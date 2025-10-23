@@ -11,6 +11,7 @@ class MobileLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screen = MediaQuery.of(context).size.width;
+    bool isWideScreen = screen > 800;
 
     return Scaffold(
       body: Container(
@@ -21,31 +22,57 @@ class MobileLoginScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: Expanded(
-          flex: 1,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              color: Color(0xFF4A609C).withValues(alpha: 0.66),
-            ),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(tDefaultSize),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FormHeaderWidget(
-                      image: tWelcomeScreenImage,
-                      title: "Welcome Back,",
-                      subTitle:
-                          "Learn Logic Gates much faster, easier, more convinient",
-                    ),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            color: const Color(0xFF4A609C).withValues(alpha: 0.66),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(tDefaultSize),
+              child: isWideScreen
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Left side (Header + Description)
+                        Expanded(
+                          flex: 1,
+                          child: FormHeaderWidget(
+                            image: tWelcomeScreenImage,
+                            title: "Welcome Back,",
+                            subTitle:
+                                "Learn Logic Gates much faster, easier, more convenient",
+                          ),
+                        ),
+                        const SizedBox(width: 50),
 
-                    const LoginForm(),
-                    LoginFooterWidget(),
-                  ],
-                ),
-              ),
+                        // Right side (Form + Footer)
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              LoginForm(),
+                              SizedBox(height: tFormHeight),
+                              LoginFooterWidget(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FormHeaderWidget(
+                          image: tWelcomeScreenImage,
+                          title: "Welcome Back,",
+                          subTitle:
+                              "Learn Logic Gates much faster, easier, more convenient",
+                        ),
+                        const LoginForm(),
+                        const LoginFooterWidget(),
+                      ],
+                    ),
             ),
           ),
         ),

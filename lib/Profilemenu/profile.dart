@@ -59,8 +59,8 @@ class ProfileMenuBox extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(10),
-                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.all(1),
+                  backgroundColor: const Color.fromARGB(255, 255, 254, 254),
                   fixedSize: const Size(36, 36),
                 ),
                 child: ClipOval(

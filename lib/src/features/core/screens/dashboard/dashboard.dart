@@ -37,7 +37,7 @@ class Dashboard extends StatelessWidget {
             margin: const EdgeInsets.only(right: 20, top: 7),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: tCardBgColor,
+              color: const Color.fromARGB(0, 247, 246, 241),
             ),
             child: IconButton(
               onPressed: () {
@@ -177,7 +177,7 @@ class Dashboard extends StatelessWidget {
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[800],
-                      text: "Block 6",
+                      text: "Block 7",
                       image: "assets/logo/annd.jpg",
                     ),
                   ],

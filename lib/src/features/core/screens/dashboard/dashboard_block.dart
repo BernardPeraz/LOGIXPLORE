@@ -90,7 +90,7 @@ class buildBlock extends StatelessWidget {
                       text,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: width * 0.052,
+                        fontSize: width * 0.045,
                       ),
                     ),
                   ),

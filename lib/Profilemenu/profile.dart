@@ -70,7 +70,7 @@ class ProfileMenuBox extends StatelessWidget {
                 child: ClipOval(
                   child: imageUrl != null && imageUrl.isNotEmpty
                       ? Image.network(
-                          imageUrl!,
+                          imageUrl,
                           width: 36,
                           height: 36,
                           fit: BoxFit.cover,
@@ -122,7 +122,7 @@ class ProfileMenuBox extends StatelessWidget {
                   child: ClipOval(
                     child: imageUrl != null && imageUrl.isNotEmpty
                         ? Image.network(
-                            imageUrl!,
+                            imageUrl,
                             width: 36,
                             height: 36,
                             fit: BoxFit.cover,

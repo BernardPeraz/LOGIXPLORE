@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/main.dart';
 
 class AnyScreen extends StatelessWidget {
+  const AnyScreen({super.key});
+
   void _loadWebsite() {
     // Start loading
     Get.find<AppLoadingController>().startLoading();

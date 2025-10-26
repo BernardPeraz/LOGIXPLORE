@@ -14,7 +14,6 @@ class MobileLayout {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // TITLE AND SUBTITLE
             Text(
               lesson['title']!,
               style: TextStyle(
@@ -25,17 +24,6 @@ class MobileLayout {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 8),
-
-            Text(
-              lesson['subtitle']!,
-              style: TextStyle(
-                fontSize: DialogController.getFontSize(context, false),
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[700],
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
 
             // IMAGE
             Container(
@@ -66,6 +54,7 @@ class MobileLayout {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
+                  side: BorderSide(color: Colors.transparent),
                   backgroundColor: const Color.fromARGB(255, 255, 149, 0),
                   foregroundColor: const Color.fromARGB(255, 0, 0, 0),
                   minimumSize: Size(double.infinity, 50),
@@ -86,21 +75,28 @@ class MobileLayout {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
+                  side: BorderSide(color: Colors.transparent),
                   backgroundColor: Colors.grey,
-                  foregroundColor: const Color.fromARGB(255, 185, 184, 184),
+                  foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                   minimumSize: Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
                 ),
-                child: Text(
-                  'ASSESSMENT',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.w600),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.lock),
+                    SizedBox(width: 20),
+                    const Text(
+                      'ASSESSMENT',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: 20),
           ],
         ),
       ),

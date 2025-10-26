@@ -1,21 +1,12 @@
 class BlocksGate {
   static const Map<String, Map<String, String>> lessons = {
-    'And': {
+    'AND': {
       'title': 'AND GATES',
-      'subtitle': 'Subheading',
       'content': '''
-Body text for your whole article or post. We'll put in some lorem ipsum to show how a filed-out page might look:
-
-Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content. Qui international first-class nulla ut. Punctual adipisicing, essentia brevi velen tempor eiusmodi truer. Exclusive tzakyar charming Scandinavian impeccable aute quality of life soft power pariatur Melbourne occaecat discerning. Qui wardrobe aliquip, et Porter destination Toto remarkable officia Helsinki excepteur Basset Round. Zürich sleepy perfect consectetur.
-
-Additional text to make it scrollable. Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content. Qui international first-class nulla ut.
+AND gates are fundamental digital logic components that output HIGH only when both inputs are HIGH. They implement the Boolean AND operation using the logical expression A · B. In truth table terms, the output is 1 exclusively when input A AND input B equal 1. These gates serve as essential building blocks in digital circuits and computer processors. Understanding AND gates is crucial for designing complex logic systems and computational devices.
 ''',
     },
-    'Block 2': {
-      'title': 'OR GATES',
-      'subtitle': 'Logic Gates',
-      'content': 'OR Gates content here...',
-    },
+    'Block 2': {'title': 'OR GATES', 'content': 'OR Gates content here...'},
     // Pwede kang magdagdag ng iba pang blocks dito
   };
 }

@@ -54,14 +54,14 @@ class _EditprofileState extends State<Editprofile> {
         displayName = '${data['First Name'] ?? ''} ${data['Last Name'] ?? ''}'
             .trim();
         // GUSTO KO: Kunin ang username na ininput sa account at i-assign sa loginType
-        loginType = data['username'] ?? 'User';
+        loginType = data['Username'] ?? 'User';
       }
     }
 
     if (user.providerData.any((p) => p.providerId == 'google.com')) {
       displayName = user.email ?? 'No Email Found';
       // GUSTO KO: Kunin ang username na ininput sa account at i-assign sa loginType
-      loginType = doc.data()?['username'] ?? user.displayName ?? 'Google User';
+      loginType = doc.data()?['Username'] ?? user.displayName ?? 'Google User';
     }
 
     setState(() {

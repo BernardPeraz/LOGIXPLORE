@@ -7,10 +7,26 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboa
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/firebase_options.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/utils/theme/theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+// Global loading controller - Dinagdagan lang dito
+class AppLoadingController extends GetxController {
+  final isLoading = false.obs;
+
+  void startLoading() => isLoading.value = true;
+  void stopLoading() => isLoading.value = false;
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await Supabase.initialize(
+    url: 'https://yumufbsbqiwnjnzkacnn.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1bXVmYnNicWl3bmpuemthY25uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzOTg0MDYsImV4cCI6MjA3Njk3NDQwNn0.nDq_gUdJBbsdzdHNLZap1B6QWxP4Nna92gRwHG_Gbp0',
+  );
 
   runApp(const MyApp());
 }
@@ -65,6 +81,42 @@ class _MyAppState extends State<MyApp> {
       home: FirebaseAuth.instance.currentUser != null
           ? const Dashboard()
           : SplashScreen(),
+      // Global loading overlay - Dinagdagan lang dito
+      builder: (context, child) {
+        return Stack(
+          children: [
+            child!,
+            Obx(() {
+              final loadingController = Get.put(AppLoadingController());
+              return loadingController.isLoading.value
+                  ? Container(
+                      color: Colors.black54,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              'Loading...',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink();
+            }),
+          ],
+        );
+      },
     );
   }
 }

@@ -37,11 +37,14 @@ class ProfileMenuBox extends StatelessWidget {
           imageUrl = data['profileImage'];
         }
 
+        // 🟡 FIX: If Firestore doesn’t have a profileImage, use Google photoURL
+        imageUrl ??= user.photoURL;
+
         if (displayName.isEmpty ||
             displayName == 'Loading...' ||
             displayName.trim().isEmpty) {
           // If Firestore name fields are missing, use email instead
-          displayName = user.email ?? 'No Email Found';
+          displayName = user.displayName ?? user.email ?? 'No Email Found';
         }
 
         const String defaultAssetImage = 'assets/logo/avatar.png';
@@ -58,6 +61,7 @@ class ProfileMenuBox extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
+                  side: BorderSide(color: Colors.transparent),
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(1),
                   backgroundColor: const Color.fromARGB(255, 255, 254, 254),
@@ -66,10 +70,17 @@ class ProfileMenuBox extends StatelessWidget {
                 child: ClipOval(
                   child: imageUrl != null && imageUrl.isNotEmpty
                       ? Image.network(
-                          imageUrl,
+                          imageUrl!,
                           width: 36,
                           height: 36,
                           fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                                defaultAssetImage,
+                                width: 36,
+                                height: 36,
+                                fit: BoxFit.cover,
+                              ),
                         )
                       : Image.asset(
                           defaultAssetImage,
@@ -79,8 +90,6 @@ class ProfileMenuBox extends StatelessWidget {
                         ),
                 ),
               ),
-
-              // 🟠 Dropdown arrow with display name shown only for mobile
             ],
           );
         } else {
@@ -104,6 +113,7 @@ class ProfileMenuBox extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
+                    side: BorderSide(color: Colors.transparent),
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(5),
                     backgroundColor: Colors.white,
@@ -112,10 +122,17 @@ class ProfileMenuBox extends StatelessWidget {
                   child: ClipOval(
                     child: imageUrl != null && imageUrl.isNotEmpty
                         ? Image.network(
-                            imageUrl,
+                            imageUrl!,
                             width: 36,
                             height: 36,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                                  defaultAssetImage,
+                                  width: 36,
+                                  height: 36,
+                                  fit: BoxFit.cover,
+                                ),
                           )
                         : Image.asset(
                             defaultAssetImage,
@@ -126,7 +143,6 @@ class ProfileMenuBox extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                // Name + Role
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

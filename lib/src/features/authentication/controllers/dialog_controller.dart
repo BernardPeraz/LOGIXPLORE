@@ -25,7 +25,7 @@ class DialogController {
   static double getImageHeight(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     if (screenHeight < 600) {
-      return 120;
+      return 200;
     } else {
       return 200;
     }

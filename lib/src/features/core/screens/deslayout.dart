@@ -10,7 +10,6 @@ class DesktopLayout {
   ) {
     return Row(
       children: [
-        // LEFT CONTAINER - TEXT WITH SCROLLBAR
         Expanded(
           flex: 2,
           child: Padding(
@@ -26,16 +25,7 @@ class DesktopLayout {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8),
 
-                Text(
-                  lesson['subtitle']!,
-                  style: TextStyle(
-                    fontSize: DialogController.getFontSize(context, false),
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey[700],
-                  ),
-                ),
                 SizedBox(height: 25),
 
                 Expanded(
@@ -50,7 +40,7 @@ class DesktopLayout {
                             context,
                             false,
                           ),
-                          height: 1.6,
+                          height: 2,
                           color: Colors.black87,
                         ),
                       ),
@@ -67,78 +57,107 @@ class DesktopLayout {
           flex: 1,
           child: Container(
             padding: DialogController.getPadding(context),
-            child: Column(
-              children: [
-                Container(
-                  height: DialogController.getImageHeight(context),
-                  width: DialogController.getImageWidth(context),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: AssetImage(image),
-                      fit: BoxFit.cover,
+
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final screenWidth = MediaQuery.of(context).size.width;
+
+                return Scrollbar(
+                  thumbVisibility: screenWidth <= 355,
+                  radius: const Radius.circular(10),
+                  thickness: 6,
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: DialogController.getImageHeight(context),
+                          width: DialogController.getImageWidth(context),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                              image: AssetImage(image),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 120),
+
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: DialogController.getButtonWidth(context),
+                              child: ElevatedButton(
+                                onPressed: () {},
+
+                                style: ElevatedButton.styleFrom(
+                                  side: BorderSide(color: Colors.grey),
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    255,
+                                    149,
+                                    0,
+                                  ),
+                                  foregroundColor: const Color.fromARGB(
+                                    255,
+                                    0,
+                                    0,
+                                    0,
+                                  ),
+                                  minimumSize: const Size(double.infinity, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                child: const Text(
+                                  'START LESSON',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.w900),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 40),
+                            SizedBox(
+                              width: DialogController.getButtonWidth(context),
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  side: BorderSide(color: Colors.transparent),
+                                  backgroundColor: Colors.grey,
+                                  foregroundColor: const Color.fromARGB(
+                                    255,
+                                    255,
+                                    255,
+                                    255,
+                                  ),
+                                  minimumSize: const Size(double.infinity, 50),
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.lock),
+                                    SizedBox(width: 20),
+                                    const Text(
+                                      'ASSESSMENT',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                SizedBox(height: 30),
-
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: DialogController.getButtonWidth(context),
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              149,
-                              0,
-                            ),
-                            foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          child: Text(
-                            'START LESSON',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.w900),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      SizedBox(
-                        width: DialogController.getButtonWidth(context),
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
-                            foregroundColor: const Color.fromARGB(
-                              255,
-                              185,
-                              184,
-                              184,
-                            ),
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                          ),
-                          child: Text(
-                            'ASSESSMENT',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ),

@@ -69,7 +69,7 @@ class MobileLayout {
                 ),
               ),
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 10),
             SizedBox(
               width: DialogController.getButtonWidth(context),
               child: ElevatedButton(

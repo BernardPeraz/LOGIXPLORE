@@ -19,7 +19,6 @@ class ProfileMenuBox extends StatelessWidget {
       );
     }
 
-    // Fetch user info from Firestore
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('users')
@@ -37,13 +36,11 @@ class ProfileMenuBox extends StatelessWidget {
           imageUrl = data['profileImage'];
         }
 
-        // 🟡 FIX: If Firestore doesn’t have a profileImage, use Google photoURL
         imageUrl ??= user.photoURL;
 
         if (displayName.isEmpty ||
             displayName == 'Loading...' ||
             displayName.trim().isEmpty) {
-          // If Firestore name fields are missing, use email instead
           displayName = user.displayName ?? user.email ?? 'No Email Found';
         }
 
@@ -65,27 +62,27 @@ class ProfileMenuBox extends StatelessWidget {
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(1),
                   backgroundColor: const Color.fromARGB(255, 255, 254, 254),
-                  fixedSize: const Size(36, 36),
+                  fixedSize: const Size(40, 40),
                 ),
                 child: ClipOval(
                   child: imageUrl != null && imageUrl.isNotEmpty
                       ? Image.network(
                           imageUrl,
-                          width: 36,
-                          height: 36,
+                          width: 40,
+                          height: 40,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
                               Image.asset(
                                 defaultAssetImage,
-                                width: 36,
-                                height: 36,
+                                width: 40,
+                                height: 40,
                                 fit: BoxFit.cover,
                               ),
                         )
                       : Image.asset(
                           defaultAssetImage,
-                          width: 36,
-                          height: 36,
+                          width: 40,
+                          height: 40,
                           fit: BoxFit.cover,
                         ),
                 ),
@@ -117,27 +114,28 @@ class ProfileMenuBox extends StatelessWidget {
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(5),
                     backgroundColor: Colors.white,
-                    fixedSize: const Size(36, 36),
+                    // =============== FIXED CIRCLE SIZE ===============
+                    fixedSize: const Size(40, 40),
                   ),
                   child: ClipOval(
                     child: imageUrl != null && imageUrl.isNotEmpty
                         ? Image.network(
                             imageUrl,
-                            width: 36,
-                            height: 36,
+                            width: 40,
+                            height: 40,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
                                 Image.asset(
                                   defaultAssetImage,
-                                  width: 36,
-                                  height: 36,
+                                  width: 40,
+                                  height: 40,
                                   fit: BoxFit.cover,
                                 ),
                           )
                         : Image.asset(
                             defaultAssetImage,
-                            width: 36,
-                            height: 36,
+                            width: 40,
+                            height: 40,
                             fit: BoxFit.cover,
                           ),
                   ),

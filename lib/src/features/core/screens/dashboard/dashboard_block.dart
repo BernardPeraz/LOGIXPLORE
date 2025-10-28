@@ -92,7 +92,7 @@ class buildBlock extends StatelessWidget {
                         color: Colors.black,
                         fontSize: width > 600 ? width * 0.045 : 16,
                         fontWeight: FontWeight.bold,
-                        height: 1.0, // Fixed line height
+                        height: 0.3, // Fixed line height
                       ),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.visible,

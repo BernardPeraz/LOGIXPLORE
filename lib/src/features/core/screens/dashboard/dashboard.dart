@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
@@ -118,28 +119,36 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false); // Cancel
-                                  },
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                      color: isDark
-                                          ? Colors.blue[300]
-                                          : Colors.blue,
-                                    ),
-                                  ),
-                                ),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(21),
+                                    ),
                                     backgroundColor: Colors.red,
                                     foregroundColor: Colors.white,
                                   ),
+
                                   onPressed: () {
                                     Navigator.of(context).pop(true); // Confirm
                                   },
                                   child: Text("Logout"),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(21),
+                                    ),
+                                    textStyle: TextStyle(
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+
+                                  onPressed: () {
+                                    Navigator.of(context).pop(true); // Confirm
+                                  },
+                                  child: Text("Cancel"),
                                 ),
                               ],
                             );
@@ -187,16 +196,33 @@ class _DashboardState extends State<Dashboard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      user.displayName?.isNotEmpty == true
-                          ? user.displayName!
-                          : 'User',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: isDark ? Colors.white : Colors.black,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+                    FutureBuilder<DocumentSnapshot>(
+                      future: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid)
+                          .get(),
+                      builder: (context, snapshot) {
+                        String displayName = user.displayName ?? 'Loading...';
+
+                        if (snapshot.hasData && snapshot.data!.exists) {
+                          final data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+                          final String fullName =
+                              '${data['First Name'] ?? ''} ${data['Last Name'] ?? ''}'
+                                  .trim();
+                          if (fullName.isNotEmpty) displayName = fullName;
+                        }
+
+                        return Text(
+                          displayName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: isDark ? Colors.white : Colors.black,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      },
                     ),
                     const SizedBox(height: 2),
                     Text(

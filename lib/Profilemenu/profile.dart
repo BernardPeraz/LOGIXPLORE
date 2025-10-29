@@ -61,7 +61,7 @@ class ProfileMenuBox extends StatelessWidget {
                   side: BorderSide(color: Colors.transparent),
                   shape: const CircleBorder(),
                   padding: const EdgeInsets.all(1),
-                  backgroundColor: const Color.fromARGB(255, 255, 254, 254),
+                  backgroundColor: const Color.fromARGB(0, 212, 7, 7),
                   fixedSize: const Size(40, 40),
                 ),
                 child: ClipOval(

@@ -4,8 +4,9 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/and.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/deslayout.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/moblayout.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
 
-class buildBlock extends StatelessWidget {
+class buildBlock extends StatefulWidget {
   buildBlock({
     super.key,
     required this.width,
@@ -15,17 +16,25 @@ class buildBlock extends StatelessWidget {
   });
 
   final double width;
-  Color? color;
+  final Color? color;
   final String image;
   final String text;
 
+  @override
+  State<buildBlock> createState() => _buildBlockState();
+}
+
+class _buildBlockState extends State<buildBlock> {
+  double _progress = 0.0;
+  bool _hasBeenCompleted = false;
+
   void _showOptionsDialog(BuildContext context) {
     final lesson =
-        BlocksGate.lessons[text] ??
+        BlocksGate.lessons[widget.text] ??
         {
-          'title': text,
+          'title': widget.text,
           'subtitle': 'Lesson Subtitle',
-          'content': 'Lesson content for $text...',
+          'content': 'Lesson content for ${widget.text}...',
         };
 
     showDialog(
@@ -35,40 +44,77 @@ class buildBlock extends StatelessWidget {
 
         return Dialog(
           backgroundColor: Colors.transparent,
-          child: Container(
-            width: DialogController.getDialogWidth(context),
-            height: DialogController.getDialogHeight(context),
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(158, 255, 255, 255),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: isMobile
-                ? MobileLayout.build(context, lesson, image)
-                : DesktopLayout.build(context, lesson, image),
+          child: Stack(
+            children: [
+              Container(
+                width: DialogController.getDialogWidth(context),
+                height: DialogController.getDialogHeight(context),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(158, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: isMobile
+                    ? MobileLayout.build(
+                        context,
+                        lesson,
+                        widget.image,
+                        onStartLesson: _navigateToLessonPage,
+                      )
+                    : DesktopLayout.build(
+                        context,
+                        lesson,
+                        widget.image,
+                        onStartLesson: _navigateToLessonPage,
+                      ),
+              ),
+              // CLOSE BUTTON - NASA UPPER RIGHT NA
+              Positioned(
+                top: 10,
+                right: 10,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(Icons.close, color: Colors.black, size: 24),
+                ),
+              ),
+            ],
           ),
         );
       },
     );
   }
 
+  void _navigateToLessonPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SimpleTextImagePage()),
+    ).then((result) {
+      // When returning from SimpleTextImagePage, check if Done was pressed
+      if (result == true && !_hasBeenCompleted) {
+        setState(() {
+          _progress = 1.0; // Set to 100%
+          _hasBeenCompleted = true;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width,
-      height: width - (width * 0.08),
-      color: color,
-
+      width: widget.width,
+      height: widget.width - (widget.width * 0.08),
+      color: widget.color,
       padding: EdgeInsets.all(9),
-
       child: Column(
         children: [
-          Image(image: AssetImage(image), width: width),
-          Container(height: width * 0.02),
-
+          Image(image: AssetImage(widget.image), width: widget.width),
+          Container(height: widget.width * 0.02),
           Row(
             children: [
               Container(
-                height: width * 0.120,
+                height: widget.width * 0.120,
                 width: 100,
                 color: Colors.transparent,
                 child: Center(
@@ -78,7 +124,7 @@ class buildBlock extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       side: BorderSide(color: Colors.transparent),
-                      fixedSize: Size(100, width * 0.1),
+                      fixedSize: Size(100, widget.width * 0.1),
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
@@ -87,12 +133,14 @@ class buildBlock extends StatelessWidget {
                       alignment: Alignment.center,
                     ),
                     child: Text(
-                      text,
+                      widget.text,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: width > 600 ? width * 0.045 : 16,
+                        fontSize: widget.width > 600
+                            ? widget.width * 0.045
+                            : 16,
                         fontWeight: FontWeight.bold,
-                        height: 0.3, // Fixed line height
+                        height: 0.3,
                       ),
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.visible,
@@ -100,18 +148,19 @@ class buildBlock extends StatelessWidget {
                   ),
                 ),
               ),
-
               Expanded(child: Container()),
               Container(
                 alignment: Alignment.center,
-                width: width * 0.1,
-                height: width * 0.1,
+                width: widget.width * 0.1,
+                height: widget.width * 0.1,
                 child: CircularProgressIndicator(
-                  value: 0.7,
+                  value: _progress,
                   strokeWidth: 7,
                   backgroundColor: Colors.grey[300],
                   valueColor: AlwaysStoppedAnimation<Color>(
-                    const Color.fromARGB(255, 73, 222, 39),
+                    _progress == 1.0
+                        ? Colors.green
+                        : const Color.fromARGB(255, 73, 222, 39),
                   ),
                 ),
               ),

@@ -1,13 +1,15 @@
 // mobile_layout.dart
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
 
 class MobileLayout {
   static Widget build(
     BuildContext context,
     Map<String, String> lesson,
-    String image,
-  ) {
+    String image, {
+    VoidCallback? onStartLesson,
+  }) {
     return SingleChildScrollView(
       child: Padding(
         padding: DialogController.getPadding(context),
@@ -52,7 +54,14 @@ class MobileLayout {
             SizedBox(
               width: DialogController.getButtonWidth(context),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Close dialog first
+                  Navigator.of(context).pop();
+                  // Then call onStartLesson to navigate to lesson page
+                  if (onStartLesson != null) {
+                    onStartLesson();
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   side: BorderSide(color: Colors.transparent),
                   backgroundColor: const Color.fromARGB(255, 255, 149, 0),

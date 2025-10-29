@@ -1,13 +1,16 @@
 // desktop_layout.dart
 import 'package:flutter/material.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
 
 class DesktopLayout {
   static Widget build(
     BuildContext context,
     Map<String, String> lesson,
-    String image,
-  ) {
+    String image, {
+    required VoidCallback onStartLesson,
+  }) {
     return Row(
       children: [
         Expanded(
@@ -89,8 +92,12 @@ class DesktopLayout {
                             SizedBox(
                               width: DialogController.getButtonWidth(context),
                               child: ElevatedButton(
-                                onPressed: () {},
-
+                                onPressed: () {
+                                  // Close dialog first
+                                  Navigator.of(context).pop();
+                                  // Then call onStartLesson to navigate to lesson page
+                                  onStartLesson();
+                                },
                                 style: ElevatedButton.styleFrom(
                                   side: BorderSide(color: Colors.grey),
                                   backgroundColor: const Color.fromARGB(

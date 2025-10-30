@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/welcome_screen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 
 class FadeInAnimationController extends GetxController {
   static FadeInAnimationController get find => Get.find();
@@ -15,7 +15,7 @@ class FadeInAnimationController extends GetxController {
 
     await Future.delayed(const Duration(milliseconds: 1000));
 
-    Get.offAll(() => const WelcomeScreen());
+    Get.offAll(() => const Landingpagee());
   }
 
   Future startAnimation() async {

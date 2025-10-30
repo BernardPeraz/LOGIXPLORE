@@ -81,7 +81,6 @@ class _MyAppState extends State<MyApp> {
       home: FirebaseAuth.instance.currentUser != null
           ? const Dashboard()
           : SplashScreen(),
-      // Global loading overlay - Dinagdagan lang dito
       builder: (context, child) {
         return Stack(
           children: [

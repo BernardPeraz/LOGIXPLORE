@@ -15,7 +15,7 @@ class FadeInAnimationController extends GetxController {
 
     await Future.delayed(const Duration(milliseconds: 1000));
 
-    Get.to(Landingpagee());
+    Get.off(() => const Landingpagee());
   }
 
   Future startAnimation() async {

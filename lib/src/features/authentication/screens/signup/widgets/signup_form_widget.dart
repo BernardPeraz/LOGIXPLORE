@@ -118,12 +118,12 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               inputFormatters: mobileNumberInputFormatters(),
               decoration: InputDecoration(
                 label: const Text("Phone Number"),
-                hintText: '948536375',
+                hintText: '9948536375',
                 errorText: fieldErrors['mobileNumber'],
                 prefixIcon: const Icon(Icons.phone),
                 prefix: Padding(
                   padding: EdgeInsetsGeometry.only(right: 5.0),
-                  child: Text('+639', style: TextStyle(color: Colors.black)),
+                  child: Text('+63', style: TextStyle(color: Colors.black)),
                 ),
               ),
             ),

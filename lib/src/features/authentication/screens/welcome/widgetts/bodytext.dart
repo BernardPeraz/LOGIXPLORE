@@ -5,7 +5,7 @@ Widget BodyText(double width, bool isDesktop) {
     flex: 4,
     child: Container(
       // Mas magandang height calculation base sa screen size
-      height: isDesktop ? 300 : 245,
+      height: isDesktop ? 355 : 245,
       width: width,
       child: Center(
         child: Column(
@@ -18,6 +18,13 @@ Widget BodyText(double width, bool isDesktop) {
               child: Text(
                 "LOGIXPLORE",
                 style: TextStyle(
+                  shadows: [
+                    Shadow(
+                      offset: Offset(3, 6),
+                      blurRadius: 2,
+                      color: Colors.black.withValues(alpha: 100),
+                    ),
+                  ],
                   fontSize: isDesktop ? width * 0.07 : width * 0.12,
                   fontFamily: 'Headline',
                   fontWeight: FontWeight.w700,
@@ -41,6 +48,13 @@ Widget BodyText(double width, bool isDesktop) {
                 child: Text(
                   "Small circuits can make big impact!",
                   style: TextStyle(
+                    shadows: [
+                      Shadow(
+                        offset: Offset(4, 0),
+                        blurRadius: 16,
+                        color: Colors.black.withValues(alpha: 100),
+                      ),
+                    ],
                     fontSize: isDesktop ? width * 0.03 : width * 0.04,
                     fontFamily: 'Headline',
                     fontWeight: FontWeight.w700,

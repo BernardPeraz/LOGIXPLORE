@@ -220,7 +220,14 @@ class _LandingmobileState extends State<Landingmobile> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             elevation: 1,
-            backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+            backgroundColor: const Color.fromARGB(
+              142,
+              221,
+              217,
+              217,
+            ).withValues(alpha: 350),
+            shadowColor: const Color.fromARGB(165, 9, 9, 9),
+            bottomOpacity: BorderSide.strokeAlignOutside,
             actions: [
               ...visibleButtons.map(
                 (label) => Padding(
@@ -324,7 +331,13 @@ class _LandingmobileState extends State<Landingmobile> {
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             children: [
-                              ScopeContainer(0, 20, 0, '', false),
+                              ScopeContainer(
+                                0,
+                                20,
+                                0,
+                                ' Explore the building blocks of digital electronics through interactive logic gate simulations.',
+                                false,
+                              ),
                               const SizedBox(height: 10),
                               ScopeContainer(0, 20, 0, '', false),
                               const SizedBox(height: 10),

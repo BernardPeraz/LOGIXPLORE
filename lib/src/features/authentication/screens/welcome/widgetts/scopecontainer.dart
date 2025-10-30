@@ -17,20 +17,28 @@ Widget ScopeContainer(
         ),
       ),
       Flexible(
-        flex: 20,
-        child: Container(
-          height: isDesktop ? 55 : 50, // CONDITIONAL: Mas maliit sa mobile
-          color: const Color.fromARGB(250, 255, 149, 0),
-          child: Center(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: isDesktop
-                    ? 26
-                    : 18, // CONDITIONAL: Mas maliit sa mobile
-                fontWeight: FontWeight.w900,
+        flex: 25,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(250, 255, 149, 0),
+            shadowColor: Colors.black,
+            elevation: 15,
+          ),
+          onPressed: () {},
+          child: Container(
+            height: isDesktop ? 55 : 50, // CONDITIONAL: Mas maliit sa mobile
+            color: const Color.fromARGB(250, 255, 149, 0),
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: isDesktop
+                      ? 26
+                      : 18, // CONDITIONAL: Mas maliit sa mobile
+                  fontWeight: FontWeight.w900,
 
-                color: Colors.black,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),

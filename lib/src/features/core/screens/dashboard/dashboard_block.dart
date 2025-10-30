@@ -25,14 +25,6 @@ class buildBlock extends StatefulWidget {
 }
 
 class _buildBlockState extends State<buildBlock> {
-  final ScrollController _scrollController = ScrollController();
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    // ... dispose other controllers
-    super.dispose();
-  }
-
   double _progress = 0.0;
   bool _hasBeenCompleted = false;
 

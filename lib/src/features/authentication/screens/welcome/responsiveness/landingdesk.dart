@@ -70,7 +70,14 @@ class _LandingdesktopState extends State<Landingdesktop>
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         elevation: 1,
-        backgroundColor: const Color.fromARGB(255, 253, 253, 253),
+        backgroundColor: const Color.fromARGB(
+          142,
+          221,
+          217,
+          217,
+        ).withValues(alpha: 350),
+        shadowColor: const Color.fromARGB(165, 9, 9, 9),
+        bottomOpacity: BorderSide.strokeAlignOutside,
         actions: [
           ElevatedButton(
             onPressed: () {},
@@ -162,6 +169,11 @@ class _LandingdesktopState extends State<Landingdesktop>
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 image: DecorationImage(
+                  opacity: 0.9,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.dstATop,
+                  ),
                   image: AssetImage(
                     "assets/images/background_images/light-bg-image.jpg",
                   ),

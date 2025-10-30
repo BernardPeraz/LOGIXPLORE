@@ -39,7 +39,7 @@ bool _isValidPassword(String pass) {
 
 bool _isValidEmail(String email) =>
     RegExp(r'^[\w\.-]+@(gmail|yahoo)\.com$').hasMatch(email);
-bool isValidMobileNumber(String value) => RegExp(r'^(\d{9})$').hasMatch(value);
+bool isValidMobileNumber(String value) => RegExp(r'^(\d{10})$').hasMatch(value);
 
 bool areFieldsValid({
   required String firstName,
@@ -109,7 +109,7 @@ String? getPasswordError(String value) {
 List<TextInputFormatter> mobileNumberInputFormatters() {
   return [
     FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]')),
-    LengthLimitingTextInputFormatter(9),
+    LengthLimitingTextInputFormatter(10),
   ];
 }
 

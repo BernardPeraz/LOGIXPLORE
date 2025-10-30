@@ -16,18 +16,170 @@ class Landingmobile extends StatefulWidget {
 class _LandingmobileState extends State<Landingmobile> {
   bool _isLoading = false;
 
+  // Add these variables for the popup menu functionality
+  final LayerLink _layerLink = LayerLink();
+  OverlayEntry? _overlayEntry;
+  bool _isMenuOpen = false;
+
+  @override
+  void dispose() {
+    _hidePopupMenu();
+    super.dispose();
+  }
+
+  // Popup Menu Functions - same functionality as in Dashboard
+  void _showPopupMenu(BuildContext context, List<String> hiddenButtons) {
+    if (_isMenuOpen) return;
+
+    _overlayEntry = _createOverlayEntry(context, hiddenButtons);
+    Overlay.of(context).insert(_overlayEntry!);
+    setState(() {
+      _isMenuOpen = true;
+    });
+  }
+
+  void _hidePopupMenu() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+    setState(() {
+      _isMenuOpen = false;
+    });
+  }
+
+  OverlayEntry _createOverlayEntry(
+    BuildContext context,
+    List<String> hiddenButtons,
+  ) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        width: 200,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: const Offset(-150, 40),
+          child: MouseRegion(
+            onExit: (_) {
+              _hidePopupMenu();
+            },
+            child: Material(
+              elevation: 4,
+              borderRadius: BorderRadius.circular(8),
+              color: isDark ? Colors.grey[900] : Colors.white,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: hiddenButtons
+                      .map(
+                        (label) => _buildPopupMenuItem(
+                          text: label,
+                          isDark: isDark,
+                          onTap: () {
+                            _hidePopupMenu();
+                            _handleMenuAction(label);
+                          },
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPopupMenuItem({
+    required String text,
+    required bool isDark,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              Container(
+                height: 35,
+                width: 35,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(300),
+                  color: isDark
+                      ? Colors.grey[700]
+                      : const Color.fromARGB(82, 158, 158, 158),
+                ),
+                child: Icon(
+                  _getIconForLabel(text),
+                  size: 20,
+                  color: isDark ? Colors.white : Colors.black,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                text,
+
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  IconData _getIconForLabel(String label) {
+    switch (label) {
+      case 'Home':
+        return Icons.home;
+      case 'About':
+        return Icons.info;
+      case 'Sign in':
+        return Icons.person;
+      case 'Register':
+        return Icons.app_registration;
+      default:
+        return Icons.menu;
+    }
+  }
+
+  void _handleMenuAction(String label) {
+    if (label == 'Register') {
+      _goToSignUp();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Get.to(() => const SignupScreen());
+      });
+    } else if (label == 'Sign in') {
+      _goToSignUp();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Get.to(() => const LoginScreen());
+      });
+    } else if (label == 'About') {
+      // Handle About action
+    } else if (label == 'Home') {
+      // Handle Home action
+    }
+    print('$label clicked');
+  }
+
   void _goToSignUp() {
     setState(() {
-      _isLoading = true; // Magpapakita ng white screen
+      _isLoading = true;
     });
 
-    // After 2 seconds, babalik sa normal
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         _isLoading = false;
       });
-      // Dito ilalagay yung navigation papuntang sign up page
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
     });
   }
 
@@ -55,6 +207,7 @@ class _LandingmobileState extends State<Landingmobile> {
           visibleButtons = [];
           hiddenButtons = allButtons;
         }
+
         return Scaffold(
           appBar: AppBar(
             leading: Image.asset(
@@ -74,25 +227,12 @@ class _LandingmobileState extends State<Landingmobile> {
                   padding: const EdgeInsets.only(left: 13),
                   child: OutlinedButton(
                     onPressed: () {
-                      if (label == 'Register') {
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Get.to(
-                            () => const SignupScreen(),
-                          ); // Navigate to SignupScreen after delay
-                        });
-                      } else if (label == 'Sign in') {
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Get.to(
-                            () => const SignupScreen(),
-                          ); // Navigate to SignupScreen after delay
-                        });
-                      } else if (label == 'About') {
-                      } else if (label == 'Home') {}
+                      _handleMenuAction(label);
                     },
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Colors.black),
+                      side: const BorderSide(color: Colors.black),
                       backgroundColor: (label == 'Register')
-                          ? Color.fromARGB(255, 255, 128, 0)
+                          ? const Color.fromARGB(255, 255, 128, 0)
                           : Colors.black,
                       foregroundColor: (label == 'Register')
                           ? Colors.black
@@ -108,50 +248,36 @@ class _LandingmobileState extends State<Landingmobile> {
                 ),
               ),
 
-              if (allButtons.isNotEmpty)
+              if (hiddenButtons.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
-                  child: PopupMenuButton<String>(
-                    icon: Icon(Icons.menu, color: Colors.black),
-                    onSelected: (value) {
-                      if (value == 'Register') {
-                        _goToSignUp();
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Get.to(
-                            () => const SignupScreen(),
-                          ); // Navigate to SignupScreen after delay
-                        });
-                      } else if (value == 'Sign in') {
-                        _goToSignUp();
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Get.to(
-                            () => const LoginScreen(),
-                          ); // Navigate to SignupScreen after delay
-                        });
-                      } else if (value == 'About') {
-                      } else if (value == 'Home') {}
-                      // ignore: avoid_print
-                      print('$value clicked');
-                      // You can handle navigation here
-                    },
-                    itemBuilder: (context) => hiddenButtons
-                        .map(
-                          (label) =>
-                              PopupMenuItem(value: label, child: Text(label)),
-                        )
-                        .toList(),
+                  child: CompositedTransformTarget(
+                    link: _layerLink,
+                    child: MouseRegion(
+                      onEnter: (_) => _showPopupMenu(context, hiddenButtons),
+                      child: IconButton(
+                        icon: Icon(Icons.menu, color: Colors.black),
+                        onPressed: () {
+                          if (_isMenuOpen) {
+                            _hidePopupMenu();
+                          } else {
+                            _showPopupMenu(context, hiddenButtons);
+                          }
+                        },
+                      ),
+                    ),
                   ),
                 ),
             ],
           ),
           body: _isLoading
               ? Container(
-                  color: Colors.white, // Pure white background
+                  color: Colors.white,
                   child: const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CircularProgressIndicator(), // Loading spinner
+                        CircularProgressIndicator(),
                         SizedBox(height: 20),
                         Text(
                           'Loading...',
@@ -173,7 +299,6 @@ class _LandingmobileState extends State<Landingmobile> {
                       image: AssetImage(
                         "assets/images/background_images/light-bg-image.jpg",
                       ),
-
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -193,20 +318,18 @@ class _LandingmobileState extends State<Landingmobile> {
                             BodyText(MediaQuery.of(context).size.width, false),
                           ],
                         ),
-
                         Container(
-                          padding: EdgeInsets.all(19),
-
+                          padding: const EdgeInsets.all(19),
                           height: 270,
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             children: [
                               ScopeContainer(0, 20, 0, '', false),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ScopeContainer(0, 20, 0, '', false),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ScopeContainer(0, 20, 0, '', false),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               ScopeContainer(0, 20, 0, '', false),
                             ],
                           ),

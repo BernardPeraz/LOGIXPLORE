@@ -23,72 +23,80 @@ class MobileSignupScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(tDefaultSize),
-              child: Column(
-                children: [
-                  const FormHeaderWidget(
-                    image: tWelcomeScreenImage,
-                    title: "Get On Board!",
-                    subTitle: "Create your profile to start your journey.",
-                  ),
-                  const SignUpFormWidget(),
-                  const Text("OR"),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton.icon(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: Color(0xFF4A609C).withValues(alpha: 0.66),
+            ),
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(tDefaultSize),
+                child: Column(
+                  children: [
+                    const FormHeaderWidget(
+                      image: tWelcomeScreenImage,
+                      title: "Get On Board!",
+                      subTitle: "Create your profile to start your journey.",
+                    ),
+                    const SignUpFormWidget(),
+                    const Text("OR"),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () async {
+                          bool isLoggedIn = await login(context);
+                          if (isLoggedIn) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Dashboard(),
+                              ),
+                            );
+                          }
+                        },
+                        icon: const Image(
+                          image: AssetImage(tGoogleLogoimage),
+                          width: 20,
+                        ),
+                        label: const Text("SIGN IN WITH GOOGLE"),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextButton(
                       onPressed: () async {
-                        bool isLoggedIn = await login(context);
-                        if (isLoggedIn) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Dashboard(),
-                            ),
-                          );
-                        }
-                      },
-                      icon: const Image(
-                        image: AssetImage(tGoogleLogoimage),
-                        width: 20,
-                      ),
-                      label: const Text("SIGN IN WITH GOOGLE"),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextButton(
-                    onPressed: () async {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false, // user cannot dismiss
-                        builder: (context) =>
-                            const Center(child: CircularProgressIndicator()),
-                      );
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false, // user cannot dismiss
+                          builder: (context) =>
+                              const Center(child: CircularProgressIndicator()),
+                        );
 
-                      await Future.delayed(const Duration(seconds: 2));
+                        await Future.delayed(const Duration(seconds: 2));
 
-                      Navigator.of(context).pop();
+                        Navigator.of(context).pop();
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
-                    },
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Already have an Account? ",
-                            style: Theme.of(context).textTheme.bodySmall,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
                           ),
-                          TextSpan(text: "LOGIN"),
-                        ],
+                        );
+                      },
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Already have an Account? ",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            TextSpan(text: "LOGIN"),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

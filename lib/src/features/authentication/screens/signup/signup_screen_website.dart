@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/common_widgets/form/form_header_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
@@ -35,83 +36,141 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
             ),
             Expanded(
               flex: 1,
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.all(tDefaultSize),
-                  child: Column(
-                    children: [
-                      FormHeaderWidget(
-                        image: tWelcomeScreenImage,
-                        title: "Get On Board!",
-                        subTitle: "Create your profile to start your Journey.",
-                      ),
-                      SignUpFormWidget(),
-                      Column(
-                        children: [
-                          const Text("OR"),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: double.infinity,
-                            child: OutlinedButton.icon(
-                              onPressed: () async {
-                                bool isLoggedIn = await login(context);
-                                if (isLoggedIn) {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const Dashboard(),
-                                    ),
-                                  );
-                                }
-                              },
-                              icon: const Image(
-                                image: AssetImage(tGoogleLogoimage),
-                                width: 20,
-                              ),
-                              label: const Text("SIGN-IN WITH GOOGLE"),
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Color(0xFF4A609C).withValues(alpha: 0.66),
+                ),
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.all(tDefaultSize),
+                        child: Column(
+                          children: [
+                            FormHeaderWidget(
+                              image: tWelcomeScreenImage,
+                              title: "Get On Board!",
+                              subTitle:
+                                  "Create your profile to start your Journey.",
                             ),
+
+                            SignUpFormWidget(),
+                            Column(
+                              children: [
+                                const Text("OR"),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: OutlinedButton.icon(
+                                    onPressed: () async {
+                                      bool isLoggedIn = await login(context);
+                                      if (isLoggedIn) {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Dashboard(),
+                                          ),
+                                        );
+                                      }
+                                    },
+
+                                    icon: const Image(
+                                      image: AssetImage(tGoogleLogoimage),
+                                      width: 20,
+                                    ),
+                                    label: const Text("SIGN-IN WITH GOOGLE"),
+                                  ),
+                                ),
+
+                                TextButton(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible:
+                                          false, // user cannot dismiss
+                                      builder: (context) => const Center(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+
+                                    await Future.delayed(
+                                      const Duration(seconds: 2),
+                                    );
+
+                                    Navigator.of(context).pop();
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "Already have an Account? ",
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall,
+                                        ),
+                                        TextSpan(text: "LOGIN"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 20, // 20 pixels from the top
+                      right: 20, // 20 pixels from the right
+                      child: GestureDetector(
+                        onTap: () {
+                          // STEP 4: Navigation functionality - magse-close ang screen kapag pinindot
+                          Navigator.of(context).pop();
+                          resetFormFields(updateUI: () {});
+                        },
+                        child: Container(
+                          width: 40, // Fixed width
+                          height: 40, // Fixed height
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(
+                              125,
+                              225,
+                              56,
+                              56,
+                            ), // White background
+                            shape: BoxShape.circle, // Circular shape
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                blurRadius: 4,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                           ),
-
-                          TextButton(
-                            onPressed: () async {
-                              showDialog(
-                                context: context,
-                                barrierDismissible:
-                                    false, // user cannot dismiss
-                                builder: (context) => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-
-                              await Future.delayed(const Duration(seconds: 2));
-
+                          child: IconButton(
+                            icon: Icon(Icons.close, color: Colors.black),
+                            onPressed: () {
                               Navigator.of(context).pop();
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(),
-                                ),
+                              resetFormFields(
+                                updateUI: () {
+                                  setState(() {}); // Force UI update
+                                },
                               );
                             },
-                            child: Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "Already have an Account? ",
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall,
-                                  ),
-                                  TextSpan(text: "LOGIN"),
-                                ],
-                              ),
-                            ),
                           ),
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

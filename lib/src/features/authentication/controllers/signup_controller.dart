@@ -39,8 +39,7 @@ bool _isValidPassword(String pass) {
 
 bool _isValidEmail(String email) =>
     RegExp(r'^[\w\.-]+@(gmail|yahoo)\.com$').hasMatch(email);
-bool isValidMobileNumber(String value) =>
-    RegExp(r'^(09\d{9}|\+639\d{9})$').hasMatch(value);
+bool isValidMobileNumber(String value) => RegExp(r'^(\d{9})$').hasMatch(value);
 
 bool areFieldsValid({
   required String firstName,
@@ -110,7 +109,7 @@ String? getPasswordError(String value) {
 List<TextInputFormatter> mobileNumberInputFormatters() {
   return [
     FilteringTextInputFormatter.allow(RegExp(r'[0-9\+]')),
-    LengthLimitingTextInputFormatter(13),
+    LengthLimitingTextInputFormatter(9),
   ];
 }
 
@@ -183,7 +182,7 @@ Map<String, String?> validateAllFields() {
   if (!_hasValue(mobileNumberController.text)) {
     errors['mobileNumber'] = 'Mobile number is required';
   } else if (!isValidMobileNumber(mobileNumberController.text)) {
-    errors['mobileNumber'] = 'Enter valid PH number (09 or +639)';
+    errors['mobileNumber'] = 'Must 9 digits input';
   }
 
   if (!_hasValue(passwordController.text)) {

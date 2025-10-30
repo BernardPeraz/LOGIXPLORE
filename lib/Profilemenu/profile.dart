@@ -26,7 +26,7 @@ class ProfileMenuBox extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         String displayName = 'Loading...';
-        String role = 'Visitor';
+        String role = 'Student';
         String? imageUrl;
 
         if (snapshot.hasData && snapshot.data!.exists) {

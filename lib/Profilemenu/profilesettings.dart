@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/editprofile.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 
@@ -16,6 +17,17 @@ class ProfileSettings extends StatelessWidget {
             "PROFILE SETTINGS",
             style: Theme.of(context).textTheme.headlineMedium,
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: const Icon(Icons.close_rounded),
+              ),
+            ),
+          ],
           backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         ),
 

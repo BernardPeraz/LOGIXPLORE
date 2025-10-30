@@ -2,37 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/signup_screen.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/signup_screen_website.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
+
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/bodytext.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/imagecontainer.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/scopecontainer.dart';
 
 class Landingdesktop extends StatefulWidget {
-  // Pinalitan ko to StatefulWidget para magkaroon ng loading state
   const Landingdesktop({super.key});
 
   @override
   State<Landingdesktop> createState() => _LandingdesktopState();
 }
 
-class _LandingdesktopState extends State<Landingdesktop> {
-  // Dito idedeklara yung loading state
+class _LandingdesktopState extends State<Landingdesktop>
+    with WidgetsBindingObserver {
   bool _isLoading = false;
+  bool _showMenu = false;
 
-  // Eto yung function para sa pagpunta sa sign up
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    // This method is called when the screen size changes
+    if (_showMenu) {
+      // Use post frame callback to avoid setState during build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _showMenu = false;
+          });
+        }
+      });
+    }
+  }
+
   void _goToSignUp() {
     setState(() {
-      _isLoading = true; // Magpapakita ng white screen
+      _isLoading = true;
     });
 
-    // After 2 seconds, babalik sa normal
     Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isLoading = false;
-      });
-      // Dito ilalagay yung navigation papuntang sign up page
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpPage()));
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     });
   }
 
@@ -78,12 +102,9 @@ class _LandingdesktopState extends State<Landingdesktop> {
             onPressed: () {
               _goToSignUp();
               Future.delayed(const Duration(milliseconds: 500), () {
-                Get.to(
-                  () => const SignupScreen(),
-                ); // Navigate to SignupScreen after delay
+                Get.to(() => const SignupScreen());
               });
             },
-
             style: ElevatedButton.styleFrom(
               fixedSize: const Size(101, 33),
               backgroundColor: Colors.black,
@@ -99,9 +120,7 @@ class _LandingdesktopState extends State<Landingdesktop> {
             onPressed: () {
               _goToSignUp();
               Future.delayed(const Duration(milliseconds: 500), () {
-                Get.to(
-                  () => const LoginScreen(),
-                ); // Navigate to SignupScreen after delay
+                Get.to(() => const LoginScreen());
               });
             },
             style: ElevatedButton.styleFrom(
@@ -117,15 +136,14 @@ class _LandingdesktopState extends State<Landingdesktop> {
           const SizedBox(width: 30),
         ],
       ),
-      // Dito yung condition para sa white screen loading
       body: _isLoading
           ? Container(
-              color: Colors.white, // Pure white background
+              color: Colors.white,
               child: const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(), // Loading spinner
+                    CircularProgressIndicator(),
                     SizedBox(height: 20),
                     Text(
                       'Loading...',
@@ -170,7 +188,13 @@ class _LandingdesktopState extends State<Landingdesktop> {
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
-                          ScopeContainer(0, 20, 9, "!ST SCOPE HAHAHA", false),
+                          ScopeContainer(
+                            0,
+                            20,
+                            9,
+                            "Explore the building blocks of digital electronics through interactive logic gate simulations.",
+                            false,
+                          ),
                           const SizedBox(height: 10),
                           ScopeContainer(3, 20, 6, "", false),
                           const SizedBox(height: 10),

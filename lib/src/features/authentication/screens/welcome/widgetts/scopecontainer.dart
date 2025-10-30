@@ -12,14 +12,28 @@ Widget ScopeContainer(
       Flexible(
         flex: firstSpace,
         child: Container(
-          height: isDesktop ? 50 : 24, // CONDITIONAL: Mas maliit sa mobile
+          height: isDesktop ? 50 : 24,
+          // CONDITIONAL: Mas maliit sa mobile
         ),
       ),
       Flexible(
         flex: 20,
         child: Container(
           height: isDesktop ? 55 : 50, // CONDITIONAL: Mas maliit sa mobile
-          color: Colors.black,
+          color: const Color.fromARGB(250, 255, 149, 0),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: isDesktop
+                    ? 26
+                    : 18, // CONDITIONAL: Mas maliit sa mobile
+                fontWeight: FontWeight.w900,
+
+                color: Colors.black,
+              ),
+            ),
+          ),
         ),
       ),
       Flexible(

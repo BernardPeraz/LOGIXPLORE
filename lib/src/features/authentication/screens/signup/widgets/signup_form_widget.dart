@@ -6,6 +6,8 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'dart:async';
 
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+
 class SignUpFormWidget extends StatefulWidget {
   const SignUpFormWidget({super.key});
 
@@ -23,9 +25,9 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
     super.initState();
     mobileNumberController.addListener(() {
       final input = mobileNumberController.text;
-      setState(() {
-        mobileError = getMobileNumberError(input);
-      });
+      if (mounted) {
+        setState(() => fieldErrors = {input: getMobileNumberError(input)});
+      }
     });
   }
 
@@ -37,6 +39,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
   final ValueNotifier<bool> passwordVisible = ValueNotifier(false);
   final ValueNotifier<bool> repeatPasswordVisible = ValueNotifier(false);
+  String completePhoneNumber = "+639$mobileNumberController";
 
   void togglePasswordVisibility() {
     passwordVisible.value = !passwordVisible.value;
@@ -115,8 +118,13 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               inputFormatters: mobileNumberInputFormatters(),
               decoration: InputDecoration(
                 label: const Text("Phone Number"),
+                hintText: '948536375',
                 errorText: fieldErrors['mobileNumber'],
                 prefixIcon: const Icon(Icons.phone),
+                prefix: Padding(
+                  padding: EdgeInsetsGeometry.only(right: 5.0),
+                  child: Text('+639', style: TextStyle(color: Colors.black)),
+                ),
               ),
             ),
             SizedBox(height: tFormHeight - 20),
@@ -131,6 +139,8 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     counterText: '',
+                    hintText:
+                        'Must have 1 uppercase, lowercase, number, and special character',
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -155,6 +165,8 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   decoration: InputDecoration(
                     labelText: 'Repeat Password',
                     counterText: '',
+                    hintText:
+                        'Must have 1 uppercase, lowercase, number, and special character',
                     prefixIcon: const Icon(Icons.lock_outline),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -273,7 +285,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => SplashScreen()),
+                        MaterialPageRoute(builder: (context) => Dashboard()),
                       );
                     } catch (e) {
                       Navigator.pop(context);

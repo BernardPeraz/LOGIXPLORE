@@ -53,7 +53,7 @@ class _EditprofileState extends State<Editprofile> {
       if (user.providerData.any((p) => p.providerId == 'password')) {
         displayName = '${data['First Name'] ?? ''} ${data['Last Name'] ?? ''}'
             .trim();
-        loginType = data['username'] ?? 'User';
+        loginType = data['Username'] ?? 'User';
       }
     }
 
@@ -137,7 +137,7 @@ class _EditprofileState extends State<Editprofile> {
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(20),
-      color: Colors.black,
+      color: const Color.fromARGB(255, 55, 118, 226),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

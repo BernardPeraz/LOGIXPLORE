@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
@@ -119,36 +120,52 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               actions: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(21),
-                                    ),
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                  ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Logout button sa left
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        side: BorderSide(
+                                          color: Colors.transparent,
+                                        ),
 
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true); // Confirm
-                                  },
-                                  child: Text("Logout"),
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(21),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                        ),
+                                        backgroundColor: Colors.red,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(
+                                          context,
+                                        ).pop(true); // Confirm
+                                      },
+                                      child: Text("Logout"),
                                     ),
-                                    textStyle: TextStyle(
-                                      color: isDark
-                                          ? Colors.white
-                                          : Colors.black,
+                                    Spacer(flex: 1),
+                                    // Cancel button sa right
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                        ),
+                                        textStyle: TextStyle(
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Get.back(); // Confirm
+                                      },
+                                      child: Text("Cancel"),
                                     ),
-                                  ),
-
-                                  onPressed: () {
-                                    Navigator.of(context).pop(true); // Confirm
-                                  },
-                                  child: Text("Cancel"),
+                                  ],
                                 ),
                               ],
                             );

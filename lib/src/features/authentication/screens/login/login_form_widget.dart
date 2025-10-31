@@ -257,7 +257,7 @@ class _LoginFormState extends State<LoginForm> {
                     backgroundColor: const Color.fromARGB(255, 255, 149, 0),
                     foregroundColor: const Color.fromARGB(255, 0, 0, 0),
 
-                    elevation: 50,
+                    elevation: 1,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(color: Colors.transparent),

@@ -13,14 +13,13 @@ class LoginFooterWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text("OR"),
+        const Text("OR", style: TextStyle(fontSize: 12)),
 
         SizedBox(height: tFormHeight - 20),
 
         SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            icon: Image(image: AssetImage(tGoogleLogoimage), width: 20),
+          width: 40,
+          child: IconButton(
             onPressed: () async {
               bool isLoggedIn = await login(context);
               if (isLoggedIn) {
@@ -30,12 +29,29 @@ class LoginFooterWidget extends StatelessWidget {
                 );
               }
             },
-            label: Text("Sign-In with Google"),
+            icon: const Image(image: AssetImage(tGoogleLogoimage), width: 20),
+
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              side: BorderSide(color: const Color.fromARGB(0, 0, 0, 0)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+            ),
           ),
         ),
         SizedBox(height: tFormHeight - 20),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
+            showDialog(
+              context: context,
+              barrierDismissible: false, // user cannot dismiss
+              builder: (context) =>
+                  const Center(child: CircularProgressIndicator()),
+            );
+
+            await Future.delayed(const Duration(seconds: 2));
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -45,12 +61,16 @@ class LoginFooterWidget extends StatelessWidget {
           },
           child: Text.rich(
             TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
               text: "Dont have an Account?  ",
-              style: Theme.of(context).textTheme.bodySmall,
+
               children: const [
                 TextSpan(
                   text: "Signup",
-                  style: TextStyle(color: Colors.blue),
+                  style: TextStyle(
+                    color: const Color.fromARGB(255, 25, 17, 255),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),

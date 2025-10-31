@@ -4,11 +4,10 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:http/http.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_block.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blocknavigation.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -396,48 +395,56 @@ class _DashboardState extends State<Dashboard> {
                       color: Colors.blue[300],
                       text: "AND",
                       image: "assets/logo/annd.jpg",
+                      progress: 1.0,
                     ),
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[400],
                       text: "NAND",
                       image: "assets/logo/or.jpg",
+                      progress: 1.0,
                     ),
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[500],
                       text: "OR",
                       image: "assets/logo/annd.jpg",
+                      progress: 1.0,
                     ),
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[600],
                       text: "NOR",
                       image: "assets/logo/or.jpg",
+                      progress: 1.0,
                     ),
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[700],
                       text: "NOT",
                       image: "assets/logo/annd.jpg",
+                      progress: 1.0,
                     ),
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[800],
                       text: "XOR",
                       image: "assets/logo/or.jpg",
+                      progress: 1.0,
                     ),
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[800],
                       text: "XNOR",
                       image: "assets/logo/annd.jpg",
+                      progress: 1.0,
                     ),
                     buildBlock(
                       width: blockWidth,
                       color: Colors.blue[800],
                       text: "BUFFER",
                       image: "assets/logo/annd.jpg",
+                      progress: 1.0,
                     ),
                   ],
                 ),

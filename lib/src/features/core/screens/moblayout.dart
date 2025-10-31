@@ -1,7 +1,7 @@
 // mobile_layout.dart
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 
 class MobileLayout {
   static Widget build(
@@ -9,6 +9,7 @@ class MobileLayout {
     Map<String, String> lesson,
     String image, {
     VoidCallback? onStartLesson,
+    required double progress,
   }) {
     return SingleChildScrollView(
       child: Padding(
@@ -81,30 +82,7 @@ class MobileLayout {
             SizedBox(height: 10),
             SizedBox(
               width: DialogController.getButtonWidth(context),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  side: BorderSide(color: Colors.transparent),
-                  backgroundColor: Colors.grey,
-                  foregroundColor: const Color.fromARGB(255, 255, 255, 255),
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.lock),
-                    SizedBox(width: 20),
-                    const Text(
-                      'ASSESSMENT',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-              ),
+              child: TaskButton(progress: progress),
             ),
           ],
         ),

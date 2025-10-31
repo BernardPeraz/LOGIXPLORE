@@ -142,13 +142,32 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 30),
             TextFormField(
               controller: emailOrNumberController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person_outline_outlined),
                 labelText: "Email or Phone Number",
+                filled: true,
                 hintText: "Email or Phone Number",
-                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(
+                    color: const Color.fromARGB(0, 33, 149, 243),
+                    width: 1.0,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide(
+                    color: const Color.fromARGB(0, 33, 149, 243),
+                    width: 1.0,
+                  ),
+                ),
               ),
             ),
             if (_emailError != null) ...[
@@ -169,8 +188,7 @@ class _LoginFormState extends State<LoginForm> {
                     prefixIcon: const Icon(Icons.fingerprint),
                     labelText: "Password",
                     hintText: "Password",
-
-                    border: const OutlineInputBorder(),
+                    filled: true,
 
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -184,6 +202,24 @@ class _LoginFormState extends State<LoginForm> {
                               !_passwordVisible; // 👁️ toggle visibility
                         });
                       },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
                     ),
                   ),
                 );
@@ -203,24 +239,46 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () {
                   ForgetPasswordScreen.buildShowModalBottomSheet(context);
                 },
-                child: const Text("Forgot Password?"),
+                child: const Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Color.fromARGB(255, 110, 6, 255),
+                  ),
+                ),
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _isLoading ? null : _login,
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 250,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 255, 149, 0),
+                    foregroundColor: const Color.fromARGB(255, 0, 0, 0),
 
-                child: _isLoading
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
+                    elevation: 50,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: Colors.transparent),
+                    ),
+                  ),
+                  onPressed: _isLoading ? null : _login,
+
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          "LOGIN",
+                          style: TextStyle(fontWeight: FontWeight.w600),
                         ),
-                      )
-                    : const Text("LOGIN"),
+                ),
               ),
             ),
           ],

@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/common_widgets/fade_in_animation/fade_in_animation_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/firebase_options.dart';
@@ -51,7 +50,11 @@ class _MyAppState extends State<MyApp> {
 
     auth.authStateChanges().listen((user) {
       if (user == null) {
-        Get.offAll(() => SplashScreen());
+        Future.delayed(Duration(milliseconds: 100), () {
+          if (FirebaseAuth.instance.currentUser == null && mounted) {
+            Get.offAll(() => SplashScreen());
+          }
+        });
       }
     });
 

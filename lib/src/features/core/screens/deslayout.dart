@@ -1,14 +1,14 @@
 // desktop_layout.dart
 import 'package:flutter/material.dart';
-import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 
 class DesktopLayout {
   static Widget build(
     BuildContext context,
     Map<String, String> lesson,
     String image, {
+    required double progress,
     required VoidCallback onStartLesson,
   }) {
     return Row(
@@ -126,38 +126,7 @@ class DesktopLayout {
                             ),
 
                             const SizedBox(height: 40),
-                            SizedBox(
-                              width: DialogController.getButtonWidth(context),
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  side: BorderSide(color: Colors.transparent),
-                                  backgroundColor: Colors.grey,
-                                  foregroundColor: const Color.fromARGB(
-                                    255,
-                                    255,
-                                    255,
-                                    255,
-                                  ),
-                                  minimumSize: const Size(double.infinity, 50),
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.lock),
-                                    SizedBox(width: 20),
-                                    const Text(
-                                      'ASSESSMENT',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            TaskButton(progress: progress),
                           ],
                         ),
                       ],

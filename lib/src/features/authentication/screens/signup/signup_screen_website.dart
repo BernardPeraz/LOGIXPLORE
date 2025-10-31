@@ -60,29 +60,36 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                               children: [
                                 const Text("OR"),
                                 const SizedBox(height: 20),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: OutlinedButton.icon(
-                                    onPressed: () async {
-                                      bool isLoggedIn = await login(context);
-                                      if (isLoggedIn) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Dashboard(),
-                                          ),
-                                        );
-                                      }
-                                    },
+                                IconButton(
+                                  onPressed: () async {
+                                    bool isLoggedIn = await login(context);
+                                    if (isLoggedIn) {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Dashboard(),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: const Image(
+                                    image: AssetImage(tGoogleLogoimage),
+                                    width: 20,
+                                  ),
 
-                                    icon: const Image(
-                                      image: AssetImage(tGoogleLogoimage),
-                                      width: 20,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: Colors.black,
+                                    side: BorderSide(
+                                      color: const Color.fromARGB(0, 0, 0, 0),
                                     ),
-                                    label: const Text("SIGN-IN WITH GOOGLE"),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
                                   ),
                                 ),
+                                SizedBox(height: 15),
 
                                 TextButton(
                                   onPressed: () async {
@@ -110,12 +117,22 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                                   },
                                   child: Text.rich(
                                     TextSpan(
+                                      style: TextStyle(
+                                        color: const Color.fromARGB(
+                                          255,
+                                          25,
+                                          17,
+                                          255,
+                                        ),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+
                                       children: [
                                         TextSpan(
                                           text: "Already have an Account? ",
                                           style: Theme.of(
                                             context,
-                                          ).textTheme.bodySmall,
+                                          ).textTheme.bodyMedium,
                                         ),
                                         TextSpan(text: "LOGIN"),
                                       ],

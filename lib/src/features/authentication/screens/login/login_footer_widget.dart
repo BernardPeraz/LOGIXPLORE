@@ -68,7 +68,7 @@ class LoginFooterWidget extends StatelessWidget {
                 TextSpan(
                   text: "Signup",
                   style: TextStyle(
-                    color: const Color.fromARGB(255, 25, 17, 255),
+                    color: Color.fromARGB(255, 25, 17, 255),
                     fontWeight: FontWeight.w600,
                   ),
                 ),

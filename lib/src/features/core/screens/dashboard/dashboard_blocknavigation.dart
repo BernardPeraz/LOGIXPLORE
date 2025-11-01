@@ -8,7 +8,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/moblayo
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
 
 class buildBlock extends StatefulWidget {
-  buildBlock({
+  const buildBlock({
     super.key,
     required this.width,
     this.color,

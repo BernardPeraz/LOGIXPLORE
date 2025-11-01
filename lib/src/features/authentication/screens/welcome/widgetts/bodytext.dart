@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Widget BodyText(double width, bool isDesktop) {
   return Expanded(
     flex: 4,
-    child: Container(
+    child: SizedBox(
       // Mas magandang height calculation base sa screen size
       height: isDesktop ? 355 : 245,
       width: width,

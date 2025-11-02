@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/common_widgets/form/form_header_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
@@ -8,6 +9,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
 class WebsiteSignupScreen extends StatefulWidget {
@@ -152,7 +154,6 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                         onTap: () {
                           // STEP 4: Navigation functionality - magse-close ang screen kapag pinindot
                           Navigator.of(context).pop();
-                          resetFormFields(updateUI: () {});
                         },
                         child: Container(
                           width: 40, // Fixed width
@@ -176,12 +177,20 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                           child: IconButton(
                             icon: Icon(Icons.close, color: Colors.black),
                             onPressed: () {
-                              Navigator.of(context).pop();
-                              resetFormFields(
-                                updateUI: () {
-                                  setState(() {}); // Force UI update
-                                },
-                              );
+                              Get.offAll(Landingpagee());
+                              void resetFormFields({
+                                required VoidCallback updateUI,
+                              }) {
+                                firstNameController.clear();
+                                lastNameController.clear();
+                                usernameController.clear();
+                                emailController.clear();
+                                mobileNumberController.clear();
+                                passwordController.clear();
+                                repeatPasswordController.clear();
+
+                                updateUI();
+                              }
                             },
                           ),
                         ),

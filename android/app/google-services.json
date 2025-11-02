@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "696544803362",
+    "firebase_url": "https://flutter-login-app-e278b-default-rtdb.firebaseio.com",
     "project_id": "flutter-login-app-e278b",
     "storage_bucket": "flutter-login-app-e278b.firebasestorage.app"
   },

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/common_widgets/form/form_header_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_footer_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_form_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 
 class WebsiteLoginScreen extends StatelessWidget {
   const WebsiteLoginScreen({super.key});
@@ -62,7 +64,7 @@ class WebsiteLoginScreen extends StatelessWidget {
                       right: 20,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pop();
+                          Navigator.pop(context);
                         },
                         child: Container(
                           width: 40,
@@ -86,18 +88,18 @@ class WebsiteLoginScreen extends StatelessWidget {
                           child: IconButton(
                             icon: Icon(Icons.close, color: Colors.black),
                             onPressed: () {
-                              Navigator.of(context).pop();
-
+                              Get.offAll(Landingpagee());
                               void resetFormFields({
                                 required VoidCallback updateUI,
                               }) {
                                 firstNameController.clear();
                                 lastNameController.clear();
                                 usernameController.clear();
-                                mobileNumberController.clear();
                                 emailController.clear();
+                                mobileNumberController.clear();
                                 passwordController.clear();
                                 repeatPasswordController.clear();
+
                                 updateUI();
                               }
                             },

@@ -52,11 +52,11 @@ class LoginFooterWidget extends StatelessWidget {
             );
 
             await Future.delayed(const Duration(seconds: 2));
+            Navigator.of(context).pop();
+
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => Scaffold(body: SignupScreen()),
-              ),
+              MaterialPageRoute(builder: (context) => SignupScreen()),
             );
           },
           child: Text.rich(

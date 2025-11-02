@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/common_widgets/form/form_header_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
@@ -8,6 +9,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
 class MobileSignupScreen extends StatelessWidget {
@@ -54,7 +56,7 @@ class MobileSignupScreen extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const Dashboard(),
+                                    builder: (context) => const Landingpagee(),
                                   ),
                                 );
                               }
@@ -88,8 +90,6 @@ class MobileSignupScreen extends StatelessWidget {
                             );
 
                             await Future.delayed(const Duration(seconds: 2));
-
-                            Navigator.of(context).pop();
 
                             Navigator.push(
                               context,
@@ -155,18 +155,15 @@ class MobileSignupScreen extends StatelessWidget {
                   child: IconButton(
                     icon: Icon(Icons.close, color: Colors.black),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Get.offAll(Landingpagee());
 
-                      void resetFormFields({required VoidCallback updateUI}) {
-                        firstNameController.clear();
-                        lastNameController.clear();
-                        usernameController.clear();
-                        mobileNumberController.clear();
-                        emailController.clear();
-                        passwordController.clear();
-                        repeatPasswordController.clear();
-                        updateUI();
-                      }
+                      firstNameController.clear();
+                      lastNameController.clear();
+                      usernameController.clear();
+                      mobileNumberController.clear();
+                      emailController.clear();
+                      passwordController.clear();
+                      repeatPasswordController.clear();
                     },
                   ),
                 ),

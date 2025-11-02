@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/common_widgets/form/form_header_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_footer_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_form_widget.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 
 class MobileLoginScreen extends StatelessWidget {
   const MobileLoginScreen({super.key});
@@ -84,9 +87,7 @@ class MobileLoginScreen extends StatelessWidget {
             top: 20,
             right: 20,
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+              onTap: () {},
               child: Container(
                 width: 40,
                 height: 40,
@@ -109,18 +110,7 @@ class MobileLoginScreen extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.close, color: Colors.black),
                   onPressed: () {
-                    Navigator.of(context).pop();
-
-                    void resetFormFields({required VoidCallback updateUI}) {
-                      firstNameController.clear();
-                      lastNameController.clear();
-                      usernameController.clear();
-                      mobileNumberController.clear();
-                      emailController.clear();
-                      passwordController.clear();
-                      repeatPasswordController.clear();
-                      updateUI();
-                    }
+                    Get.offAll(Landingpagee());
                   },
                 ),
               ),

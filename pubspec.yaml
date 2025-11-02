@@ -49,6 +49,7 @@ dependencies:
   firebase_storage: ^13.0.3
   supabase_flutter: ^2.10.3
   http: ^1.5.0
+  mailer: ^6.6.0
 
 dev_dependencies:
   flutter_test:

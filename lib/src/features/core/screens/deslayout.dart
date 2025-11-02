@@ -125,7 +125,7 @@ class DesktopLayout {
                               ),
                             ),
 
-                            const SizedBox(height: 40),
+                            const SizedBox(height: 20),
                             TaskButton(progress: progress),
                           ],
                         ),

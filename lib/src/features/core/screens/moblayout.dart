@@ -50,7 +50,7 @@ class MobileLayout {
               ),
               textAlign: TextAlign.justify,
             ),
-
+            SizedBox(height: 20),
             // BUTTONS
             SizedBox(
               width: DialogController.getButtonWidth(context),

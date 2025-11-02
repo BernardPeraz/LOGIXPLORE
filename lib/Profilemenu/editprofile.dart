@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/Image.dart';
 
 Uint8List? _webImage;
 
@@ -160,7 +161,12 @@ class _EditprofileState extends State<Editprofile> {
           ),
           const SizedBox(height: 20),
 
-          ElevatedButton(onPressed: () {}, child: const Text('Change Avatar')),
+          ElevatedButton(
+            onPressed: () {
+              changeProfilePicture(context);
+            },
+            child: const Text('Upload'),
+          ),
           const SizedBox(height: 15),
 
           ElevatedButton(onPressed: () {}, child: Text('Save Changes')),

@@ -15,7 +15,11 @@ class ProfileSettings extends StatelessWidget {
           leading: Image.asset('assets/logo/logicon.png'),
           title: Text(
             "PROFILE SETTINGS",
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w900,
+              fontSize: 35,
+            ),
           ),
           actions: [
             Padding(

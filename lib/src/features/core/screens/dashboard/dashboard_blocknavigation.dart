@@ -1,11 +1,21 @@
 // buildBlock.dart
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/and.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/introtopicS.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/bufferlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/nandlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/norlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/notlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/orlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/xnorlessons.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/xorlessons.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blockuiresponse.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/deslayout.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/moblayout.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
+// 🆕 kung may iba ka pang lesson files, import mo rin dito:
+// import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/orlessons.dart';
+// import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/notlessons.dart';
 
 class buildBlock extends StatefulWidget {
   const buildBlock({
@@ -30,32 +40,31 @@ class _buildBlockState extends State<buildBlock> {
   double _progress = 0.0;
   bool _hasBeenCompleted = false;
 
-  // DAGDAG: Method para makuha ang total pages para sa bawat block
   int _getTotalPagesForBlock(String blockName) {
     switch (blockName.toUpperCase()) {
       case 'AND GATE':
       case 'AND':
-        return 1; // Isa lang ang page para sa AND Gate
+        return 1;
 
       case 'NOT AND':
       case 'NAND':
-        return 1; // Apat na pages para sa OR Gate
+        return 1;
 
       case 'OR GATE':
       case 'OR':
-        return 1; // Tatlong pages para sa NOT Gate
+        return 1;
 
       case 'NOT OR GATE':
       case 'NOR':
-        return 1; // Dalawang pages para sa NAND Gate
+        return 1;
 
       case 'NOT GATE':
       case 'NOT':
-        return 1; // Limang pages para sa NOR Gate
+        return 1;
 
       case 'EXCLUSIVE OR GATE':
       case 'XOR':
-        return 1; // Tatlong pages para sa XOR Gate
+        return 1;
 
       case 'EXCLUSIVE NOR GATE':
       case 'XNOR':
@@ -70,19 +79,13 @@ class _buildBlockState extends State<buildBlock> {
     }
   }
 
-  // DAGDAG: Getter para sa task completion status
   bool get isTaskCompleted => _progress == 1.0;
 
-  // DAGDAG: Method para i-update ang progress
   void updateProgress(int pagesCompleted) {
     setState(() {
       int totalPages = _getTotalPagesForBlock(widget.text);
       _progress = pagesCompleted / totalPages;
-
-      // I-check kung complete na
-      if (_progress == 1.0) {
-        _hasBeenCompleted = true;
-      }
+      if (_progress == 1.0) _hasBeenCompleted = true;
     });
   }
 
@@ -127,7 +130,6 @@ class _buildBlockState extends State<buildBlock> {
                         onStartLesson: _navigateToLessonPage,
                       ),
               ),
-              // CLOSE BUTTON - NASA UPPER RIGHT NA
               Positioned(
                 top: 10,
                 right: 10,
@@ -135,7 +137,7 @@ class _buildBlockState extends State<buildBlock> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  icon: Icon(Icons.close, color: Colors.black, size: 24),
+                  icon: const Icon(Icons.close, color: Colors.black, size: 24),
                 ),
               ),
             ],
@@ -145,33 +147,60 @@ class _buildBlockState extends State<buildBlock> {
     );
   }
 
+  // 🧠 BINAGO LANG: conditional navigation logic (using Map)
   void _navigateToLessonPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const SimpleTextImagePage()),
-    ).then((result) {
-      // DAGDAG: Modified logic para sa multiple pages
-      if (result != null && result is int) {
-        // Kapag may binigay na pages completed
-        int pagesCompleted = result;
-        updateProgress(pagesCompleted);
-      } else if (result == true && !_hasBeenCompleted) {
-        // Para sa backward compatibility - AND Gate (1 page)
-        int totalPages = _getTotalPagesForBlock(widget.text);
-        if (totalPages == 1) {
-          setState(() {
-            _progress = 1.0;
-            _hasBeenCompleted = true;
-          });
+    // Map ng topics at corresponding pages
+    final Map<String, Widget> lessonPages = {
+      'AND GATES': const Andlessons(),
+      'AND': const Andlessons(),
+      'NAND GATE': const Nandlessons(),
+      'NAND': const Nandlessons(),
+      'OR GATE': const Orlessons(),
+      'OR': const Orlessons(),
+      'NOR GATE': const Norlessons(),
+      'NOR': const Norlessons(),
+      'NOT GATE': const Notlessons(),
+      'NOT': const Notlessons(),
+      'XOR GATE': const Xorlessons(),
+      'XOR': const Xorlessons(),
+      'XNOR GATE': const Xnorlessons(),
+      'XNOR': const Xnorlessons(),
+      'BUFFER GATE': const Bufferlessons(),
+      'BUFFER': const Bufferlessons(),
+    };
+
+    // Kunin page base sa text
+    final Widget? selectedPage = lessonPages[widget.text.toUpperCase().trim()];
+
+    if (selectedPage != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => selectedPage),
+      ).then((result) {
+        if (result != null && result is int) {
+          int pagesCompleted = result;
+          updateProgress(pagesCompleted);
+        } else if (result == true && !_hasBeenCompleted) {
+          int totalPages = _getTotalPagesForBlock(widget.text);
+          if (totalPages == 1) {
+            setState(() {
+              _progress = 1.0;
+              _hasBeenCompleted = true;
+            });
+          }
         }
-      }
-    });
+      });
+    } else {
+      // Fallback kapag walang matching page
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No lesson page found for ${widget.text}')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BuildBlockUI.build(
-      // USE THE RENAMED CLASS
       context,
       width: widget.width,
       color: widget.color,

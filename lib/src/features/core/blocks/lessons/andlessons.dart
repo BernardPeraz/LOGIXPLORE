@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class SimpleTextImagePage extends StatefulWidget {
-  const SimpleTextImagePage({super.key});
+class Andlessons extends StatelessWidget {
+  const Andlessons({super.key});
 
-  @override
-  State<SimpleTextImagePage> createState() => _SimpleTextImagePageState();
-}
-
-class _SimpleTextImagePageState extends State<SimpleTextImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,20 +13,12 @@ class _SimpleTextImagePageState extends State<SimpleTextImagePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/logo/avatar.png',
-                    width: 100,
-                    height: 100,
+                  const SizedBox(height: 100),
+                  Text(
+                    'AND GATES',
+                    style: TextStyle(fontWeight: FontWeight.w900),
                   ),
-                  const SizedBox(height: 20),
-                  const Text('Hello World!', style: TextStyle(fontSize: 18)),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'This is a simple page',
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 30),
-
+                  const SizedBox(height: 100),
                   // Your AND gate description text
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -42,58 +29,41 @@ class _SimpleTextImagePageState extends State<SimpleTextImagePage> {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
 
-                  // Truth table
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Table(
-                      border: TableBorder.all(color: Colors.grey),
-                      children: [
-                        TableRow(
-                          decoration: BoxDecoration(color: Colors.grey[200]),
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Input 1',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Input 2',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                'Output',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Return true to indicate completion
+                          Navigator.pop(context, true);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 15,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
                         ),
-                        _buildTableRow('0', '0', '0'),
-                        _buildTableRow('0', '1', '0'),
-                        _buildTableRow('1', '0', '0'),
-                        _buildTableRow('1', '1', '1'),
-                      ],
+                        child: Text(
+                          'Done',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
 
                   // Copyright text
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                  Align(
                     child: Text(
                       '©2025 LOGIXPLORE, ALL RIGHTS RESERVED',
                       style: TextStyle(
@@ -113,49 +83,8 @@ class _SimpleTextImagePageState extends State<SimpleTextImagePage> {
           // Done Button - Bottom Right
           // andlessons.dart - SimpleTextImagePage
           // Done Button - Bottom Right
-          Positioned(
-            bottom: 20,
-            right: 20,
-            child: ElevatedButton(
-              onPressed: () {
-                // Return true to indicate completion
-                Navigator.pop(context, true);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
-              ),
-              child: Text(
-                'Done',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
         ],
       ),
-    );
-  }
-
-  TableRow _buildTableRow(String input1, String input2, String output) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(input1, textAlign: TextAlign.center),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(input2, textAlign: TextAlign.center),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(output, textAlign: TextAlign.center),
-        ),
-      ],
     );
   }
 }

@@ -88,7 +88,7 @@ class _BuildBlockState extends State<BuildBlock> {
 
   void _showOptionsDialog(BuildContext context) {
     final lesson =
-        BlocksGate.lessons[widget.text] ??
+        Introtopics.lessons[widget.text] ??
         {
           'title': widget.text,
           'subtitle': 'Lesson Subtitle',

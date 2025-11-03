@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/common_widgets/form/form_header_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_footer_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_form_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';

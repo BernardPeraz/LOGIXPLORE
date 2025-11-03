@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class Nandlessons extends StatelessWidget {
   const Nandlessons({super.key});
@@ -19,27 +20,39 @@ class Nandlessons extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Align(
-          alignment: Alignment.bottomRight,
-
-          child: ElevatedButton(
-            onPressed: () {
-              // Return true to indicate completion
-              Navigator.pop(context, true);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+        child: Column(
+          children: [
+            Expanded(
+              child: SfPdfViewer.asset(
+                'assets/handouts/nandlessons.pdf',
+                canShowScrollHead: true,
+                canShowScrollStatus: true,
               ),
             ),
-            child: Text(
-              'Done',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+
+            const SizedBox(height: 20),
+
+            Align(
+              alignment: Alignment.bottomRight,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                child: Text(
+                  'Done',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

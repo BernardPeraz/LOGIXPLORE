@@ -10,7 +10,6 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
 class MobileSignupScreen extends StatelessWidget {
   const MobileSignupScreen({super.key});

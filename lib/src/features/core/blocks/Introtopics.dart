@@ -1,4 +1,4 @@
-class Introtopics {
+class IntroTopics {
   static const Map<String, Map<String, String>> lessons = {
     'AND': {
       'title': 'AND GATES',

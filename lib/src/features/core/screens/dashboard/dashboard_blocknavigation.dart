@@ -1,6 +1,7 @@
 // buildBlock.dart
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/IntrotopicS.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/introtopics.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/bufferlessons.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/nandlessons.dart';
@@ -88,7 +89,7 @@ class _BuildBlockState extends State<BuildBlock> {
 
   void _showOptionsDialog(BuildContext context) {
     final lesson =
-        Introtopics.lessons[widget.text] ??
+        IntroTopics.lessons[widget.text] ??
         {
           'title': widget.text,
           'subtitle': 'Lesson Subtitle',

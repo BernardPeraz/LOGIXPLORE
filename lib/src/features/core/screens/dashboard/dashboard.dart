@@ -390,56 +390,56 @@ class _DashboardState extends State<Dashboard> {
                   spacing: 35,
                   runSpacing: 30,
                   children: [
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[300],
                       text: "AND",
                       image: "assets/logo/annd.jpg",
                       progress: 1.0,
                     ),
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[400],
                       text: "NAND",
                       image: "assets/logo/or.jpg",
                       progress: 1.0,
                     ),
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[500],
                       text: "OR",
                       image: "assets/logo/annd.jpg",
                       progress: 1.0,
                     ),
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[600],
                       text: "NOR",
                       image: "assets/logo/or.jpg",
                       progress: 1.0,
                     ),
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[700],
                       text: "NOT",
                       image: "assets/logo/annd.jpg",
                       progress: 1.0,
                     ),
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[800],
                       text: "XOR",
                       image: "assets/logo/or.jpg",
                       progress: 1.0,
                     ),
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[800],
                       text: "XNOR",
                       image: "assets/logo/annd.jpg",
                       progress: 1.0,
                     ),
-                    buildBlock(
+                    BuildBlock(
                       width: blockWidth,
                       color: Colors.blue[800],
                       text: "BUFFER",

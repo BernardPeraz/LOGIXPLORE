@@ -1,7 +1,7 @@
 // buildBlock.dart
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/introtopicS.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/introtopics.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/bufferlessons.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/nandlessons.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/norlessons.dart';
@@ -13,12 +13,9 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboa
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/deslayout.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/moblayout.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
-// 🆕 kung may iba ka pang lesson files, import mo rin dito:
-// import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/orlessons.dart';
-// import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/notlessons.dart';
 
-class buildBlock extends StatefulWidget {
-  const buildBlock({
+class BuildBlock extends StatefulWidget {
+  const BuildBlock({
     super.key,
     required this.width,
     this.color,
@@ -33,10 +30,10 @@ class buildBlock extends StatefulWidget {
   final String text;
 
   @override
-  State<buildBlock> createState() => _buildBlockState();
+  State<BuildBlock> createState() => _BuildBlockState();
 }
 
-class _buildBlockState extends State<buildBlock> {
+class _BuildBlockState extends State<BuildBlock> {
   double _progress = 0.0;
   bool _hasBeenCompleted = false;
 

@@ -57,7 +57,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
           children: [
             TextFormField(
               controller: firstNameController,
-              maxLength: 15,
+              maxLength: 50,
               decoration: InputDecoration(
                 label: const Text("First Name"),
                 counterText: '',
@@ -89,7 +89,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
             TextFormField(
               controller: lastNameController,
-              maxLength: 10,
+              maxLength: 30,
               decoration: InputDecoration(
                 label: const Text("Last Name"),
                 counterText: '',
@@ -121,14 +121,24 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
             TextFormField(
               controller: usernameController,
-              maxLength: 10,
+
+              maxLength: 30,
               decoration: InputDecoration(
                 label: const Text("Username"),
                 counterText: '',
                 border: InputBorder.none,
+
                 filled: true,
                 prefixIcon: const Icon(Icons.person),
                 errorText: fieldErrors['username'],
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.autorenew_rounded), // refresh icon
+                  tooltip: 'Generate username',
+                  onPressed: () {
+                    generateUsername(); // 👈 tawagin yung function
+                  },
+                ),
+
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide(color: Colors.blue, width: 1.0),
@@ -157,14 +167,18 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               decoration: InputDecoration(
                 label: const Text("E-Mail"),
                 counterText: '',
+                hintText: "Only @gmail.com is accepted",
+
                 border: InputBorder.none,
                 filled: true,
+
                 prefixIcon: const Icon(Icons.email_outlined),
                 errorText: fieldErrors['email'],
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide(color: Colors.blue, width: 1.0),
                 ),
+
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30.0),
                   borderSide: BorderSide(
@@ -230,47 +244,107 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
             ValueListenableBuilder(
               valueListenable: passwordVisible,
               builder: (context, value, child) {
-                return TextFormField(
-                  obscureText: !value,
-                  controller: passwordController,
-                  maxLength: 20,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    counterText: '',
-                    border: InputBorder.none,
-                    filled: true,
-                    hintText:
-                        'Must have 1 uppercase, lowercase, number, and special character',
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        value ? Icons.visibility : Icons.visibility_off,
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextFormField(
+                      obscureText: !value,
+                      controller: passwordController,
+                      maxLength: 20,
+                      onChanged: (pwd) {
+                        // para ma-update real-time yung indicator
+                        final result = evaluatePassword(pwd);
+                        passwordStrengthNotifier.value =
+                            result; // see note below
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        counterText: '',
+                        border: InputBorder.none,
+                        filled: true,
+                        hintText:
+                            'Must have 1 uppercase, lowercase, number, and special character',
+                        prefixIcon: const Icon(Icons.lock_outline),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            value ? Icons.visibility : Icons.visibility_off,
+                          ),
+                          onPressed: togglePasswordVisibility,
+                        ),
+                        errorText: fieldErrors['password'],
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: const BorderSide(
+                            color: Colors.blue,
+                            width: 1.0,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(0, 33, 149, 243),
+                            width: 1.0,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: const BorderSide(
+                            color: Color.fromARGB(0, 33, 149, 243),
+                            width: 1.0,
+                          ),
+                        ),
                       ),
-                      onPressed: togglePasswordVisibility,
                     ),
-                    errorText: fieldErrors['password'],
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+
+                    const SizedBox(height: 10),
+                    ValueListenableBuilder<PasswordResult>(
+                      valueListenable: passwordStrengthNotifier,
+                      builder: (context, result, _) {
+                        if (result.strength == PasswordStrength.empty) {
+                          return const SizedBox.shrink();
+                        }
+                        Color color;
+                        switch (result.strength) {
+                          case PasswordStrength.short:
+                            color = Colors.red;
+                          case PasswordStrength.veryWeak:
+                            color = const Color.fromARGB(255, 237, 77, 66);
+                            break;
+                          case PasswordStrength.medium:
+                            color = Colors.orange;
+                            break;
+                          case PasswordStrength.strong:
+                            color = const Color.fromARGB(255, 0, 183, 6);
+                            break;
+                          default:
+                            color = Colors.grey;
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            LinearProgressIndicator(
+                              value: result.score,
+                              backgroundColor: Colors.grey.shade300,
+                              valueColor: AlwaysStoppedAnimation<Color>(color),
+                              minHeight: 6,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              result.label,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: color,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(0, 33, 149, 243),
-                        width: 1.0,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(0, 33, 149, 243),
-                        width: 1.0,
-                      ),
-                    ),
-                  ),
+                  ],
                 );
               },
             ),
+
             SizedBox(height: tFormHeight - 10),
 
             ValueListenableBuilder(
@@ -279,7 +353,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                 return TextFormField(
                   obscureText: !value,
                   controller: repeatPasswordController,
-                  maxLength: 20,
+                  maxLength: 50,
                   decoration: InputDecoration(
                     labelText: 'Repeat Password',
                     counterText: '',
@@ -417,13 +491,20 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                           ),
                         );
 
-                        firstNameController.clear();
-                        lastNameController.clear();
-                        usernameController.clear();
-                        mobileNumberController.clear();
-                        emailController.clear();
-                        passwordController.clear();
-                        repeatPasswordController.clear();
+                        setState(() {
+                          firstNameController.clear();
+                          lastNameController.clear();
+                          usernameController.clear();
+                          mobileNumberController.clear();
+                          emailController.clear();
+                          passwordController.clear();
+                          repeatPasswordController.clear();
+                          passwordStrengthNotifier.value = PasswordResult(
+                            PasswordStrength.empty,
+                            0.0,
+                            "",
+                          );
+                        });
 
                         Navigator.pushReplacement(
                           context,

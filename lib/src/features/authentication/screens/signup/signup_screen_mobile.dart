@@ -155,14 +155,12 @@ class MobileSignupScreen extends StatelessWidget {
                     icon: Icon(Icons.close, color: Colors.black),
                     onPressed: () {
                       Get.offAll(Landingpagee());
-
-                      firstNameController.clear();
-                      lastNameController.clear();
-                      usernameController.clear();
-                      mobileNumberController.clear();
-                      emailController.clear();
-                      passwordController.clear();
-                      repeatPasswordController.clear();
+                      resetFormFields(updateUI: () {});
+                      passwordStrengthNotifier.value = PasswordResult(
+                        PasswordStrength.empty,
+                        0.0,
+                        "",
+                      );
                     },
                   ),
                 ),

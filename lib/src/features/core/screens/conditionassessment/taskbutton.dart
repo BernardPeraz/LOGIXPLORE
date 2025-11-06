@@ -1,6 +1,8 @@
 // taskbutton.dart
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/choices.dart';
 
 class TaskButton extends StatefulWidget {
   final double progress; // ADD THIS: parameter para sa progress
@@ -28,7 +30,12 @@ class _TaskButtonState extends State<TaskButton> {
             ? SizedBox(
                 width: DialogController.getButtonWidth(context),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Assessment()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     side: BorderSide(color: Colors.transparent),
                     backgroundColor:
@@ -42,10 +49,19 @@ class _TaskButtonState extends State<TaskButton> {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.check), // Palit icon kapag completed
-                      SizedBox(width: 20),
-                      const Text('START ASSESSMENT'),
+                      SizedBox(width: 8), // spacing between icon and text
+                      Flexible(
+                        child: Text(
+                          'START ASSESSMENT',
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow
+                              .ellipsis, // Show ... if text is too long
+                          softWrap: false, // Prevent wrapping to next line
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -62,7 +78,7 @@ class _TaskButtonState extends State<TaskButton> {
                     mainAxisAlignment:
                         MainAxisAlignment.center, // Center the content
                     children: [
-                      SizedBox(width: 10),
+                      SizedBox(width: 8),
                       Icon(Icons.lock),
                       // Add spacing between icon and text
                       Expanded(

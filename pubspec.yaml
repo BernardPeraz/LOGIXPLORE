@@ -51,12 +51,13 @@ dependencies:
   http: ^1.5.0
   mailer: ^6.6.0
   path: ^1.8.3
+  email_auth: ^2.0.0
+  email_otp: ^3.0.0
+  cloud_functions: ^6.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
-
   flutter_lints: ^6.0.0
 
 flutter:

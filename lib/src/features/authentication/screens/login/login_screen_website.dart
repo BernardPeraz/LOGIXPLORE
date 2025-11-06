@@ -35,7 +35,7 @@ class WebsiteLoginScreen extends StatelessWidget {
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 decoration: BoxDecoration(
-                  color: Color(0xFF4A609C).withOpacity(0.66),
+                  color: Color(0xFF4A609C).withValues(alpha: 0.66),
                 ),
                 child: Stack(
                   children: [

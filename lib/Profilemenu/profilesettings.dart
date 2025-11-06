@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/editprofile.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettingwidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 
 class ProfileSettings extends StatelessWidget {
@@ -12,16 +13,17 @@ class ProfileSettings extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          leading: Image.asset('assets/logo/logicon.png'),
+          leading: Image.asset('assets/logo/logicon.png', height: 9, width: 5),
           title: Text(
             "PROFILE SETTINGS",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w900,
-              fontSize: 35,
-            ),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
+          elevation: 1,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.grey[900]
+              : Colors.white,
           actions: [
+            Padding(padding: const EdgeInsets.only(right: 16.0)),
             Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: IconButton(
@@ -32,30 +34,20 @@ class ProfileSettings extends StatelessWidget {
               ),
             ),
           ],
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         ),
-
         body: Stack(
+          alignment: Alignment.centerLeft,
           children: [
             Image.asset(
-              BackgroundImageLight,
+              Theme.of(context).brightness == Brightness.light
+                  ? BackgroundImageLight
+                  : BackgroundImageDark,
               fit: BoxFit.cover,
-              height: double.infinity,
               width: double.infinity,
+              height: double.infinity,
             ),
 
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 40),
-                  const Editprofile(),
-
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
+            ProfileWidget(),
           ],
         ),
       ),

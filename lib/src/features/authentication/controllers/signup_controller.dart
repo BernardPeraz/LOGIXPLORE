@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -204,4 +205,136 @@ Map<String, String?> validateAllFields() {
   }
 
   return errors;
+}
+
+final ValueNotifier<PasswordResult> passwordStrengthNotifier =
+    ValueNotifier<PasswordResult>(
+      PasswordResult(PasswordStrength.empty, 0.0, ""),
+    );
+
+enum PasswordStrength { empty, veryWeak, short, medium, strong }
+
+class PasswordResult {
+  final PasswordStrength strength;
+  final double score; // 0.0 - 1.0
+  final String label;
+  PasswordResult(this.strength, this.score, this.label);
+}
+
+PasswordResult evaluatePassword(String pwd) {
+  if (pwd.isEmpty) {
+    return PasswordResult(PasswordStrength.empty, 0.0, "");
+  }
+
+  final hasLower = RegExp(r'[a-z]').hasMatch(pwd);
+  final hasUpper = RegExp(r'[A-Z]').hasMatch(pwd);
+  final hasDigit = RegExp(r'\d').hasMatch(pwd);
+  final hasSymbol = RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(pwd);
+
+  // Base score from length
+  double score = (pwd.length / 35).clamp(0.0, 5.0);
+
+  // Variety adds to strength
+  int variety = 0;
+  if (hasLower) variety++;
+  if (hasUpper) variety++;
+  if (hasDigit) variety++;
+  if (hasSymbol) variety++;
+
+  score += (variety * 0.12);
+  score = score.clamp(0.0, 1.0);
+
+  if (pwd.length < 2) {
+    return PasswordResult(PasswordStrength.veryWeak, score, "Very Weak");
+  } else if (pwd.length < 8 || score < 0.2) {
+    return PasswordResult(PasswordStrength.short, score, "Short");
+  } else if (score < 0.75) {
+    return PasswordResult(PasswordStrength.medium, score, "Medium");
+  } else {
+    return PasswordResult(PasswordStrength.strong, score, "Strong");
+  }
+}
+
+Future<void> registerWithEmailVerification(
+  String email,
+  String password,
+) async {
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    User? user = userCredential.user;
+
+    if (user != null && !user.emailVerified) {
+      await user.sendEmailVerification();
+      print("Verification email sent to $email");
+    }
+
+    await FirebaseAuth.instance.signOut();
+  } on FirebaseAuthException catch (e) {
+    print("Error: ${e.message}");
+  }
+}
+
+void generateUsername() {
+  final first = firstNameController.text.trim().toLowerCase();
+  final last = lastNameController.text.trim().toLowerCase();
+
+  if (first.isEmpty || last.isEmpty) return;
+
+  // Halimbawa: john.doe123
+  final randomNumber = DateTime.now().millisecondsSinceEpoch % 1000;
+  final generated = "$first.$last$randomNumber";
+
+  usernameController.text = generated;
+}
+
+//email verification
+Future<void> sendEmailVerification(
+  String email,
+  String password,
+  BuildContext context,
+) async {
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    User? user = userCredential.user;
+    if (user != null && !user.emailVerified) {
+      await user.sendEmailVerification();
+
+      await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Verify your email'),
+          content: const Text(
+            'A verification link has been sent to your email. Please verify it before completing registration.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Sign out so they can verify first
+    await FirebaseAuth.instance.signOut();
+  } on FirebaseAuthException catch (e) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Error'),
+        content: Text(e.message ?? 'Failed to send verification email.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -108,7 +108,7 @@ class _BuildBlockState extends State<BuildBlock> {
                 width: DialogController.getDialogWidth(context),
                 height: DialogController.getDialogHeight(context),
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(158, 255, 255, 255),
+                  color: const Color.fromARGB(225, 255, 255, 255),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: isMobile
@@ -144,9 +144,7 @@ class _BuildBlockState extends State<BuildBlock> {
     );
   }
 
-  // 🧠 BINAGO LANG: conditional navigation logic (using Map)
   void _navigateToLessonPage() {
-    // Map ng topics at corresponding pages
     final Map<String, Widget> lessonPages = {
       'AND GATES': const Andlessons(),
       'AND': const Andlessons(),

@@ -178,19 +178,12 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                             icon: Icon(Icons.close, color: Colors.black),
                             onPressed: () {
                               Get.offAll(Landingpagee());
-                              void resetFormFields({
-                                required VoidCallback updateUI,
-                              }) {
-                                firstNameController.clear();
-                                lastNameController.clear();
-                                usernameController.clear();
-                                emailController.clear();
-                                mobileNumberController.clear();
-                                passwordController.clear();
-                                repeatPasswordController.clear();
-
-                                updateUI();
-                              }
+                              resetFormFields(updateUI: () => setState(() {}));
+                              passwordStrengthNotifier.value = PasswordResult(
+                                PasswordStrength.empty,
+                                0.0,
+                                "",
+                              );
                             },
                           ),
                         ),

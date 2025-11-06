@@ -313,7 +313,7 @@ class _DashboardState extends State<Dashboard> {
         ? (screenWidth / 3) - 60
         : screenWidth > 600
         ? (screenWidth / 2) - 30
-        : screenWidth - 20;
+        : screenWidth - 80;
 
     return Scaffold(
       appBar: AppBar(

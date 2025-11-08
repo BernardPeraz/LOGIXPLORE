@@ -30,7 +30,12 @@ class Nandlessons extends StatefulWidget {
 
 class _NandlessonsState extends State<Nandlessons> {
   void _openPdf(String pdfPath, int lessonIndex) {
-    html.window.open(pdfPath, '_blank');
+    const yourDomain = 'https://logixplore.online';
+
+    // Gamitin ang full URL imbes na relative path
+    final fullPdfUrl = '$yourDomain/$pdfPath';
+
+    html.window.open(fullPdfUrl, '_blank');
 
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {

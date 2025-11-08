@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 
 class ProfileMenuBox extends StatelessWidget {
@@ -50,12 +51,9 @@ class ProfileMenuBox extends StatelessWidget {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProfileSettings(),
-                    ),
-                  );
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    Get.to(() => const ProfileSettings());
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   side: BorderSide(color: Colors.transparent),
@@ -102,12 +100,9 @@ class ProfileMenuBox extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ProfileSettings(),
-                      ),
-                    );
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      Get.to(() => const ProfileSettings());
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     side: BorderSide(color: Colors.transparent),

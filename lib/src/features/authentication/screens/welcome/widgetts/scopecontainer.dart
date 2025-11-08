@@ -33,7 +33,7 @@ Widget ScopeContainer(
                 text,
                 style: TextStyle(
                   fontSize: isDesktop
-                      ? 26
+                      ? 17
                       : 18, // CONDITIONAL: Mas maliit sa mobile
                   fontWeight: FontWeight.w900,
 

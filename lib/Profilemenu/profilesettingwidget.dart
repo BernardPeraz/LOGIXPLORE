@@ -18,7 +18,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
         return SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(isMobile ? 10 : 20),
+            padding: EdgeInsets.all(isMobile ? 40 : 70),
             child: isMobile ? const MobileProfile() : const DesktopProfile(),
           ),
         );

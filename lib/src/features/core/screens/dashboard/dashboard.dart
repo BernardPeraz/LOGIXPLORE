@@ -4,9 +4,12 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/masterylevel/masterwidget.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/passwordsettings/passwordsettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/responsiveness/landingdesk.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blocknavigation.dart';
 
 class Dashboard extends StatefulWidget {
@@ -16,7 +19,22 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
+bool _isLoading = false;
+
 class _DashboardState extends State<Dashboard> {
+  void whitescreen() {
+    setState(() {
+      _isLoading = true;
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    });
+  }
+
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
   bool _isMenuOpen = false;
@@ -67,17 +85,15 @@ class _DashboardState extends State<Dashboard> {
                     if (screenWidth < 600 && user != null)
                       _buildProfilePopupItem(user, isDark),
                     _buildPopupMenuItem(
-                      icon: Icons.person,
-                      text: "Profile Settings",
+                      icon: Icons.star,
+                      text: "Mastery Level",
                       isDark: isDark,
-                      onTap: () {
+                      onTap: () async {
                         _hidePopupMenu();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ProfileSettings(),
-                          ),
-                        );
+                        whitescreen();
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          Get.to(() => const Masterwidget());
+                        });
                       },
                     ),
                     _buildPopupMenuItem(
@@ -86,6 +102,10 @@ class _DashboardState extends State<Dashboard> {
                       isDark: isDark,
                       onTap: () {
                         _hidePopupMenu();
+                        whitescreen();
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          Get.to(() => const Passwordsettings());
+                        });
                       },
                     ),
                     _buildPopupMenuItem(
@@ -382,75 +402,101 @@ class _DashboardState extends State<Dashboard> {
             width: double.infinity,
             height: double.infinity,
           ),
-          SingleChildScrollView(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Wrap(
-                  spacing: 35,
-                  runSpacing: 30,
+
+          // Loading Screen Overlay
+          if (_isLoading)
+            Container(
+              color: Colors.white,
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[300],
-                      text: "AND",
-                      image: "assets/logo/annd.jpg",
-                      progress: 1.0,
-                    ),
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[400],
-                      text: "NAND",
-                      image: "assets/logo/or.jpg",
-                      progress: 1.0,
-                    ),
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[500],
-                      text: "OR",
-                      image: "assets/logo/annd.jpg",
-                      progress: 1.0,
-                    ),
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[600],
-                      text: "NOR",
-                      image: "assets/logo/or.jpg",
-                      progress: 1.0,
-                    ),
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[700],
-                      text: "NOT",
-                      image: "assets/logo/annd.jpg",
-                      progress: 1.0,
-                    ),
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[800],
-                      text: "XOR",
-                      image: "assets/logo/or.jpg",
-                      progress: 1.0,
-                    ),
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[800],
-                      text: "XNOR",
-                      image: "assets/logo/annd.jpg",
-                      progress: 1.0,
-                    ),
-                    BuildBlock(
-                      width: blockWidth,
-                      color: Colors.blue[800],
-                      text: "BUFFER",
-                      image: "assets/logo/annd.jpg",
-                      progress: 1.0,
+                    CircularProgressIndicator(),
+                    SizedBox(height: 20),
+                    Text(
+                      'Loading...',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          ),
+
+          // Main Content
+          if (!_isLoading)
+            SingleChildScrollView(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 35,
+                    runSpacing: 30,
+                    children: [
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[300],
+                        text: "AND",
+                        image: "assets/logo/annd.jpg",
+                        progress: 1.0,
+                      ),
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[400],
+                        text: "NAND",
+                        image: "assets/logo/or.jpg",
+                        progress: 1.0,
+                      ),
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[500],
+                        text: "OR",
+                        image: "assets/logo/annd.jpg",
+                        progress: 1.0,
+                      ),
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[600],
+                        text: "NOR",
+                        image: "assets/logo/or.jpg",
+                        progress: 1.0,
+                      ),
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[700],
+                        text: "NOT",
+                        image: "assets/logo/annd.jpg",
+                        progress: 1.0,
+                      ),
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[800],
+                        text: "XOR",
+                        image: "assets/logo/or.jpg",
+                        progress: 1.0,
+                      ),
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[800],
+                        text: "XNOR",
+                        image: "assets/logo/annd.jpg",
+                        progress: 1.0,
+                      ),
+                      BuildBlock(
+                        width: blockWidth,
+                        color: Colors.blue[800],
+                        text: "BUFFER",
+                        image: "assets/logo/annd.jpg",
+                        progress: 1.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

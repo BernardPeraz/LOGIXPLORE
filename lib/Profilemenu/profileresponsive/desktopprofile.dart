@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/Image.dart';
 
 class DesktopProfile extends StatelessWidget {
   const DesktopProfile({super.key});
@@ -6,20 +7,20 @@ class DesktopProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // LEFT SIDE - PROFILE COLUMN
         Expanded(
           flex: 1,
           child: Container(
             padding: const EdgeInsets.all(24),
             margin: const EdgeInsets.only(right: 20),
             decoration: BoxDecoration(
-              color: const Color(0xFF4A609C).withOpacity(0.66),
+              color: const Color(0xFF4A609C).withValues(alpha: 0.66),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -49,11 +50,11 @@ class DesktopProfile extends StatelessWidget {
 
                 // FIRST TEXT
                 const Text(
-                  'John Doe',
+                  'Not connected yet',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Color.fromARGB(255, 0, 0, 0),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -62,10 +63,10 @@ class DesktopProfile extends StatelessWidget {
 
                 // SECOND TEXT
                 Text(
-                  'JohnDoe00',
+                  'Not connected yet',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.grey[600],
+                    color: Color.fromARGB(255, 0, 0, 0),
                     fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
@@ -75,9 +76,11 @@ class DesktopProfile extends StatelessWidget {
 
                 // FIRST ELEVATED BUTTON
                 SizedBox(
-                  width: double.infinity,
+                  width: 250,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      changeProfilePicture(context);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
@@ -87,8 +90,9 @@ class DesktopProfile extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Change Picture',
+
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -98,30 +102,6 @@ class DesktopProfile extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 16),
-
-                // SECOND ELEVATED BUTTON
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 255, 149, 0),
-                      foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-                      minimumSize: const Size(double.infinity, 52),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                    ),
-                    child: const Text(
-                      'Save Changes',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -131,13 +111,14 @@ class DesktopProfile extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
+            width: 300,
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: const Color(0xFF4A609C).withOpacity(0.66),
+              color: const Color(0xFF4A609C).withValues(alpha: 0.66),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -145,32 +126,31 @@ class DesktopProfile extends StatelessWidget {
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  'Personal Information',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // FIRST NAME TEXT FIELD
-                TextField(
+                TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'First Name',
-                    labelStyle: const TextStyle(fontSize: 16),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    prefixIcon: Icon(Icons.person_outline_outlined),
+                    labelText: "First name",
                     filled: true,
-                    fillColor: Colors.grey[100],
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+                    hintText: "First name",
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
                     ),
                   ),
                 ),
@@ -178,18 +158,32 @@ class DesktopProfile extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // LAST NAME TEXT FIELD
-                TextField(
+                TextFormField(
+                  maxLength: 30,
                   decoration: InputDecoration(
-                    labelText: 'Last Name',
-                    labelStyle: const TextStyle(fontSize: 16),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    label: const Text("Last Name"),
+                    counterText: '',
+                    border: InputBorder.none,
                     filled: true,
-                    fillColor: Colors.grey[100],
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+                    prefixIcon: const Icon(Icons.person_outline),
+
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
                     ),
                   ),
                 ),
@@ -197,18 +191,36 @@ class DesktopProfile extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // EMAIL TEXT FIELD
-                TextField(
+                TextFormField(
+                  maxLength: 30,
                   decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    labelStyle: const TextStyle(fontSize: 16),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    label: const Text("E-Mail"),
+                    counterText: '',
+                    hintText: "Only @gmail.com is accepted",
+
+                    border: InputBorder.none,
                     filled: true,
-                    fillColor: Colors.grey[100],
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+
+                    prefixIcon: const Icon(Icons.email_outlined),
+
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                    ),
+
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
                     ),
                   ),
                 ),
@@ -216,21 +228,60 @@ class DesktopProfile extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // BIO TEXT FIELD
-                TextField(
-                  maxLines: 3,
+                TextFormField(
+                  maxLength: 30,
                   decoration: InputDecoration(
-                    labelText: 'Bio',
-                    labelStyle: const TextStyle(fontSize: 16),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                    label: const Text("Username"),
+                    counterText: '',
+                    border: InputBorder.none,
+
                     filled: true,
-                    fillColor: Colors.grey[100],
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 16,
+                    prefixIcon: const Icon(Icons.person),
+
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
                     ),
-                    alignLabelWithHint: true,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide(
+                        color: const Color.fromARGB(0, 33, 149, 243),
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                Center(
+                  child: SizedBox(
+                    width: 250,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 255, 149, 0),
+                        foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+                        minimumSize: const Size(double.infinity, 52),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                      ),
+                      child: const Text(
+                        'Save Changes',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],

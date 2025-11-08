@@ -135,7 +135,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   icon: const Icon(Icons.autorenew_rounded), // refresh icon
                   tooltip: 'Generate username',
                   onPressed: () {
-                    generateUsername(); // 👈 tawagin yung function
+                    generateUsername();
                   },
                 ),
 

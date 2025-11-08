@@ -36,51 +36,108 @@ class BuildBlock extends StatefulWidget {
 class _BuildBlockState extends State<BuildBlock> {
   double _progress = 0.0;
   bool _hasBeenCompleted = false;
+  Set<String> _completedPdfs = {};
 
   int _getTotalPagesForBlock(String blockName) {
     switch (blockName.toUpperCase()) {
       case 'AND GATE':
       case 'AND':
-        return 1;
+        return Andlessons.lessons.length;
 
       case 'NOT AND':
       case 'NAND':
-        return 1;
+        return Nandlessons.lessons.length;
 
       case 'OR GATE':
       case 'OR':
-        return 1;
+        return Orlessons.lessons.length;
 
       case 'NOT OR GATE':
       case 'NOR':
-        return 1;
+        return Norlessons.lessons.length;
 
       case 'NOT GATE':
       case 'NOT':
-        return 1;
+        return Notlessons.lessons.length;
 
       case 'EXCLUSIVE OR GATE':
       case 'XOR':
-        return 1;
+        return Xorlessons.lessons.length;
 
       case 'EXCLUSIVE NOR GATE':
       case 'XNOR':
-        return 1;
+        return Xnorlessons.lessons.length;
 
       case 'BUFFER GATE':
       case 'BUFFER':
-        return 1;
+        return Bufferlessons.lessons.length;
 
       default:
         return 1;
     }
   }
 
+  int _getTotalLessonsForBlock(String blockName) {
+    switch (blockName.toUpperCase()) {
+      case 'AND GATE':
+      case 'AND':
+        return Andlessons.lessons.length;
+
+      case 'NOT AND':
+      case 'NAND':
+        return Nandlessons.lessons.length;
+
+      case 'OR GATE':
+      case 'OR':
+        return Orlessons.lessons.length;
+
+      case 'NOT OR GATE':
+      case 'NOR':
+        return Norlessons.lessons.length;
+
+      case 'NOT GATE':
+      case 'NOT':
+        return Notlessons.lessons.length;
+
+      case 'EXCLUSIVE OR GATE':
+      case 'XOR':
+        return Xorlessons.lessons.length;
+
+      case 'EXCLUSIVE NOR GATE':
+      case 'XNOR':
+        return Xnorlessons.lessons.length;
+
+      case 'BUFFER GATE':
+      case 'BUFFER':
+        return Bufferlessons.lessons.length;
+
+      default:
+        return 0;
+    }
+  }
+
   bool get isTaskCompleted => _progress == 1.0;
+
+  void _onPdfClicked(String pdfPath) {
+    setState(() {
+      if (!_completedPdfs.contains(pdfPath)) {
+        _completedPdfs.add(pdfPath);
+
+        int totalLessons = _getTotalLessonsForBlock(widget.text);
+        _progress = _completedPdfs.length / totalLessons;
+
+        if (_progress > 1.0) _progress = 1.0;
+        if (_progress == 1.0) _hasBeenCompleted = true;
+
+        print('Progress updated: ${(_progress * 100).toStringAsFixed(0)}%');
+        print('Completed PDFs: $_completedPdfs');
+      }
+    });
+  }
 
   void updateProgress(int pagesCompleted) {
     setState(() {
-      int totalPages = _getTotalPagesForBlock(widget.text);
+      int totalPages = _getTotalLessonsForBlock(widget.text);
       _progress = pagesCompleted / totalPages;
       if (_progress == 1.0) _hasBeenCompleted = true;
     });
@@ -146,22 +203,22 @@ class _BuildBlockState extends State<BuildBlock> {
 
   void _navigateToLessonPage() {
     final Map<String, Widget> lessonPages = {
-      'AND GATES': const Andlessons(),
-      'AND': const Andlessons(),
-      'NAND GATE': const Nandlessons(),
-      'NAND': const Nandlessons(),
-      'OR GATE': const Orlessons(),
-      'OR': const Orlessons(),
-      'NOR GATE': const Norlessons(),
-      'NOR': const Norlessons(),
-      'NOT GATE': const Notlessons(),
-      'NOT': const Notlessons(),
-      'XOR GATE': const Xorlessons(),
-      'XOR': const Xorlessons(),
-      'XNOR GATE': const Xnorlessons(),
-      'XNOR': const Xnorlessons(),
-      'BUFFER GATE': const Bufferlessons(),
-      'BUFFER': const Bufferlessons(),
+      'AND GATES': Andlessons(onPdfClicked: _onPdfClicked),
+      'AND': Andlessons(onPdfClicked: _onPdfClicked),
+      'NAND GATES': Nandlessons(onPdfClicked: _onPdfClicked),
+      'NAND': Nandlessons(onPdfClicked: _onPdfClicked),
+      'OR GATE': Orlessons(onPdfClicked: _onPdfClicked),
+      'OR': Orlessons(onPdfClicked: _onPdfClicked),
+      'NOR GATE': Norlessons(onPdfClicked: _onPdfClicked),
+      'NOR': Norlessons(onPdfClicked: _onPdfClicked),
+      'NOT GATE': Notlessons(onPdfClicked: _onPdfClicked),
+      'NOT': Notlessons(onPdfClicked: _onPdfClicked),
+      'XOR GATE': Xorlessons(onPdfClicked: _onPdfClicked),
+      'XOR': Xorlessons(onPdfClicked: _onPdfClicked),
+      'XNOR GATE': Xnorlessons(onPdfClicked: _onPdfClicked),
+      'XNOR': Xnorlessons(onPdfClicked: _onPdfClicked),
+      'BUFFER GATE': Bufferlessons(onPdfClicked: _onPdfClicked),
+      'BUFFER': Bufferlessons(onPdfClicked: _onPdfClicked),
     };
 
     // Kunin page base sa text
@@ -186,7 +243,6 @@ class _BuildBlockState extends State<BuildBlock> {
         }
       });
     } else {
-      // Fallback kapag walang matching page
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('No lesson page found for ${widget.text}')),
       );

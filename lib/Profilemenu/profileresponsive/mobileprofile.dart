@@ -36,7 +36,7 @@ class MobileProfile extends StatelessWidget {
 
               // FIRST TEXT
               const Text(
-                'John Doe',
+                'Not connected yet',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -49,7 +49,7 @@ class MobileProfile extends StatelessWidget {
 
               // SECOND TEXT
               Text(
-                'JohnDoe00  ',
+                'Not connected yet',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[600],
@@ -81,15 +81,6 @@ class MobileProfile extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Personal Information',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-
               const SizedBox(height: 16),
 
               // FIRST NAME TEXT FIELD
@@ -149,22 +140,34 @@ class MobileProfile extends StatelessWidget {
 
               const SizedBox(height: 12),
 
-              // BIO TEXT FIELD
-              TextField(
-                maxLines: 3,
+              TextFormField(
+                maxLength: 30,
                 decoration: InputDecoration(
-                  labelText: 'Bio',
-                  labelStyle: const TextStyle(fontSize: 14),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                  label: const Text("Username"),
+                  counterText: '',
+                  border: InputBorder.none,
+
                   filled: true,
-                  fillColor: Colors.grey[100],
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
+                  prefixIcon: const Icon(Icons.person),
+
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(color: Colors.blue, width: 1.0),
                   ),
-                  alignLabelWithHint: true,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(
+                      color: const Color.fromARGB(0, 33, 149, 243),
+                      width: 1.0,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: BorderSide(
+                      color: const Color.fromARGB(0, 33, 149, 243),
+                      width: 1.0,
+                    ),
+                  ),
                 ),
               ),
             ],

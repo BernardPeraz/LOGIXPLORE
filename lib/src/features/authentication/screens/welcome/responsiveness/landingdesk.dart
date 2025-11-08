@@ -46,7 +46,7 @@ class _LandingdesktopState extends State<Landingdesktop>
     }
   }
 
-  void _goToSignUp() {
+  void whitescreen() {
     setState(() {
       _isLoading = true;
     });
@@ -107,7 +107,7 @@ class _LandingdesktopState extends State<Landingdesktop>
           const SizedBox(width: 15),
           ElevatedButton(
             onPressed: () {
-              _goToSignUp();
+              whitescreen();
               Future.delayed(const Duration(milliseconds: 500), () {
                 Get.to(() => const SignupScreen());
               });
@@ -125,7 +125,7 @@ class _LandingdesktopState extends State<Landingdesktop>
           const SizedBox(width: 15),
           ElevatedButton(
             onPressed: () {
-              _goToSignUp();
+              whitescreen();
               Future.delayed(const Duration(milliseconds: 500), () {
                 Get.to(() => const LoginScreen());
               });
@@ -204,15 +204,34 @@ class _LandingdesktopState extends State<Landingdesktop>
                             0,
                             20,
                             9,
-                            "Explore the building blocks of digital electronics through interactive logic gate simulations.",
+                            "Learn digital electronics with interactive logic gates",
+
                             false,
                           ),
                           const SizedBox(height: 10),
-                          ScopeContainer(3, 20, 6, "", false),
+                          ScopeContainer(
+                            3,
+                            20,
+                            6,
+                            "Learn basic logic gates and their functions",
+                            false,
+                          ),
                           const SizedBox(height: 10),
-                          ScopeContainer(6, 20, 3, "", false),
+                          ScopeContainer(
+                            6,
+                            20,
+                            3,
+                            "Build your digital logic skills step by step",
+                            false,
+                          ),
                           const SizedBox(height: 10),
-                          ScopeContainer(9, 20, 0, "", false),
+                          ScopeContainer(
+                            9,
+                            20,
+                            0,
+                            "Practice with interactive circuit designs",
+                            false,
+                          ),
                         ],
                       ),
                     ),

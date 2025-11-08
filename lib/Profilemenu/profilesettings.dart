@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:studydesign2zzdatabaseplaylist/Profilemenu/editprofile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettingwidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 

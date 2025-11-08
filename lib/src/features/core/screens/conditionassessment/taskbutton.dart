@@ -1,6 +1,5 @@
 // taskbutton.dart
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/choices.dart';
 
@@ -69,6 +68,7 @@ class _TaskButtonState extends State<TaskButton> {
             : Container(
                 decoration: BoxDecoration(
                   color: Colors.grey,
+
                   borderRadius: BorderRadius.circular(25),
                   border: Border.all(color: Colors.grey),
                 ),

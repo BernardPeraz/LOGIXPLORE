@@ -54,6 +54,8 @@ dependencies:
   email_auth: ^2.0.0
   email_otp: ^3.0.0
   cloud_functions: ^6.0.3
+  universal_html: ^2.2.4
+ 
 
 dev_dependencies:
   flutter_test:
@@ -74,7 +76,7 @@ flutter:
     - assets/images/forget_password/
     - assets/images/background_images/
     - assets/logo/
-    - assets/handouts/nandlessons.pdf
+   
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

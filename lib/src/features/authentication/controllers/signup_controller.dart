@@ -338,3 +338,25 @@ Future<void> sendEmailVerification(
     );
   }
 }
+
+class TInputBorders {
+  static OutlineInputBorder enabled = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30),
+    borderSide: const BorderSide(color: Colors.transparent, width: 1),
+  );
+
+  static OutlineInputBorder focused = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30),
+    borderSide: const BorderSide(color: Colors.blue, width: 1),
+  );
+
+  static OutlineInputBorder error = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30),
+    borderSide: const BorderSide(color: Color.fromARGB(0, 0, 0, 0), width: 1),
+  );
+
+  static OutlineInputBorder focusedError = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30),
+    borderSide: const BorderSide(color: Color.fromARGB(0, 0, 0, 0), width: 1),
+  );
+}

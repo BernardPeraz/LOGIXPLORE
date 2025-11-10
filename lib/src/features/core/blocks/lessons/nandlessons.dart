@@ -11,15 +11,18 @@ class Nandlessons extends StatefulWidget {
 
   static List<Map<String, String>> lessons = [
     {
-      'pdfPath': 'assets/handouts/nandgate/nandgatelesson1.pdf',
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/nandgatelesson1.pdf',
       'title': 'NAND GATE 1',
     },
     {
-      'pdfPath': 'assets/handouts/nandgate/nandgatelesson2.pdf',
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/nandgatelesson2.pdf',
       'title': 'NAND GATE 2',
     },
     {
-      'pdfPath': 'assets/handouts/nandgate/nandgatelesson3.pdf',
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/nandgatelesson3.pdf',
       'title': 'NAND GATE 3',
     },
   ];
@@ -30,12 +33,7 @@ class Nandlessons extends StatefulWidget {
 
 class _NandlessonsState extends State<Nandlessons> {
   void _openPdf(String pdfPath, int lessonIndex) {
-    const yourDomain = 'https://logixplore.online';
-
-    // Gamitin ang full URL imbes na relative path
-    final fullPdfUrl = '$yourDomain/$pdfPath';
-
-    html.window.open(fullPdfUrl, '_blank');
+    html.window.open(pdfPath, '_blank');
 
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {

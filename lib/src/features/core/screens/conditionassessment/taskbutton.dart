@@ -22,10 +22,7 @@ class _TaskButtonState extends State<TaskButton> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Condition para magpalit ng button type
-        // Sa loob ng build method_
-        (widget.progress ==
-                1.0) // CHANGE: gamitin ang widget.progress instead of _progress
+        (widget.progress == 1.0)
             ? SizedBox(
                 width: DialogController.getButtonWidth(context),
                 child: ElevatedButton(

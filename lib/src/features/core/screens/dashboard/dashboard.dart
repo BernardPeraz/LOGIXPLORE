@@ -9,8 +9,11 @@ import 'package:studydesign2zzdatabaseplaylist/Profilemenu/passwordsettings/pass
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/verify.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/responsiveness/landingdesk.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blocknavigation.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/whitescreen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/main.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -345,6 +348,33 @@ class _DashboardState extends State<Dashboard> {
         elevation: 1,
         backgroundColor: const Color.fromARGB(0, 255, 255, 255),
         actions: [
+          IconButton(
+            onPressed: () {
+              _hidePopupMenu();
+
+              // Pupunta muna sa white screen
+              Get.to(() => WhiteScreen());
+            },
+            icon: Container(
+              padding: const EdgeInsets.all(
+                4,
+              ), // spacing between image and border
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ), // black border
+                shape:
+                    BoxShape.circle, // or BoxShape.rectangle kung gusto mo box
+              ),
+              child: Image.asset(
+                'assets/logo/iconbutton.png',
+                width: 40, // adjust size
+                height: 40,
+              ),
+            ),
+          ),
+
           Container(
             margin: const EdgeInsets.only(right: 20, top: 7),
             decoration: BoxDecoration(

@@ -12,17 +12,17 @@ class Nandlessons extends StatefulWidget {
   static List<Map<String, String>> lessons = [
     {
       'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/nandgatelesson1.pdf',
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NANDGatelessons/nandgatelesson1.pdf',
       'title': 'NAND GATE 1',
     },
     {
       'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/nandgatelesson2.pdf',
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NANDGatelessons/nandgatelesson2.pdf',
       'title': 'NAND GATE 2',
     },
     {
       'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/nandgatelesson3.pdf',
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NANDGatelessons/nandgatelesson3.pdf',
       'title': 'NAND GATE 3',
     },
   ];

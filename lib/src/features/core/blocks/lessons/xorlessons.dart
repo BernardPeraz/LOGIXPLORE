@@ -9,8 +9,16 @@ class Xorlessons extends StatefulWidget {
 
   const Xorlessons({super.key, this.onPdfClicked});
   static List<Map<String, String>> lessons = [
-    {'pdfPath': 'assets/handouts/xorgate/xorgate.pdf', 'title': 'XOR GATE 1'},
-    {'pdfPath': 'assets/handouts/xorgate/xorgate2.pdf', 'title': 'XOR GATE 2'},
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XORGatelessons/XORGatelesson1.pdf',
+      'title': 'XOR GATE 1',
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XORGatelessons/XORGatelesson2.pdf',
+      'title': 'XOR GATE 2',
+    },
   ];
 
   @override

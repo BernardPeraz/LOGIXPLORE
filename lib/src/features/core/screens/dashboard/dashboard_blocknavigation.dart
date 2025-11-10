@@ -36,7 +36,7 @@ class BuildBlock extends StatefulWidget {
 class _BuildBlockState extends State<BuildBlock> {
   double _progress = 0.0;
   bool _hasBeenCompleted = false;
-  Set<String> _completedPdfs = {};
+  final Set<String> _completedPdfs = {};
 
   int _getTotalPagesForBlock(String blockName) {
     switch (blockName.toUpperCase()) {

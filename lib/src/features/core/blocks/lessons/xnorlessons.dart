@@ -10,8 +10,16 @@ class Xnorlessons extends StatefulWidget {
   const Xnorlessons({super.key, this.onPdfClicked});
 
   static List<Map<String, String>> lessons = [
-    {'pdfPath': 'assets/handouts/xnor/xnor.pdf', 'title': 'XNOR GATE 1'},
-    {'pdfPath': 'assets/handouts/xnor/xnorgate2..pdf', 'title': 'XNOR GATE 2'},
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XNORGatelessons/xnorgatelesson1.pdf',
+      'title': 'XNOR GATE 1',
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XNORGatelessons/xnorgatelesson2..pdf',
+      'title': 'XNOR GATE 2',
+    },
   ];
 
   @override

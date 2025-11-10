@@ -11,10 +11,15 @@ class Norlessons extends StatefulWidget {
 
   static List<Map<String, String>> lessons = [
     {
-      'pdfPath': 'assets/handouts/norgate/norgatelesson.pdf',
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NORGatelessons/norgatelesson1.pdf',
       'title': 'NOR GATE 1',
     },
-    {'pdfPath': 'assets/handouts/norgate/norgate2.pdf', 'title': 'NOR GATE 2'},
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NORGatelessons/norgatelesson2.pdf',
+      'title': 'NOR GATE 2',
+    },
   ];
 
   @override

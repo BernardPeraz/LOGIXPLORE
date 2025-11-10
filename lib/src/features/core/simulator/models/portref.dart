@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/porttype.dart';
 
 class PortRef {

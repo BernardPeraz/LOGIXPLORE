@@ -3,7 +3,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/model
 
 class PortCircle extends StatelessWidget {
   final Port port;
-  const PortCircle({required this.port});
+  const PortCircle({super.key, required this.port});
 
   @override
   Widget build(BuildContext context) {

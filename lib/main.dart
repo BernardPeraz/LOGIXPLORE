@@ -4,15 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart'; // IDINAGDAG
 import 'package:get/get.dart';
-import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/firebase_options.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/utils/theme/theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Global loading controller - Dinagdagan lang dito
 class AppLoadingController extends GetxController {
   final isLoading = false.obs;
 
@@ -21,22 +18,12 @@ class AppLoadingController extends GetxController {
 }
 
 Future<void> main() async {
-  void main() {
-    runApp(MyApp());
-  }
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // IDINAGDAG: Cloud Functions initialization with error handling
   try {
     FirebaseFunctions functions = FirebaseFunctions.instance;
-    // Optional: Set region if needed
-    // functions = FirebaseFunctions.instanceFor(region: 'asia-southeast1');
-
-    // Optional: For local emulator testing
-    // functions.useFunctionsEmulator('localhost', 5001);
 
     print('Cloud Functions initialized successfully');
   } catch (e) {
@@ -103,15 +90,9 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       transitionDuration: const Duration(milliseconds: 500),
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => LoginScreen(),
-        '/profilesettings': (context) => ProfileSettings(),
-      },
       home: FirebaseAuth.instance.currentUser != null
           ? const Dashboard()
           : SplashScreen(),
-
       builder: (context, child) {
         return Stack(
           children: [

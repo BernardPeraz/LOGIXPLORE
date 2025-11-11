@@ -133,7 +133,7 @@ class _LandingdesktopState extends State<Landingdesktop>
             onPressed: () {
               whitescreen();
               Future.delayed(const Duration(milliseconds: 500), () {
-                Get.toNamed('/Login');
+                Get.to(() => const LoginScreen());
               });
             },
             style: ElevatedButton.styleFrom(

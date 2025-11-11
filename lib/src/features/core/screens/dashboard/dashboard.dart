@@ -358,16 +358,19 @@ class _DashboardState extends State<Dashboard> {
               ), // spacing between image and border
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black,
+                  color: const Color.fromARGB(0, 0, 0, 0),
                   width: 2,
                 ), // black border
                 shape:
                     BoxShape.circle, // or BoxShape.rectangle kung gusto mo box
               ),
-              child: Image.asset(
-                'assets/logo/iconbutton.png',
-                width: 40, // adjust size
-                height: 40,
+              child: Tooltip(
+                message: 'Simulator',
+                child: Image.asset(
+                  'assets/logo/iconbutton.png',
+                  width: 40, // adjust size
+                  height: 40,
+                ),
               ),
             ),
           ),
@@ -394,7 +397,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
           ),
-          ProfileMenuBox(),
+          Tooltip(message: 'Profile', child: ProfileMenuBox()),
           CompositedTransformTarget(
             link: _layerLink,
             child: MouseRegion(
@@ -467,56 +470,56 @@ class _DashboardState extends State<Dashboard> {
                         width: blockWidth,
                         color: Colors.blue[300],
                         text: "AND",
-                        image: "assets/logo/annd.jpg",
+                        image: "assets/logo/and.png",
                         progress: 1.0,
                       ),
                       BuildBlock(
                         width: blockWidth,
                         color: Colors.blue[400],
                         text: "NAND",
-                        image: "assets/logo/or.jpg",
+                        image: "assets/logo/nand.png",
                         progress: 1.0,
                       ),
                       BuildBlock(
                         width: blockWidth,
                         color: Colors.blue[500],
                         text: "OR",
-                        image: "assets/logo/annd.jpg",
+                        image: "assets/logo/or.png",
                         progress: 1.0,
                       ),
                       BuildBlock(
                         width: blockWidth,
                         color: Colors.blue[600],
                         text: "NOR",
-                        image: "assets/logo/or.jpg",
+                        image: "assets/logo/nor.png",
                         progress: 1.0,
                       ),
                       BuildBlock(
                         width: blockWidth,
                         color: Colors.blue[700],
                         text: "NOT",
-                        image: "assets/logo/annd.jpg",
+                        image: "assets/logo/not.png",
                         progress: 1.0,
                       ),
                       BuildBlock(
                         width: blockWidth,
                         color: Colors.blue[800],
                         text: "XOR",
-                        image: "assets/logo/or.jpg",
+                        image: "assets/logo/xor.png",
                         progress: 1.0,
                       ),
                       BuildBlock(
                         width: blockWidth,
                         color: Colors.blue[800],
                         text: "XNOR",
-                        image: "assets/logo/annd.jpg",
+                        image: "assets/logo/xnor.png",
                         progress: 1.0,
                       ),
                       BuildBlock(
                         width: blockWidth,
                         color: Colors.blue[800],
                         text: "BUFFER",
-                        image: "assets/logo/annd.jpg",
+                        image: "assets/logo/buffer.png",
                         progress: 1.0,
                       ),
                     ],

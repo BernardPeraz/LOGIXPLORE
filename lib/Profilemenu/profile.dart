@@ -9,6 +9,8 @@ class ProfileMenuBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
     double screenWidth = MediaQuery.of(context).size.width;
 
     // Get current user
@@ -91,7 +93,8 @@ class ProfileMenuBox extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: Colors.orange,
+              color: isDark ? Colors.black : Colors.orange,
+
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: Colors.black, width: 1),
             ),
@@ -140,15 +143,18 @@ class ProfileMenuBox extends StatelessWidget {
                   children: [
                     Text(
                       displayName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
-                        color: Colors.black,
+                        color: isDark ? Colors.white : Colors.black,
                       ),
                     ),
                     Text(
                       role,
-                      style: const TextStyle(fontSize: 12, color: Colors.black),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: isDark ? Colors.white : Colors.black,
+                      ),
                     ),
                   ],
                 ),

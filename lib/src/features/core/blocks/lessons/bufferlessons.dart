@@ -29,12 +29,17 @@ class _BufferlessonsState extends State<Bufferlessons> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset('assets/logo/buffer.png', fit: BoxFit.contain),
         title: Text('BUFFER GATE LESSONS'),
         actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.close),
+          Tooltip(
+            message: 'Home',
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.home),
+            ),
           ),
+          SizedBox(width: 23),
         ],
       ),
       body: Stack(

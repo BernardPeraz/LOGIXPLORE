@@ -26,7 +26,7 @@ class BuildBlockUI {
             children: [
               Container(
                 height: width * 0.120,
-                width: 60,
+                width: 70,
                 color: Colors.transparent,
                 child: Center(
                   child: ElevatedButton(
@@ -37,7 +37,7 @@ class BuildBlockUI {
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(1),
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       alignment: Alignment.center,
                     ),

@@ -64,7 +64,10 @@ class _LandingdesktopState extends State<Landingdesktop>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Image.asset('assets/logo/logicon.png', height: 9, width: 5),
+        leading: Tooltip(
+          message: 'Welcome LogiXmate!',
+          child: Image.asset('assets/logo/logicon.png', height: 9, width: 5),
+        ),
         title: Text(
           "LOGIXPLORE",
           style: Theme.of(context).textTheme.headlineMedium,
@@ -102,7 +105,7 @@ class _LandingdesktopState extends State<Landingdesktop>
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: const Text('About'),
+            child: Tooltip(message: 'About us', child: const Text('About')),
           ),
           const SizedBox(width: 15),
           ElevatedButton(
@@ -120,7 +123,10 @@ class _LandingdesktopState extends State<Landingdesktop>
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: const Text('Register'),
+            child: Tooltip(
+              message: 'Create your account',
+              child: const Text('Register'),
+            ),
           ),
           const SizedBox(width: 15),
           ElevatedButton(
@@ -138,7 +144,10 @@ class _LandingdesktopState extends State<Landingdesktop>
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            child: const Text('Sign In'),
+            child: Tooltip(
+              message: 'Sign in your account',
+              child: const Text('Sign In'),
+            ),
           ),
           const SizedBox(width: 30),
         ],
@@ -229,7 +238,7 @@ class _LandingdesktopState extends State<Landingdesktop>
                             9,
                             20,
                             0,
-                            "Practice with interactive circuit designs",
+                            "Explore logic operations visually",
                             false,
                           ),
                         ],

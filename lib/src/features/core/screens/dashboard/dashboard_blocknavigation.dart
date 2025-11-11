@@ -187,11 +187,18 @@ class _BuildBlockState extends State<BuildBlock> {
               Positioned(
                 top: 10,
                 right: 10,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close, color: Colors.black, size: 24),
+                child: Tooltip(
+                  message: 'Close',
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ),
                 ),
               ),
             ],

@@ -150,41 +150,46 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                     Positioned(
                       top: 20, // 20 pixels from the top
                       right: 20, // 20 pixels from the right
-                      child: GestureDetector(
-                        onTap: () {
-                          // STEP 4: Navigation functionality - magse-close ang screen kapag pinindot
-                          Navigator.of(context).pop();
-                        },
-                        child: Container(
-                          width: 40, // Fixed width
-                          height: 40, // Fixed height
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(
-                              125,
-                              225,
-                              56,
-                              56,
-                            ), // White background
-                            shape: BoxShape.circle, // Circular shape
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: Icon(Icons.close, color: Colors.black),
-                            onPressed: () {
-                              Get.offAll(Landingpagee());
-                              resetFormFields(updateUI: () => setState(() {}));
-                              passwordStrengthNotifier.value = PasswordResult(
-                                PasswordStrength.empty,
-                                0.0,
-                                "",
-                              );
-                            },
+                      child: Tooltip(
+                        message: 'Close',
+                        child: GestureDetector(
+                          onTap: () {
+                            // STEP 4: Navigation functionality - magse-close ang screen kapag pinindot
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            width: 40, // Fixed width
+                            height: 40, // Fixed height
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(
+                                125,
+                                225,
+                                56,
+                                56,
+                              ), // White background
+                              shape: BoxShape.circle, // Circular shape
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.close, color: Colors.black),
+                              onPressed: () {
+                                Get.offAll(Landingpagee());
+                                resetFormFields(
+                                  updateUI: () => setState(() {}),
+                                );
+                                passwordStrengthNotifier.value = PasswordResult(
+                                  PasswordStrength.empty,
+                                  0.0,
+                                  "",
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),

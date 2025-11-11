@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/forget_password/forget_password_options/forget_password_model_bottom_sheet.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -150,24 +151,10 @@ class _LoginFormState extends State<LoginForm> {
                 labelText: "Email or Phone Number",
                 filled: true,
                 hintText: "Email or Phone Number",
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
+                enabledBorder: TInputBorders.enabled,
+                focusedBorder: TInputBorders.focused,
+                errorBorder: TInputBorders.error,
+                focusedErrorBorder: TInputBorders.focusedError,
               ),
             ),
             if (_emailError != null) ...[
@@ -199,28 +186,14 @@ class _LoginFormState extends State<LoginForm> {
                       onPressed: () {
                         setState(() {
                           _passwordVisible =
-                              !_passwordVisible; // 👁️ toggle visibility
+                              !_passwordVisible; //  toggle visibility
                         });
                       },
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(0, 33, 149, 243),
-                        width: 1.0,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(0, 33, 149, 243),
-                        width: 1.0,
-                      ),
-                    ),
+                    enabledBorder: TInputBorders.enabled,
+                    focusedBorder: TInputBorders.focused,
+                    errorBorder: TInputBorders.error,
+                    focusedErrorBorder: TInputBorders.focusedError,
                   ),
                 );
               },

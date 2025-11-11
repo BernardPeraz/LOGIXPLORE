@@ -39,12 +39,17 @@ class _XorlessonsState extends State<Xorlessons> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset('assets/logo/xor.png', fit: BoxFit.contain),
         title: Text('XOR GATE LESSONS'),
         actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.close),
+          Tooltip(
+            message: 'Home',
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.home),
+            ),
           ),
+          SizedBox(width: 23),
         ],
       ),
       body: Stack(

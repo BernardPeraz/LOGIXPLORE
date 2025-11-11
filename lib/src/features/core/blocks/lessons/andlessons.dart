@@ -1,6 +1,7 @@
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/lessons_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 
@@ -29,12 +30,18 @@ class _AndlessonsState extends State<Andlessons> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset('assets/logo/and.png', fit: BoxFit.contain),
         title: Text('AND GATE LESSONS'),
+
         actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.close),
+          Tooltip(
+            message: 'Home',
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.home),
+            ),
           ),
+          SizedBox(width: 23),
         ],
       ),
       body: Stack(
@@ -62,6 +69,8 @@ class _AndlessonsState extends State<Andlessons> {
                   ),
                 ),
                 SizedBox(height: 10),
+                const SizedBox(height: 20),
+
                 Text(
                   'Select a lesson to open the PDF',
                   style: TextStyle(

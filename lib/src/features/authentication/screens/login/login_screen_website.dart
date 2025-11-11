@@ -62,47 +62,50 @@ class WebsiteLoginScreen extends StatelessWidget {
                     Positioned(
                       top: 20,
                       right: 20,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(
-                              125,
-                              225,
-                              56,
-                              56,
-                            ), // White background
-                            shape: BoxShape.circle, // Circular shape
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                blurRadius: 4,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: IconButton(
-                            icon: Icon(Icons.close, color: Colors.black),
-                            onPressed: () {
-                              Get.offAll(Landingpagee());
-                              void resetFormFields({
-                                required VoidCallback updateUI,
-                              }) {
-                                firstNameController.clear();
-                                lastNameController.clear();
-                                usernameController.clear();
-                                emailController.clear();
-                                mobileNumberController.clear();
-                                passwordController.clear();
-                                repeatPasswordController.clear();
+                      child: Tooltip(
+                        message: 'Close page',
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(
+                                125,
+                                225,
+                                56,
+                                56,
+                              ), // White background
+                              shape: BoxShape.circle, // Circular shape
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.3),
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: IconButton(
+                              icon: Icon(Icons.close, color: Colors.black),
+                              onPressed: () {
+                                Get.offAll(Landingpagee());
+                                void resetFormFields({
+                                  required VoidCallback updateUI,
+                                }) {
+                                  firstNameController.clear();
+                                  lastNameController.clear();
+                                  usernameController.clear();
+                                  emailController.clear();
+                                  mobileNumberController.clear();
+                                  passwordController.clear();
+                                  repeatPasswordController.clear();
 
-                                updateUI();
-                              }
-                            },
+                                  updateUI();
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ),

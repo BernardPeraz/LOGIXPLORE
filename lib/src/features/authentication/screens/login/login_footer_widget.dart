@@ -19,24 +19,27 @@ class LoginFooterWidget extends StatelessWidget {
 
         SizedBox(
           width: 40,
-          child: IconButton(
-            onPressed: () async {
-              bool isLoggedIn = await login(context);
-              if (isLoggedIn) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Dashboard()),
-                );
-              }
-            },
-            icon: const Image(image: AssetImage(tGoogleLogoimage), width: 20),
+          child: Tooltip(
+            message: 'Sign in your Google account',
+            child: IconButton(
+              onPressed: () async {
+                bool isLoggedIn = await login(context);
+                if (isLoggedIn) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Dashboard()),
+                  );
+                }
+              },
+              icon: const Image(image: AssetImage(tGoogleLogoimage), width: 20),
 
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              side: BorderSide(color: const Color.fromARGB(0, 0, 0, 0)),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                side: BorderSide(color: const Color.fromARGB(0, 0, 0, 0)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
               ),
             ),
           ),

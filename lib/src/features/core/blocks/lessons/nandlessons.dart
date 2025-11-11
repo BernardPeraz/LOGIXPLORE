@@ -45,12 +45,18 @@ class _NandlessonsState extends State<Nandlessons> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset('assets/logo/nand.png'),
+
         title: Text('NAND GATE LESSONS'),
         actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.close),
+          Tooltip(
+            message: 'Home',
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.home),
+            ),
           ),
+          SizedBox(width: 23),
         ],
       ),
       body: Stack(

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/passwordstrengthnotifier.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/terms/policy.dart';
 import 'dart:async';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/terms/termsnconditions.dart';
 
 class SignUpFormWidget extends StatefulWidget {
   const SignUpFormWidget({super.key});
@@ -12,6 +15,8 @@ class SignUpFormWidget extends StatefulWidget {
   @override
   State<SignUpFormWidget> createState() => _SignUpFormWidgetState();
 }
+
+bool agreeToTerms = false;
 
 class _SignUpFormWidgetState extends State<SignUpFormWidget> {
   String? mobileError;
@@ -59,26 +64,13 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               controller: firstNameController,
               maxLength: 50,
               decoration: InputDecoration(
-                label: const Text("First Name"),
+                label: const Text("First name"),
                 counterText: '',
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
+                hintText: 'First name',
+                enabledBorder: TInputBorders.enabled,
+                focusedBorder: TInputBorders.focused,
+                errorBorder: TInputBorders.error,
+                focusedErrorBorder: TInputBorders.focusedError,
                 filled: true,
                 border: InputBorder.none,
                 prefixIcon: const Icon(Icons.person_outline),
@@ -91,30 +83,17 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               controller: lastNameController,
               maxLength: 30,
               decoration: InputDecoration(
-                label: const Text("Last Name"),
+                label: const Text("Last name"),
                 counterText: '',
+                hintText: 'Last name',
                 border: InputBorder.none,
                 filled: true,
                 prefixIcon: const Icon(Icons.person_outline),
                 errorText: fieldErrors['lastName'],
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
+                enabledBorder: TInputBorders.enabled,
+                focusedBorder: TInputBorders.focused,
+                errorBorder: TInputBorders.error,
+                focusedErrorBorder: TInputBorders.focusedError,
               ),
             ),
             SizedBox(height: tFormHeight - 10),
@@ -126,6 +105,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               decoration: InputDecoration(
                 label: const Text("Username"),
                 counterText: '',
+                hintText: 'Logixplore00',
                 border: InputBorder.none,
 
                 filled: true,
@@ -139,24 +119,10 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   },
                 ),
 
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
+                enabledBorder: TInputBorders.enabled,
+                focusedBorder: TInputBorders.focused,
+                errorBorder: TInputBorders.error,
+                focusedErrorBorder: TInputBorders.focusedError,
               ),
             ),
             SizedBox(height: tFormHeight - 10),
@@ -165,34 +131,17 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               controller: emailController,
               maxLength: 30,
               decoration: InputDecoration(
-                label: const Text("E-Mail"),
+                label: const Text("Email"),
                 counterText: '',
-                hintText: "Only @gmail.com is accepted",
-
+                hintText: "Email",
                 border: InputBorder.none,
                 filled: true,
-
                 prefixIcon: const Icon(Icons.email_outlined),
                 errorText: fieldErrors['email'],
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                ),
-
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
+                enabledBorder: TInputBorders.enabled,
+                focusedBorder: TInputBorders.focused,
+                errorBorder: TInputBorders.error,
+                focusedErrorBorder: TInputBorders.focusedError,
               ),
             ),
             SizedBox(height: tFormHeight - 10),
@@ -219,24 +168,10 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   padding: EdgeInsetsGeometry.only(right: 5.0),
                   child: Text('+63', style: TextStyle(color: Colors.black)),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: BorderSide(
-                    color: const Color.fromARGB(0, 33, 149, 243),
-                    width: 1.0,
-                  ),
-                ),
+                enabledBorder: TInputBorders.enabled,
+                focusedBorder: TInputBorders.focused,
+                errorBorder: TInputBorders.error,
+                focusedErrorBorder: TInputBorders.focusedError,
               ),
             ),
             SizedBox(height: tFormHeight - 10),
@@ -272,74 +207,15 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                           onPressed: togglePasswordVisibility,
                         ),
                         errorText: fieldErrors['password'],
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: const BorderSide(
-                            color: Colors.blue,
-                            width: 1.0,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(0, 33, 149, 243),
-                            width: 1.0,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: const BorderSide(
-                            color: Color.fromARGB(0, 33, 149, 243),
-                            width: 1.0,
-                          ),
-                        ),
+                        enabledBorder: TInputBorders.enabled,
+                        focusedBorder: TInputBorders.focused,
+                        errorBorder: TInputBorders.error,
+                        focusedErrorBorder: TInputBorders.focusedError,
                       ),
                     ),
 
                     const SizedBox(height: 10),
-                    ValueListenableBuilder<PasswordResult>(
-                      valueListenable: passwordStrengthNotifier,
-                      builder: (context, result, _) {
-                        if (result.strength == PasswordStrength.empty) {
-                          return const SizedBox.shrink();
-                        }
-                        Color color;
-                        switch (result.strength) {
-                          case PasswordStrength.short:
-                            color = Colors.red;
-                          case PasswordStrength.veryWeak:
-                            color = const Color.fromARGB(255, 237, 77, 66);
-                            break;
-                          case PasswordStrength.medium:
-                            color = Colors.orange;
-                            break;
-                          case PasswordStrength.strong:
-                            color = const Color.fromARGB(255, 0, 183, 6);
-                            break;
-                          default:
-                            color = Colors.grey;
-                        }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            LinearProgressIndicator(
-                              value: result.score,
-                              backgroundColor: Colors.grey.shade300,
-                              valueColor: AlwaysStoppedAnimation<Color>(color),
-                              minHeight: 6,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              result.label,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: color,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                    PasswordStrengthWidget(notifier: passwordStrengthNotifier),
                   ],
                 );
               },
@@ -359,7 +235,6 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                     counterText: '',
                     border: InputBorder.none,
                     filled: true,
-
                     hintText:
                         'Must have 1 uppercase, lowercase, number, and special character',
                     prefixIcon: const Icon(Icons.lock_outline),
@@ -370,151 +245,83 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                       onPressed: toggleRepeatPasswordVisibility,
                     ),
                     errorText: fieldErrors['repeatPassword'],
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(0, 33, 149, 243),
-                        width: 1.0,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: BorderSide(
-                        color: const Color.fromARGB(0, 33, 149, 243),
-                        width: 1.0,
-                      ),
-                    ),
+                    enabledBorder: TInputBorders.enabled,
+                    focusedBorder: TInputBorders.focused,
+                    errorBorder: TInputBorders.error,
+                    focusedErrorBorder: TInputBorders.focusedError,
                   ),
                 );
               },
             ),
             SizedBox(height: tFormHeight - 10),
 
-            Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: 350,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final errors = validateAllFields();
-                    if (mounted) {
-                      setState(() => fieldErrors = errors);
-                    }
-                    _errorTimer?.cancel();
-                    if (errors.isNotEmpty) {
-                      _errorTimer = Timer(const Duration(seconds: 3), () {
-                        if (mounted) {
-                          setState(() => fieldErrors = {});
-                        }
-                      });
-                      return; // stop signup if invalid
-                    }
+            Row(
+              children: [
+                Checkbox(
+                  value: agreeToTerms,
+                  onChanged: (value) {
+                    setState(() => agreeToTerms = value!);
+                  },
+                ),
 
-                    final duplicateMessage = await checkDuplicateUser(
-                      email: emailController.text.trim(),
-                      mobileNumber: mobileNumberController.text.trim(),
-                    );
-
-                    if (duplicateMessage != null) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Duplicate Entry'),
-                          content: Text(duplicateMessage),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('OK'),
+                Expanded(
+                  child: Wrap(
+                    children: [
+                      const Text("I agree to the "),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const TermsAndConditionsPage(),
                             ),
-                          ],
-                        ),
-                      );
-                      return;
-                    }
-
-                    Future<void> signup() async {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (context) =>
-                            const Center(child: CircularProgressIndicator()),
-                      );
-
-                      try {
-                        UserCredential userCredential = await FirebaseAuth
-                            .instance
-                            .createUserWithEmailAndPassword(
-                              email: emailController.text.trim(),
-                              password: passwordController.text.trim(),
-                            );
-
-                        await FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(userCredential.user!.uid)
-                            .set({
-                              'First Name': firstNameController.text.trim(),
-                              'Last Name': lastNameController.text.trim(),
-                              'Username': usernameController.text.trim(),
-                              'Mobile Number': mobileNumberController.text
-                                  .trim(),
-                              'Password': passwordController.text.trim(),
-                              'Email': emailController.text.trim(),
-                              'Created At': Timestamp.now(),
-                            });
-
-                        Navigator.pop(context);
-
-                        await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            title: const Text(
-                              'Registration Successful',
-                              textAlign: TextAlign.center,
-                            ),
-                            content: const Text(
-                              'You have been successfully registered!',
-                              textAlign: TextAlign.center,
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          ),
-                        );
-
-                        setState(() {
-                          firstNameController.clear();
-                          lastNameController.clear();
-                          usernameController.clear();
-                          mobileNumberController.clear();
-                          emailController.clear();
-                          passwordController.clear();
-                          repeatPasswordController.clear();
-                          passwordStrengthNotifier.value = PasswordResult(
-                            PasswordStrength.empty,
-                            0.0,
-                            "",
                           );
-                        });
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Landingpagee(),
+                        },
+                        child: const Text(
+                          "Terms & Conditions",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                            decoration: TextDecoration.underline,
                           ),
-                        );
-                      } catch (e) {
-                        Navigator.pop(context);
+                        ),
+                      ),
+                      const Text(" and "),
 
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const PrivacyPolicyPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Privacy Policy",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: SizedBox(
+                  width: 300,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (!agreeToTerms) {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -522,13 +329,51 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             title: const Text(
-                              'Registration Failed',
+                              'Terms & Conditions Required',
                               textAlign: TextAlign.center,
                             ),
-                            content: Text(
-                              e.toString(),
+                            content: const Text(
+                              'You must agree to the Terms & Conditions before signing up.',
                               textAlign: TextAlign.center,
                             ),
+                            actions: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                        return; // BLOCK SIGNUP
+                      }
+                      final errors = validateAllFields();
+                      if (mounted) {
+                        setState(() => fieldErrors = errors);
+                      }
+                      _errorTimer?.cancel();
+                      if (errors.isNotEmpty) {
+                        _errorTimer = Timer(const Duration(seconds: 3), () {
+                          if (mounted) {
+                            setState(() => fieldErrors = {});
+                          }
+                        });
+                        return; // stop signup if invalid
+                      }
+
+                      final duplicateMessage = await checkDuplicateUser(
+                        email: emailController.text.trim(),
+                        mobileNumber: mobileNumberController.text.trim(),
+                      );
+
+                      if (duplicateMessage != null) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Duplicate Entry'),
+                            content: Text(duplicateMessage),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -537,24 +382,129 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                             ],
                           ),
                         );
+                        return;
                       }
-                    }
 
-                    await signup();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 255, 149, 0),
-                    foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+                      Future<void> signup() async {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) =>
+                              const Center(child: CircularProgressIndicator()),
+                        );
 
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .createUserWithEmailAndPassword(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              );
+
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(userCredential.user!.uid)
+                              .set({
+                                'First Name': firstNameController.text.trim(),
+                                'Last Name': lastNameController.text.trim(),
+                                'Username': usernameController.text.trim(),
+                                'Mobile Number': mobileNumberController.text
+                                    .trim(),
+                                'Password': passwordController.text.trim(),
+                                'Email': emailController.text.trim(),
+                                'Created At': Timestamp.now(),
+                              });
+
+                          Navigator.pop(context);
+
+                          await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              title: const Text(
+                                'Registration Successful',
+                                textAlign: TextAlign.center,
+                              ),
+                              content: const Text(
+                                'You have been successfully registered!',
+                                textAlign: TextAlign.center,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          setState(() {
+                            firstNameController.clear();
+                            lastNameController.clear();
+                            usernameController.clear();
+                            mobileNumberController.clear();
+                            emailController.clear();
+                            passwordController.clear();
+                            repeatPasswordController.clear();
+                            passwordStrengthNotifier.value = PasswordResult(
+                              PasswordStrength.empty,
+                              0.0,
+                              "",
+                            );
+                          });
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Landingpagee(),
+                            ),
+                          );
+                        } catch (e) {
+                          Navigator.pop(context);
+
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              title: const Text(
+                                'Registration Failed',
+                                textAlign: TextAlign.center,
+                              ),
+                              content: Text(
+                                e.toString(),
+                                textAlign: TextAlign.center,
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      }
+
+                      await signup();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 255, 149, 0),
+                      foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                  ),
 
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ),

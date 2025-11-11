@@ -77,7 +77,7 @@ class DesktopLayout {
                           height: DialogController.getImageHeight(context),
                           width: DialogController.getImageWidth(context),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(15),
                             image: DecorationImage(
                               image: AssetImage(image),
                               fit: BoxFit.cover,

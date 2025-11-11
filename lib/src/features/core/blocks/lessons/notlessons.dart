@@ -29,12 +29,17 @@ class _NotlessonsState extends State<Notlessons> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Image.asset('assets/logo/not.png', fit: BoxFit.cover),
         title: Text('NOT GATE LESSONS'),
         actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: Icon(Icons.close),
+          Tooltip(
+            message: 'Home',
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(Icons.home),
+            ),
           ),
+          SizedBox(width: 23),
         ],
       ),
       body: Stack(

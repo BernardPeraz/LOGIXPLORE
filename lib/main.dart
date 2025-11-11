@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart'; // IDINAGDAG
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/firebase_options.dart';
@@ -19,6 +21,10 @@ class AppLoadingController extends GetxController {
 }
 
 Future<void> main() async {
+  void main() {
+    runApp(MyApp());
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -97,9 +103,15 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       transitionDuration: const Duration(milliseconds: 500),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => LoginScreen(),
+        '/profilesettings': (context) => ProfileSettings(),
+      },
       home: FirebaseAuth.instance.currentUser != null
           ? const Dashboard()
           : SplashScreen(),
+
       builder: (context, child) {
         return Stack(
           children: [

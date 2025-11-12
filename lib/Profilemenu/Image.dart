@@ -1,64 +1,53 @@
-import 'dart:io';
+import 'dart:io' show File;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:path/path.dart' as path;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> changeProfilePicture(BuildContext context) async {
   final supabase = Supabase.instance.client;
-  final firebaseUser = FirebaseAuth.instance.currentUser;
   final picker = ImagePicker();
+  final firebaseUser = fb.FirebaseAuth.instance.currentUser;
 
-  if (firebaseUser == null) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Please log in first')));
-    return;
-  }
+  // Pick image from gallery
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  if (pickedFile == null) return;
+
+  final fileName =
+      '${firebaseUser?.uid ?? "guest"}_${DateTime.now().millisecondsSinceEpoch}.jpg';
 
   try {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile == null) return;
-
-    final fileName =
-        '${firebaseUser.uid}_${DateTime.now().millisecondsSinceEpoch}${path.extension(pickedFile.path)}';
-
+    // Upload to Supabase Storage
     if (kIsWeb) {
-      // WEB — read bytes
-      final fileBytes = await pickedFile.readAsBytes();
-      await supabase.storage
-          .from('profile_pics')
-          .uploadBinary(
-            fileName,
-            fileBytes,
-            fileOptions: const FileOptions(upsert: true),
-          );
+      final bytes = await pickedFile.readAsBytes();
+      await supabase.storage.from('avatars').uploadBinary(fileName, bytes);
     } else {
-      // MOBILE — use File()
       final file = File(pickedFile.path);
-      await supabase.storage
-          .from('profile_pics')
-          .upload(fileName, file, fileOptions: const FileOptions(upsert: true));
+      await supabase.storage.from('avatars').upload(fileName, file);
     }
 
-    final publicUrl = supabase.storage
-        .from('profile_pics')
-        .getPublicUrl(fileName);
+    // Get public URL
+    final publicUrl = supabase.storage.from('avatars').getPublicUrl(fileName);
 
-    await supabase.from('profiles').upsert({
-      'id': firebaseUser.uid,
-      'email': firebaseUser.email,
-      'avatar_url': publicUrl,
-    });
+    // Save to Firestore
+    if (firebaseUser != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(firebaseUser.uid)
+          .update({'profileImage': publicUrl});
+    }
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Profile picture updated!')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text(' Profile picture updated successfully!')),
+    );
+
+    print(' Uploaded successfully: $publicUrl');
   } catch (e) {
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    ).showSnackBar(SnackBar(content: Text(' Upload error: $e')));
+    print(' Upload error: $e');
   }
 }

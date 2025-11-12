@@ -11,8 +11,6 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/scree
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/terms/policy.dart';
 import 'dart:async';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/terms/termsnconditions.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/loadingwidgget/loadingscreen.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/loadingscreen.dart';
 
 class SignUpFormWidget extends StatefulWidget {
   const SignUpFormWidget({super.key});
@@ -142,7 +140,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               decoration: InputDecoration(
                 label: const Text("Email"),
                 counterText: '',
-                hintText: "Email",
+                hintText: " @gmail.com | @yahoo.com",
                 border: InputBorder.none,
                 filled: true,
                 prefixIcon: const Icon(Icons.email_outlined),
@@ -168,14 +166,14 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
               inputFormatters: mobileNumberInputFormatters(),
               decoration: InputDecoration(
                 label: const Text("Phone Number"),
-                hintText: '9948536375',
+                hintText: ' 9xxxxxxxxxx',
                 filled: true,
                 border: InputBorder.none,
                 errorText: fieldErrors['mobileNumber'],
                 prefixIcon: const Icon(Icons.phone),
                 prefix: Padding(
                   padding: EdgeInsetsGeometry.only(right: 5.0),
-                  child: Text('+63', style: TextStyle(color: Colors.black)),
+                  child: Text('PH+63', style: TextStyle(color: Colors.black)),
                 ),
                 enabledBorder: TInputBorders.enabled,
                 focusedBorder: TInputBorders.focused,
@@ -460,8 +458,10 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                                 'First Name': firstNameController.text.trim(),
                                 'Last Name': lastNameController.text.trim(),
                                 'Username': usernameController.text.trim(),
-                                'Mobile Number': mobileNumberController.text
-                                    .trim(),
+                                'Mobile Number': normalizeMobileNumber(
+                                  mobileNumberController.text.trim(),
+                                ),
+
                                 'Password': passwordController.text.trim(),
                                 'Email': emailController.text.trim(),
                                 'Created At': Timestamp.now(),
@@ -505,6 +505,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                               0.0,
                               "",
                             );
+                            agreeToTerms = false;
                           });
 
                           Navigator.pushReplacement(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/masterylevel/boxes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 
 class Masterwidget extends StatefulWidget {
@@ -16,7 +17,7 @@ class _MasterwidgetState extends State<Masterwidget> {
       appBar: AppBar(
         leading: Image.asset('assets/logo/logicon.png', height: 9, width: 5),
         title: Text(
-          "PASSWORD SETTINGS",
+          "MASTERY LEVEL",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         elevation: 1,
@@ -44,12 +45,7 @@ class _MasterwidgetState extends State<Masterwidget> {
             width: double.infinity,
             height: double.infinity,
           ),
-          Center(
-            child: Text(
-              'On going proces...',
-              style: TextStyle(fontWeight: FontWeight.w900),
-            ),
-          ),
+          ResponsiveRectangles(),
         ],
       ),
     );

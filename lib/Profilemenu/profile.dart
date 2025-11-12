@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profileresponsive/updateprofile/profilecontroller.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 
 class ProfileMenuBox extends StatelessWidget {
@@ -22,11 +23,8 @@ class ProfileMenuBox extends StatelessWidget {
       );
     }
 
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .snapshots(),
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      stream: UserProfileController.userProfileStream(),
       builder: (context, snapshot) {
         String displayName = 'Loading...';
         String role = 'Student';
@@ -39,7 +37,9 @@ class ProfileMenuBox extends StatelessWidget {
           imageUrl = data['profileImage'];
         }
 
+        //  fixed misplaced code here
         imageUrl ??= user.photoURL;
+        const String defaultAssetImage = 'assets/logo/avatar.png';
 
         if (displayName.isEmpty ||
             displayName == 'Loading...' ||
@@ -47,7 +47,6 @@ class ProfileMenuBox extends StatelessWidget {
           displayName = user.displayName ?? user.email ?? 'No Email Found';
         }
 
-        const String defaultAssetImage = 'assets/logo/avatar.png';
         if (screenWidth < 620) {
           return Row(
             children: [
@@ -58,8 +57,10 @@ class ProfileMenuBox extends StatelessWidget {
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  side: BorderSide(color: Colors.transparent),
-                  shape: const CircleBorder(),
+                  side: const BorderSide(color: Colors.transparent),
+                  shape: const CircleBorder(
+                    side: BorderSide(style: BorderStyle.solid),
+                  ),
                   padding: const EdgeInsets.all(1),
                   backgroundColor: const Color.fromARGB(0, 212, 7, 7),
                   fixedSize: const Size(40, 40),
@@ -94,7 +95,6 @@ class ProfileMenuBox extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: isDark ? Colors.black : Colors.orange,
-
               borderRadius: BorderRadius.circular(8),
               border: Border.all(color: Colors.black, width: 1),
             ),
@@ -108,7 +108,7 @@ class ProfileMenuBox extends StatelessWidget {
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    side: BorderSide(color: Colors.transparent),
+                    side: const BorderSide(color: Colors.transparent),
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(1),
                     backgroundColor: Colors.orange,

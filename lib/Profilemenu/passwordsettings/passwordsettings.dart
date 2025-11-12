@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/Profilemenu/passwordsettings/passwordback/passwordcontrollers.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 
@@ -12,6 +14,11 @@ class Passwordsettings extends StatefulWidget {
 
 class _PasswordsettingsState extends State<Passwordsettings> {
   final ValueNotifier<bool> repeatPasswordVisible = ValueNotifier(false);
+  final currentPassword =
+      ''; // TODO: connect to your current password TextFormField
+  final newPassword = ''; // TODO: connect to new password TextFormField
+  final repeatPassword = '';
+
   bool _passwordVisible = false;
   bool passwordVisible = false;
   Map<String, String?> fieldErrors = {};
@@ -114,6 +121,7 @@ class _PasswordsettingsState extends State<Passwordsettings> {
                           ),
                           builder: (context, value, child) {
                             return TextFormField(
+                              controller: currentPasswordController,
                               obscureText: !_passwordVisible,
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(Icons.fingerprint),
@@ -128,37 +136,10 @@ class _PasswordsettingsState extends State<Passwordsettings> {
                                   ),
                                   onPressed: togglePasswordVisibility,
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  borderSide: BorderSide(
-                                    color: const Color.fromARGB(
-                                      0,
-                                      33,
-                                      149,
-                                      243,
-                                    ),
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  borderSide: BorderSide(
-                                    color: const Color.fromARGB(
-                                      0,
-                                      33,
-                                      149,
-                                      243,
-                                    ),
-                                    width: 1.0,
-                                  ),
-                                ),
+                                enabledBorder: TInputBorders.enabled,
+                                focusedBorder: TInputBorders.focused,
+                                errorBorder: TInputBorders.error,
+                                focusedErrorBorder: TInputBorders.focusedError,
                               ),
                             );
                           },
@@ -173,6 +154,7 @@ class _PasswordsettingsState extends State<Passwordsettings> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 TextFormField(
+                                  controller: newPasswordController,
                                   obscureText: !passwordVisible,
                                   maxLength: 20,
                                   onChanged: (pdw) {
@@ -292,6 +274,7 @@ class _PasswordsettingsState extends State<Passwordsettings> {
                           valueListenable: repeatPasswordVisible,
                           builder: (context, value, child) {
                             return TextFormField(
+                              controller: repeaatPasswordController,
                               obscureText: !value,
                               maxLength: 50,
                               decoration: InputDecoration(
@@ -353,7 +336,18 @@ class _PasswordsettingsState extends State<Passwordsettings> {
                           child: SizedBox(
                             width: 250,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                changePassword(
+                                  context: context,
+                                  currentPassword: currentPasswordController
+                                      .text
+                                      .trim(),
+                                  newPassword: newPasswordController.text
+                                      .trim(),
+                                  repeatPassword: repeaatPasswordController.text
+                                      .trim(),
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color.fromARGB(
                                   255,

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/emailjsservice.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/loadingwidgget/loadingscreen.dart';
 
 class VerificationDialog extends StatefulWidget {
   final String otp; // this is the correct OTP

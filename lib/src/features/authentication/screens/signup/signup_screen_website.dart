@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -212,6 +213,7 @@ Future<bool> login(BuildContext context) async {
       await FirebaseAuth.instance.signInWithPopup(googleProvider);
       return FirebaseAuth.instance.currentUser != null;
     } else {
+      // 1️⃣ Trigger Google Sign-In
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       if (googleUser == null) {
@@ -219,19 +221,67 @@ Future<bool> login(BuildContext context) async {
         return false;
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
+      // 2️⃣ Show loading while checking Firestore
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => const Center(child: CircularProgressIndicator()),
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      return FirebaseAuth.instance.currentUser != null;
+      // ✅ Get email from Google user
+      final email = googleUser.email;
+
+      // 3️⃣ Check Firestore manually if account already exists (simple if–else)
+      final existingUser = await FirebaseFirestore.instance
+          .collection('users')
+          .where('Email', isEqualTo: email)
+          .get();
+
+      if (existingUser.docs.isNotEmpty) {
+        // 🚫 Account already exists (from manual registration)
+        Navigator.pop(context); // close loading dialog
+
+        await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text('Account Already Exists'),
+            content: const Text(
+              'This email is already registered using Email and Password.\n\n'
+              'Please log in manually instead of using Google Sign-In.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+
+        // 👇 Sign out from Google to cancel the login process
+        await GoogleSignIn().signOut();
+
+        return false;
+      } else {
+        // ✅ No duplicate found, continue Google authentication
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        Navigator.pop(context); // close loading dialog
+
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        return FirebaseAuth.instance.currentUser != null;
+      }
     }
   } catch (e) {
     print("Google Sign-In Error: $e");
+
+    if (Navigator.canPop(context)) Navigator.pop(context);
 
     return false;
   }

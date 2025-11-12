@@ -39,8 +39,27 @@ bool _isValidPassword(String pass) {
 }
 
 bool _isValidEmail(String email) =>
-    RegExp(r'^[\w\.-]+@(gmail|yahoo)\.com$').hasMatch(email);
-bool isValidMobileNumber(String value) => RegExp(r'^(\d{10})$').hasMatch(value);
+    RegExp(r'^[\w\.-]+@(gmail|yahoo|)\.com$').hasMatch(email);
+bool isValidMobileNumber(String value) {
+  final cleaned = value.replaceAll(RegExp(r'[^\d+]'), '');
+  return RegExp(r'^(?:\+639|639|09|9)\d{9}$').hasMatch(cleaned);
+}
+
+String normalizeMobileNumber(String value) {
+  final digits = value.replaceAll(RegExp(r'[^\d+]'), '');
+  if (digits.startsWith('+639')) {
+    return digits; // already correct
+  } else if (digits.startsWith('639')) {
+    return '+$digits';
+  } else if (digits.startsWith('09')) {
+    return '+63${digits.substring(1)}';
+  } else if (digits.startsWith('9') && digits.length == 10) {
+    return '+63$digits';
+  } else {
+    //itooooooooooooooooooooooooooooooooooooooooooooooo
+    return ''; // invalid
+  }
+}
 
 bool areFieldsValid({
   required String firstName,
@@ -359,4 +378,64 @@ class TInputBorders {
     borderRadius: BorderRadius.circular(30),
     borderSide: const BorderSide(color: Color.fromARGB(0, 0, 0, 0), width: 1),
   );
+}
+
+// conditions.dart
+
+/// Returns true if input can be a valid Philippine mobile number
+bool isValidPHMobile(String input) {
+  final normalized = _digitsOnly(input);
+  // Accept patterns:
+  // - starts with '9' and has 10 digits (e.g. 9171234567)
+  // - starts with '09' and has 11 digits (e.g. 09171234567)
+  // - starts with '63' and has 12 digits (e.g. 639171234567)
+  // - starts with '639' and has 12 digits (same as above)
+  if (normalized.isEmpty) return false;
+  if (normalized.length == 10 && normalized.startsWith('9')) return true;
+  if (normalized.length == 11 && normalized.startsWith('09')) return true;
+  if (normalized.length == 12 && normalized.startsWith('63')) return true;
+  return false;
+}
+
+/// Normalize arbitrary user input into E.164-like +63 format
+/// Returns normalized string like "+639171234567" on success, otherwise returns null.
+String? normalizeToE164(String input) {
+  final digits = _digitsOnly(input);
+
+  if (digits.length == 10 && digits.startsWith('9')) {
+    // 9171234567 -> +63 9171234567
+    return '+63' + digits;
+  }
+
+  if (digits.length == 11 && digits.startsWith('09')) {
+    // 09171234567 -> drop leading 0 -> 9171234567
+    final last10 = digits.substring(1);
+    return '+63' + last10;
+  }
+
+  if (digits.length == 12 && digits.startsWith('63')) {
+    // 639171234567 -> already country code included
+    return '+$digits';
+  }
+
+  // Optionally: support inputs with leading + (we stripped non-digits so it's handled above)
+  return null; // invalid / cannot normalize
+}
+
+/// Normalize to local format starting with 0: e.g. 09171234567
+/// Returns null if invalid.
+String? normalizeToLocal(String input) {
+  final e164 = normalizeToE164(input);
+  if (e164 == null) return null;
+  // e164 looks like "+639171234567" -> drop "+63" -> "9171234567" -> add "0"
+  final last10 = e164.replaceFirst('+63', '');
+  return '0' + last10;
+}
+
+/// Helper: keep only digits
+String _digitsOnly(String s) {
+  if (s == null) return '';
+  // remove spaces, hyphens, parentheses, pluses etc.
+  final digits = s.replaceAll(RegExp(r'[^0-9]'), '');
+  return digits;
 }

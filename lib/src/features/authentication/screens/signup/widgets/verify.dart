@@ -1,9 +1,14 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/emailjsservice.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/loadingwidgget/loadingscreen.dart';
 
 class VerificationDialog extends StatefulWidget {
   final String otp; // this is the correct OTP
-  const VerificationDialog({super.key, required this.otp});
+  final String email; //  added to send new OTP
+
+  const VerificationDialog({super.key, required this.otp, required this.email});
 
   @override
   State<VerificationDialog> createState() => _VerificationDialogState();
@@ -16,9 +21,43 @@ class _VerificationDialogState extends State<VerificationDialog> {
   );
 
   String? errorMessage;
+  String currentOtp = ""; //  track latest OTP
+  bool isResending = false; //  true while sending new code
+  int resendSeconds = 0; // cooldown timer
+  Timer? resendTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    currentOtp = widget.otp;
+  }
+
+  @override
+  void dispose() {
+    resendTimer?.cancel();
+    super.dispose();
+  }
 
   String getEnteredOtp() {
     return otpControllers.map((c) => c.text).join();
+  }
+
+  //  generate new OTP
+  String generateNewOtp() {
+    final random = Random();
+    return (100000 + random.nextInt(900000)).toString();
+  }
+
+  //  start 1-minute cooldown
+  void startCooldown() {
+    setState(() => resendSeconds = 60);
+    resendTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (resendSeconds == 0) {
+        timer.cancel();
+      } else {
+        setState(() => resendSeconds--);
+      }
+    });
   }
 
   @override
@@ -44,6 +83,16 @@ class _VerificationDialogState extends State<VerificationDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                //  Close button
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: const Icon(Icons.close, color: Colors.grey),
+                    tooltip: "Close",
+                    onPressed: () => Navigator.pop(context, false),
+                  ),
+                ),
+
                 const Text(
                   "Enter Verification Code",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -97,6 +146,10 @@ class _VerificationDialogState extends State<VerificationDialog> {
                                 if (value.isNotEmpty && index < 5) {
                                   FocusScope.of(context).nextFocus();
                                 }
+                                // clear error when user types
+                                if (errorMessage != null) {
+                                  setState(() => errorMessage = null);
+                                }
                               },
                             ),
                           ),
@@ -116,6 +169,7 @@ class _VerificationDialogState extends State<VerificationDialog> {
 
                 const SizedBox(height: 18),
 
+                // Verify button logic
                 ElevatedButton(
                   onPressed: () async {
                     final enteredOtp = getEnteredOtp();
@@ -124,44 +178,24 @@ class _VerificationDialogState extends State<VerificationDialog> {
                       setState(
                         () => errorMessage = "Incomplete verification code.",
                       );
+                      Future.delayed(const Duration(seconds: 2), () {
+                        if (mounted) setState(() => errorMessage = null);
+                      });
                       return;
                     }
 
-                    if (enteredOtp != widget.otp) {
+                    if (enteredOtp != currentOtp) {
                       setState(
                         () => errorMessage = "Incorrect verification code.",
                       );
+                      Future.delayed(const Duration(seconds: 2), () {
+                        if (mounted) setState(() => errorMessage = null);
+                      });
                       return;
                     }
 
                     setState(() => errorMessage = null);
-
-                    await showLoadingBeforeDialog(context);
-
-                    Navigator.pop(context);
-
-                    await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        title: const Text(
-                          'Registration Successful',
-                          textAlign: TextAlign.center,
-                        ),
-                        content: const Text(
-                          'You have been successfully registered!',
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
+                    Navigator.pop(context, true);
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(dialogWidth * 0.4, 40),
@@ -169,7 +203,64 @@ class _VerificationDialogState extends State<VerificationDialog> {
                   child: const Text("Verify"),
                 ),
 
-                TextButton(onPressed: () {}, child: const Text("Resend Code")),
+                // RESEND BUTTON WITH COOLDOWN TIMER
+                TextButton(
+                  onPressed: (isResending || resendSeconds > 0)
+                      ? null
+                      : () async {
+                          setState(() => isResending = true);
+
+                          final newOtp = generateNewOtp();
+
+                          final sent = await EmailJsService.sendOtp(
+                            widget.email.trim(),
+                            newOtp,
+                          );
+
+                          setState(() => isResending = false);
+
+                          if (sent) {
+                            currentOtp = newOtp;
+                            startCooldown();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "A new verification code has been sent.",
+                                  textAlign: TextAlign.center,
+                                ),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Failed to resend code. Try again.",
+                                  textAlign: TextAlign.center,
+                                ),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        },
+                  child: isResending
+                      ? const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 8),
+                            Text("Resending..."),
+                          ],
+                        )
+                      : resendSeconds > 0
+                      ? Text("Resend available in ${resendSeconds}s")
+                      : const Text("Resend Code"),
+                ),
               ],
             ),
           ),

@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/otpgenerate.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/passwordstrengthnotifier.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/emailjsservice.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/verify.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/terms/policy.dart';
 import 'dart:async';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/terms/termsnconditions.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/loadingwidgget/loadingscreen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/loadingscreen.dart';
 
 class SignUpFormWidget extends StatefulWidget {
   const SignUpFormWidget({super.key});
@@ -19,6 +24,10 @@ class SignUpFormWidget extends StatefulWidget {
 bool agreeToTerms = false;
 
 class _SignUpFormWidgetState extends State<SignUpFormWidget> {
+  String generateOtp() {
+    return (100000 + DateTime.now().millisecondsSinceEpoch % 900000).toString();
+  }
+
   String? mobileError;
   Map<String, String?> fieldErrors = {};
   Timer? _errorTimer;
@@ -129,7 +138,7 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
 
             TextFormField(
               controller: emailController,
-              maxLength: 30,
+              maxLength: 50,
               decoration: InputDecoration(
                 label: const Text("Email"),
                 counterText: '',
@@ -384,7 +393,50 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                         );
                         return;
                       }
+                      final otp = OtpUtils.generate6Digit();
+                      final sent = await EmailJsService.sendOtp(
+                        emailController.text.trim(),
+                        otp,
+                      );
 
+                      if (!sent) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Error"),
+                            content: const Text(
+                              "Failed to send verification code. Try again.",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                        return;
+                      }
+
+                      final verified = await showDialog<bool>(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) => VerificationDialog(
+                          otp: otp,
+                          email: emailController.text.trim(),
+                        ),
+                      );
+
+                      if (verified != true) {
+                        return;
+                      }
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) =>
+                            const Center(child: CircularProgressIndicator()),
+                      );
                       Future<void> signup() async {
                         showDialog(
                           context: context,

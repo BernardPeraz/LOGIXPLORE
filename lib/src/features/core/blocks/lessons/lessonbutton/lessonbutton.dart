@@ -6,6 +6,7 @@ class LessonButton extends StatelessWidget {
   final String pdfPath;
   final String lessonTitle;
   final bool isCompleted;
+
   final VoidCallback onPressed;
 
   const LessonButton({
@@ -24,7 +25,7 @@ class LessonButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(169, 1, 86, 255),
+          backgroundColor: const Color.fromARGB(255, 1, 86, 255),
           foregroundColor: const Color.fromARGB(255, 0, 0, 0),
           elevation: 10,
           shape: RoundedRectangleBorder(
@@ -34,10 +35,13 @@ class LessonButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(
-              Icons.arrow_forward_ios_sharp,
-              size: Responsive.getIconSize(context),
-              color: Colors.black,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.picture_as_pdf,
+                size: Responsive.getIconSize(context),
+                color: Colors.black,
+              ),
             ),
             SizedBox(width: Responsive.getPadding(context) / 2),
             Expanded(

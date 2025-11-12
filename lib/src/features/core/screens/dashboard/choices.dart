@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/assessment/exercises/exercises.dart';
+import 'package:studydesign2zzdatabaseplaylist/assessment/exercises/quizzes/quizzes.dart';
+import 'package:studydesign2zzdatabaseplaylist/assessment/whitescreen/whitescreen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 
 class Assessment extends StatelessWidget {
@@ -62,7 +66,9 @@ class Assessment extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => WhiteScreen(nextPage: Exercises()));
+                        },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(
                             color: const Color.fromARGB(255, 0, 0, 0),
@@ -102,7 +108,9 @@ class Assessment extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => WhiteScreen(nextPage: Quizzes()));
+                        },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(
                             color: const Color.fromARGB(255, 0, 0, 0),

@@ -1,6 +1,8 @@
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/lessons_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 
@@ -9,7 +11,7 @@ class Andlessons extends StatefulWidget {
 
   const Andlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, String>> lessons = [];
+  static List<Map<String, dynamic>> lessons = [];
 
   @override
   State<Andlessons> createState() => _AndlessonsState();
@@ -19,10 +21,21 @@ class _AndlessonsState extends State<Andlessons> {
   void _openPdf(String pdfPath, int lessonIndex) {
     html.window.open(pdfPath, '_blank');
 
+    setState(() {
+      Andlessons.lessons[lessonIndex]['progress'] = 1.0;
+    });
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {
       widget.onPdfClicked!(pdfPath);
     }
+  }
+
+  double _calculateOverallProgress() {
+    double total = 0.0;
+    for (var lesson in Andlessons.lessons) {
+      total += (lesson['progress'] as double);
+    }
+    return total / Andlessons.lessons.length;
   }
 
   @override
@@ -53,51 +66,65 @@ class _AndlessonsState extends State<Andlessons> {
             width: double.infinity,
             height: double.infinity,
           ),
-          Padding(
-            padding: EdgeInsets.all(Responsive.getPadding(context)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.getPadding(context)),
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(Responsive.getPadding(context)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
 
-                Text(
-                  'Available Lessons',
-                  style: TextStyle(
-                    fontSize: Responsive.getFontSize(context) + 4,
-                    fontWeight: FontWeight.bold,
+                  Text(
+                    'Available Lessons',
+                    style: TextStyle(
+                      fontSize: Responsive.getFontSize(context) + 4,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 3),
 
-                Text(
-                  'Select a lesson to open the PDF',
-                  style: TextStyle(
-                    fontSize: Responsive.getFontSize(context),
-                    color: Colors.grey[600],
+                  Text(
+                    'Select a lesson to open the PDF',
+                    style: TextStyle(
+                      fontSize: Responsive.getFontSize(context),
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
 
-                SizedBox(height: Responsive.getPadding(context)),
+                  SizedBox(height: Responsive.getPadding(context)),
 
-                // Lessons List
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: Andlessons.lessons.length,
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: Responsive.getPadding(context) / 2),
-                    itemBuilder: (context, index) {
-                      final lesson = Andlessons.lessons[index];
-                      return LessonButton(
-                        pdfPath: lesson['pdfPath']!,
-                        lessonTitle: lesson['title']!,
+                  Column(
+                    children: Andlessons.lessons.map((lesson) {
+                      int index = Andlessons.lessons.indexOf(
+                        lesson,
+                      ); // index finder
 
-                        onPressed: () => _openPdf(lesson['pdfPath']!, index),
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: Responsive.getPadding(context) / 2,
+                        ),
+                        child: LessonButton(
+                          pdfPath: lesson['pdfPath'],
+                          lessonTitle: lesson['title'],
+                          onPressed: () => _openPdf(lesson['pdfPath'], index),
+                        ),
                       );
-                    },
+                    }).toList(),
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 60),
+
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: DialogController.getButtonWidth(context),
+                      child: TaskButton(progress: _calculateOverallProgress()),
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
           ),
         ],

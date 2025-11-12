@@ -1,6 +1,8 @@
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/lessons_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 
@@ -9,16 +11,18 @@ class Xnorlessons extends StatefulWidget {
 
   const Xnorlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, String>> lessons = [
+  static List<Map<String, dynamic>> lessons = [
     {
       'pdfPath':
           'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XNORGatelessons/xnorgatelesson1.pdf',
       'title': 'XNOR GATE 1',
+      'progress': 0.0,
     },
     {
       'pdfPath':
           'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XNORGatelessons/xnorgatelesson2..pdf',
       'title': 'XNOR GATE 2',
+      'progress': 0.0,
     },
   ];
 
@@ -29,11 +33,22 @@ class Xnorlessons extends StatefulWidget {
 class _XnorlessonsState extends State<Xnorlessons> {
   void _openPdf(String pdfPath, int lessonIndex) {
     html.window.open(pdfPath, '_blank');
+    setState(() {
+      Xnorlessons.lessons[lessonIndex]['progress'] = 1.0;
+    });
 
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {
       widget.onPdfClicked!(pdfPath);
     }
+  }
+
+  double _calculateOverallProgress() {
+    double total = 0.0;
+    for (var lesson in Xnorlessons.lessons) {
+      total += (lesson['progress'] as double);
+    }
+    return total / Xnorlessons.lessons.length;
   }
 
   @override
@@ -63,49 +78,66 @@ class _XnorlessonsState extends State<Xnorlessons> {
             width: double.infinity,
             height: double.infinity,
           ),
-          Padding(
-            padding: EdgeInsets.all(Responsive.getPadding(context)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: Responsive.getPadding(context)),
 
-                Text(
-                  'Available Lessons',
-                  style: TextStyle(
-                    fontSize: Responsive.getFontSize(context) + 4,
-                    fontWeight: FontWeight.bold,
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(Responsive.getPadding(context)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+
+                  Text(
+                    'Available Lessons',
+                    style: TextStyle(
+                      fontSize: Responsive.getFontSize(context) + 4,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Select a lesson to open the PDF',
-                  style: TextStyle(
-                    fontSize: Responsive.getFontSize(context),
-                    color: Colors.grey[600],
+                  const SizedBox(height: 3),
+
+                  Text(
+                    'Select a lesson to open the PDF',
+                    style: TextStyle(
+                      fontSize: Responsive.getFontSize(context),
+                      color: Colors.grey[600],
+                    ),
                   ),
-                ),
 
-                SizedBox(height: Responsive.getPadding(context)),
+                  SizedBox(height: Responsive.getPadding(context)),
 
-                // Lessons List
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: Xnorlessons.lessons.length,
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: Responsive.getPadding(context) / 2),
-                    itemBuilder: (context, index) {
-                      final lesson = Xnorlessons.lessons[index];
-                      return LessonButton(
-                        pdfPath: lesson['pdfPath']!,
-                        lessonTitle: lesson['title']!,
+                  Column(
+                    children: Xnorlessons.lessons.map((lesson) {
+                      int index = Xnorlessons.lessons.indexOf(
+                        lesson,
+                      ); // index finder
 
-                        onPressed: () => _openPdf(lesson['pdfPath']!, index),
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: Responsive.getPadding(context) / 2,
+                        ),
+                        child: LessonButton(
+                          pdfPath: lesson['pdfPath'],
+                          lessonTitle: lesson['title'],
+                          onPressed: () => _openPdf(lesson['pdfPath'], index),
+                        ),
                       );
-                    },
+                    }).toList(),
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 60),
+
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SizedBox(
+                      width: DialogController.getButtonWidth(context),
+                      child: TaskButton(progress: _calculateOverallProgress()),
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
           ),
         ],

@@ -11,7 +11,14 @@ class Andlessons extends StatefulWidget {
 
   const Andlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, dynamic>> lessons = [];
+  static List<Map<String, dynamic>> lessons = [
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ANDGatelessons/ANDGatelesson.pdf',
+      'title': 'AND GATE 1',
+      'progress': 0.0,
+    },
+  ];
 
   @override
   State<Andlessons> createState() => _AndlessonsState();

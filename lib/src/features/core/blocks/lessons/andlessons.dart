@@ -122,7 +122,7 @@ class _AndlessonsState extends State<Andlessons> {
                   const SizedBox(height: 60),
 
                   Align(
-                    alignment: Alignment.center,
+                    alignment: Alignment.bottomRight,
                     child: SizedBox(
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(progress: _calculateOverallProgress()),

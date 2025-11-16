@@ -43,7 +43,7 @@ class _BuildBlockState extends State<BuildBlock> {
   bool _hasBeenCompleted = false;
   final Set<String> _completedPdfs = {};
 
-  // 🔥 FIX: LOAD PROGRESS FROM FIRESTORE PER GATE
+  //  FIX: LOAD PROGRESS FROM FIRESTORE PER GATE
   Future<void> _loadProgressFromFirestore() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
@@ -138,7 +138,7 @@ class _BuildBlockState extends State<BuildBlock> {
 
   bool get isTaskCompleted => _progress == 1.0;
 
-  // 🔥 FIXED — Save each lesson completion
+  // FIXED — Save each lesson completion
   void _onPdfClicked(String pdfPath) {
     setState(() {
       if (!_completedPdfs.contains(pdfPath)) {
@@ -246,7 +246,7 @@ class _BuildBlockState extends State<BuildBlock> {
       'NOR': Norlessons(onPdfClicked: _onPdfClicked),
       'NOT GATE': Notlessons(onPdfClicked: _onPdfClicked),
       'NOT': Notlessons(onPdfClicked: _onPdfClicked),
-      'XOR GATE': Xorlessons(onPdfClicked: _onPdfClicked),
+      'XOR GATES': Xorlessons(onPdfClicked: _onPdfClicked),
       'XOR': Xorlessons(onPdfClicked: _onPdfClicked),
       'XNOR GATE': Xnorlessons(onPdfClicked: _onPdfClicked),
       'XNOR': Xnorlessons(onPdfClicked: _onPdfClicked),

@@ -62,7 +62,7 @@ class ProfileMenuBox extends StatelessWidget {
                     side: BorderSide(style: BorderStyle.solid),
                   ),
                   padding: const EdgeInsets.all(1),
-                  backgroundColor: const Color.fromARGB(0, 212, 7, 7),
+                  backgroundColor: const Color.fromARGB(0, 158, 158, 158),
                   fixedSize: const Size(40, 40),
                 ),
                 child: ClipOval(
@@ -111,28 +111,28 @@ class ProfileMenuBox extends StatelessWidget {
                     side: const BorderSide(color: Colors.transparent),
                     shape: const CircleBorder(),
                     padding: const EdgeInsets.all(1),
-                    backgroundColor: Colors.orange,
-                    fixedSize: const Size(40, 40),
+                    backgroundColor: const Color.fromARGB(0, 255, 153, 0),
+                    fixedSize: const Size(50, 50),
                   ),
                   child: ClipOval(
                     child: imageUrl != null && imageUrl.isNotEmpty
                         ? Image.network(
                             imageUrl,
-                            width: 40,
-                            height: 40,
+                            width: 45,
+                            height: 50,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) =>
                                 Image.asset(
                                   defaultAssetImage,
-                                  width: 40,
-                                  height: 40,
+                                  width: 45,
+                                  height: 50,
                                   fit: BoxFit.cover,
                                 ),
                           )
                         : Image.asset(
                             defaultAssetImage,
-                            width: 40,
-                            height: 40,
+                            width: 45,
+                            height: 50,
                             fit: BoxFit.cover,
                           ),
                   ),

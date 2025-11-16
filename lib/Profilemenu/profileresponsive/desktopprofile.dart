@@ -59,12 +59,14 @@ class DesktopProfile extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: const Color.fromARGB(
-                          0,
-                          212,
-                          7,
-                          7,
+                          255,
+                          255,
+                          255,
+                          255,
                         ), // transparent background
-                        border: Border.all(color: Colors.transparent),
+                        border: Border.all(
+                          color: const Color.fromARGB(0, 211, 15, 15),
+                        ),
                       ),
                       child: ClipOval(
                         child:
@@ -95,13 +97,15 @@ class DesktopProfile extends StatelessWidget {
                                   //  Show the user's profile picture
                                   return Image.network(
                                     imageUrl,
-                                    width: 100,
-                                    height: 100,
+                                    width: 103,
+                                    height: 105,
                                     fit: BoxFit.cover,
+
                                     errorBuilder:
                                         (context, error, stackTrace) =>
                                             Image.asset(
                                               'assets/logo/avatar.png',
+
                                               fit: BoxFit.cover,
                                             ),
                                   );
@@ -109,8 +113,9 @@ class DesktopProfile extends StatelessWidget {
                                   //  Default avatar if no image found
                                   return Image.asset(
                                     'assets/logo/avatar.png',
-                                    width: 40,
-                                    height: 40,
+
+                                    width: 103,
+                                    height: 105,
                                     fit: BoxFit.cover,
                                   );
                                 }

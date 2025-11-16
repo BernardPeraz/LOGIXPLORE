@@ -220,12 +220,51 @@ class _DashboardState extends State<Dashboard> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 17,
-                backgroundImage: user.photoURL != null
-                    ? NetworkImage(user.photoURL!)
-                    : const AssetImage('assets/logo/avatar.png')
-                          as ImageProvider,
+              ClipOval(
+                child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(color: Colors.white),
+                      );
+                    }
+
+                    String? imageUrl;
+                    if (snapshot.hasData && snapshot.data!.exists) {
+                      imageUrl = snapshot.data!.data()?['profileImage'];
+                    }
+
+                    if (imageUrl != null && imageUrl.isNotEmpty) {
+                      //  Show the user's profile picture
+                      return Image.network(
+                        imageUrl,
+                        width: 38,
+                        height: 40,
+                        fit: BoxFit.cover,
+
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                              'assets/logo/avatar.png',
+
+                              fit: BoxFit.cover,
+                            ),
+                      );
+                    } else {
+                      //  Default avatar if no image found
+                      return Image.asset(
+                        'assets/logo/avatar.png',
+
+                        width: 40,
+                        height: 40,
+                        fit: BoxFit.cover,
+                      );
+                    }
+                  },
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(

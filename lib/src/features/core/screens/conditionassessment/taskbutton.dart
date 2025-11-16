@@ -4,7 +4,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/choices.dart';
 
 class TaskButton extends StatefulWidget {
-  final double progress; // ADD THIS: parameter para sa progress
+  final double progress; //  parameter para sa progress
 
   const TaskButton({
     super.key,

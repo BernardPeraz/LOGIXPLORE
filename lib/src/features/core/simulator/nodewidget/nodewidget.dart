@@ -85,6 +85,16 @@ class NodeWidget extends StatelessWidget {
         return Colors.green.shade100;
       case 'NOT':
         return Colors.purple.shade100;
+      case 'NAND':
+        return Colors.red.shade100;
+      case 'NOR':
+        return Colors.teal.shade100;
+      case 'XOR':
+        return Colors.yellow.shade100;
+      case 'XNOR':
+        return Colors.pink.shade100;
+      case 'BUFFER':
+        return Colors.cyan.shade100;
       default:
         return Colors.grey.shade200;
     }

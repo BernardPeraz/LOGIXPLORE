@@ -31,13 +31,11 @@ class _LoginFormState extends State<LoginForm> {
     final input = emailOrNumberController.text.trim();
     final password = passwordController.text.trim();
 
-    // Reset errors
     setState(() {
       _emailError = null;
       _passwordError = null;
     });
 
-    // Validation for empty fields
     if (input.isEmpty || password.isEmpty) {
       setState(() {
         if (input.isEmpty) {
@@ -46,7 +44,6 @@ class _LoginFormState extends State<LoginForm> {
         if (password.isEmpty) _passwordError = "Please enter your password.";
       });
 
-      // Auto-remove error after 3 seconds
       Future.delayed(const Duration(seconds: 3), () {
         setState(() {
           _emailError = null;
@@ -88,6 +85,31 @@ class _LoginFormState extends State<LoginForm> {
 
       await _auth.signInWithEmailAndPassword(email: email!, password: password);
 
+      //BLOCK ADMIN FROM SIGNING IN HERE
+      final uid = _auth.currentUser!.uid;
+      final adminDoc = await FirebaseFirestore.instance
+          .collection('admin')
+          .doc(uid)
+          .get();
+
+      if (adminDoc.exists) {
+        // This is an admin account → block login
+        setState(() {
+          _isLoading = false;
+          _emailError = "Admin accounts cannot sign in here.";
+        });
+
+        Future.delayed(const Duration(seconds: 3), () {
+          if (mounted) {
+            setState(() {
+              _emailError = null;
+            });
+          }
+        });
+
+        return; // ← STOP LOGIN, DO NOT CONTINUE
+      }
+
       // If success go to dashboard
       setState(() {
         _isLoading = false;
@@ -110,7 +132,6 @@ class _LoginFormState extends State<LoginForm> {
         }
       });
 
-      // Auto-hide errors after 3 seconds
       Future.delayed(const Duration(seconds: 3), () {
         if (mounted) {
           setState(() {
@@ -176,7 +197,6 @@ class _LoginFormState extends State<LoginForm> {
                     labelText: "Password",
                     hintText: "Password",
                     filled: true,
-
                     suffixIcon: IconButton(
                       icon: Icon(
                         _passwordVisible
@@ -185,8 +205,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       onPressed: () {
                         setState(() {
-                          _passwordVisible =
-                              !_passwordVisible; //  toggle visibility
+                          _passwordVisible = !_passwordVisible;
                         });
                       },
                     ),
@@ -229,7 +248,6 @@ class _LoginFormState extends State<LoginForm> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 255, 149, 0),
                     foregroundColor: const Color.fromARGB(255, 0, 0, 0),
-
                     elevation: 1,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -237,7 +255,6 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                   onPressed: _isLoading ? null : _login,
-
                   child: _isLoading
                       ? const SizedBox(
                           height: 20,

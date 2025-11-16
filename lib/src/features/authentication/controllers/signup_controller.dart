@@ -404,13 +404,13 @@ String? normalizeToE164(String input) {
 
   if (digits.length == 10 && digits.startsWith('9')) {
     // 9171234567 -> +63 9171234567
-    return '+63' + digits;
+    return '+63$digits';
   }
 
   if (digits.length == 11 && digits.startsWith('09')) {
     // 09171234567 -> drop leading 0 -> 9171234567
     final last10 = digits.substring(1);
-    return '+63' + last10;
+    return '+63$last10';
   }
 
   if (digits.length == 12 && digits.startsWith('63')) {
@@ -429,13 +429,11 @@ String? normalizeToLocal(String input) {
   if (e164 == null) return null;
   // e164 looks like "+639171234567" -> drop "+63" -> "9171234567" -> add "0"
   final last10 = e164.replaceFirst('+63', '');
-  return '0' + last10;
+  return '0$last10';
 }
 
 /// Helper: keep only digits
 String _digitsOnly(String s) {
-  if (s == null) return '';
-  // remove spaces, hyphens, parentheses, pluses etc.
   final digits = s.replaceAll(RegExp(r'[^0-9]'), '');
   return digits;
 }

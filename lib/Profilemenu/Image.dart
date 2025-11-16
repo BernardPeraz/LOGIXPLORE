@@ -38,16 +38,5 @@ Future<void> changeProfilePicture(BuildContext context) async {
           .doc(firebaseUser.uid)
           .update({'profileImage': publicUrl});
     }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text(' Profile picture updated successfully!')),
-    );
-
-    print(' Uploaded successfully: $publicUrl');
-  } catch (e) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(' Upload error: $e')));
-    print(' Upload error: $e');
-  }
+  } catch (e) {}
 }

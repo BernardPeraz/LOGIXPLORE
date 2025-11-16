@@ -15,8 +15,8 @@ class _WhiteScreenState extends State<WhiteScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       //LogicEditorPage());
-      //LogicSimApp()
-      Get.off(() => LogicEditorPage());
+      //LogicSimp()
+      Get.off(() => LogicSimApp());
     });
   }
 

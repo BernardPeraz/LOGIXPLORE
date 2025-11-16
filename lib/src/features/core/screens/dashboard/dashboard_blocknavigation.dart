@@ -1,4 +1,6 @@
 // buildBlock.dart
+
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/introtopics.dart';
@@ -13,6 +15,9 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboa
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/deslayout.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/moblayout.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/andlessons.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BuildBlock extends StatefulWidget {
   const BuildBlock({
@@ -38,86 +43,102 @@ class _BuildBlockState extends State<BuildBlock> {
   bool _hasBeenCompleted = false;
   final Set<String> _completedPdfs = {};
 
+  // 🔥 FIX: LOAD PROGRESS FROM FIRESTORE PER GATE
+  Future<void> _loadProgressFromFirestore() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('lessons_progress')
+          .doc(widget.text.toUpperCase())
+          .get();
+
+      if (!doc.exists) return;
+
+      final data = doc.data();
+      if (data == null) return;
+
+      setState(() {
+        _progress = (data['progress'] ?? 0.0).toDouble();
+        _hasBeenCompleted = data['completed'] ?? false;
+
+        if (data['completed_pdfs'] != null) {
+          _completedPdfs.addAll(List<String>.from(data['completed_pdfs']));
+        }
+      });
+    } catch (e) {
+      print("Load progress error: $e");
+    }
+  }
+
+  //
+  Future<void> _saveProgressToFirestore() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('lessons_progress')
+          .doc(widget.text.toUpperCase())
+          .set({
+            'progress': _progress,
+            'completed': _hasBeenCompleted,
+            'completed_pdfs': _completedPdfs.toList(),
+          }, SetOptions(merge: true));
+    } catch (e) {
+      print("Progress save error: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProgressFromFirestore();
+  }
+
   int _getTotalPagesForBlock(String blockName) {
     switch (blockName.toUpperCase()) {
       case 'AND GATE':
       case 'AND':
         return Andlessons.lessons.length;
-
       case 'NOT AND':
       case 'NAND':
         return Nandlessons.lessons.length;
-
       case 'OR GATE':
       case 'OR':
         return Orlessons.lessons.length;
-
       case 'NOT OR GATE':
       case 'NOR':
         return Norlessons.lessons.length;
-
       case 'NOT GATE':
       case 'NOT':
         return Notlessons.lessons.length;
-
       case 'EXCLUSIVE OR GATE':
       case 'XOR':
         return Xorlessons.lessons.length;
-
       case 'EXCLUSIVE NOR GATE':
       case 'XNOR':
         return Xnorlessons.lessons.length;
-
       case 'BUFFER GATE':
       case 'BUFFER':
         return Bufferlessons.lessons.length;
-
       default:
         return 1;
     }
   }
 
   int _getTotalLessonsForBlock(String blockName) {
-    switch (blockName.toUpperCase()) {
-      case 'AND GATE':
-      case 'AND':
-        return Andlessons.lessons.length;
-
-      case 'NOT AND':
-      case 'NAND':
-        return Nandlessons.lessons.length;
-
-      case 'OR GATE':
-      case 'OR':
-        return Orlessons.lessons.length;
-
-      case 'NOT OR GATE':
-      case 'NOR':
-        return Norlessons.lessons.length;
-
-      case 'NOT GATE':
-      case 'NOT':
-        return Notlessons.lessons.length;
-
-      case 'EXCLUSIVE OR GATE':
-      case 'XOR':
-        return Xorlessons.lessons.length;
-
-      case 'EXCLUSIVE NOR GATE':
-      case 'XNOR':
-        return Xnorlessons.lessons.length;
-
-      case 'BUFFER GATE':
-      case 'BUFFER':
-        return Bufferlessons.lessons.length;
-
-      default:
-        return 0;
-    }
+    return _getTotalPagesForBlock(blockName);
   }
 
   bool get isTaskCompleted => _progress == 1.0;
 
+  // 🔥 FIXED — Save each lesson completion
   void _onPdfClicked(String pdfPath) {
     setState(() {
       if (!_completedPdfs.contains(pdfPath)) {
@@ -126,8 +147,10 @@ class _BuildBlockState extends State<BuildBlock> {
         int totalLessons = _getTotalLessonsForBlock(widget.text);
         _progress = _completedPdfs.length / totalLessons;
 
-        if (_progress > 1.0) _progress = 1.0;
+        if (_progress >= 1.0) _progress = 1.0;
         if (_progress == 1.0) _hasBeenCompleted = true;
+
+        _saveProgressToFirestore();
 
         print('Progress updated: ${(_progress * 100).toStringAsFixed(0)}%');
         print('Completed PDFs: $_completedPdfs');
@@ -139,7 +162,10 @@ class _BuildBlockState extends State<BuildBlock> {
     setState(() {
       int totalPages = _getTotalLessonsForBlock(widget.text);
       _progress = pagesCompleted / totalPages;
+
       if (_progress == 1.0) _hasBeenCompleted = true;
+
+      _saveProgressToFirestore();
     });
   }
 
@@ -228,7 +254,6 @@ class _BuildBlockState extends State<BuildBlock> {
       'BUFFER': Bufferlessons(onPdfClicked: _onPdfClicked),
     };
 
-    // Kunin page base sa text
     final Widget? selectedPage = lessonPages[widget.text.toUpperCase().trim()];
 
     if (selectedPage != null) {
@@ -237,8 +262,7 @@ class _BuildBlockState extends State<BuildBlock> {
         MaterialPageRoute(builder: (context) => selectedPage),
       ).then((result) {
         if (result != null && result is int) {
-          int pagesCompleted = result;
-          updateProgress(pagesCompleted);
+          updateProgress(result);
         } else if (result == true && !_hasBeenCompleted) {
           int totalPages = _getTotalPagesForBlock(widget.text);
           if (totalPages == 1) {
@@ -246,6 +270,7 @@ class _BuildBlockState extends State<BuildBlock> {
               _progress = 1.0;
               _hasBeenCompleted = true;
             });
+            _saveProgressToFirestore();
           }
         }
       });
@@ -265,9 +290,7 @@ class _BuildBlockState extends State<BuildBlock> {
       image: widget.image,
       text: widget.text,
       progress: _progress,
-      onButtonPressed: () {
-        _showOptionsDialog(context);
-      },
+      onButtonPressed: () => _showOptionsDialog(context),
     );
   }
 }

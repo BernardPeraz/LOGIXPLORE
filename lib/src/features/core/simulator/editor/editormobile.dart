@@ -137,15 +137,18 @@ class EditorModel extends ChangeNotifier {
   }
 
   PortRef? _computeGateOutput(Node gate) {
-    // gather input values by input port ordering
+    // Gather input values by input port ordering
     final inputs = gate.ports.values
         .where((p) => p.type == PortType.input)
         .toList();
+
     final Map<String, bool> inValues = {};
     for (final p in inputs) {
       inValues[p.id] = p.value;
     }
+
     bool outVal = false;
+
     switch (gate.kind) {
       case 'AND':
         outVal = inValues.values.fold(true, (a, b) => a && b);
@@ -154,44 +157,52 @@ class EditorModel extends ChangeNotifier {
         outVal = inValues.values.fold(false, (a, b) => a || b);
         break;
       case 'NOT':
-        // assume single input 'in'
         outVal = !(inValues.values.isNotEmpty ? inValues.values.first : false);
         break;
+      case 'NAND':
+        outVal = !(inValues.values.fold(true, (a, b) => a && b));
+        break;
+      case 'NOR':
+        outVal = !(inValues.values.fold(false, (a, b) => a || b));
+        break;
+      case 'XOR':
+        outVal = inValues.values.fold(false, (a, b) => a ^ b);
+        break;
+      case 'XNOR':
+        outVal = !(inValues.values.fold(false, (a, b) => a ^ b));
+        break;
+      case 'BUFFER':
+        outVal = inValues.values.isNotEmpty ? inValues.values.first : false;
+        break;
       case 'RES':
-        // assume single input 'in'
         outVal = !(inValues.values.isNotEmpty ? inValues.values.first : false);
         break;
       default:
         outVal = false;
     }
-    // apply to output port
+
+    // Apply to output port
     final outPort = gate.ports.values.firstWhere(
       (p) => p.type == PortType.output,
       orElse: () =>
           Port(id: 'out', type: PortType.output, localOffset: Offset.zero),
     );
+
     if (outPort.value != outVal) {
       outPort.value = outVal;
 
       // ======================================================
-
-      // 1. Collect input patterns
+      // Collect input patterns
       List<List<int>> inputPatterns = [];
-      for (final p in inputs) {
-        final srcNode = nodes[p.id == '' ? '' : p.id];
-      }
 
-      // FIX: Actually gather input patterns from source nodes
-      inputPatterns.clear();
       for (final p in inputs) {
-        // find the wire going into this port
         final incomingWire = wires.values.firstWhere(
           (w) => w.to.nodeId == gate.id && w.to.portId == p.id,
           orElse: () => null as Wire,
         );
 
         final inputNode = nodes[incomingWire.from.nodeId];
-        inputPatterns.add(inputNode!.truthvalue);
+        if (inputNode != null) inputPatterns.add(inputNode.truthvalue);
       }
 
       // Guard: No inputs → output pattern = empty
@@ -199,7 +210,6 @@ class EditorModel extends ChangeNotifier {
         gate.truthvalue = [];
       } else {
         int len = inputPatterns[0].length;
-
         List<int> outPattern = List.filled(len, 0);
 
         for (int i = 0; i < len; i++) {
@@ -213,6 +223,23 @@ class EditorModel extends ChangeNotifier {
             case 'NOT':
               outPattern[i] = inputPatterns[0][i] == 1 ? 0 : 1;
               break;
+            case 'NAND':
+              outPattern[i] = inputPatterns.every((p) => p[i] == 1) ? 0 : 1;
+              break;
+            case 'NOR':
+              outPattern[i] = inputPatterns.any((p) => p[i] == 1) ? 0 : 1;
+              break;
+            case 'XOR':
+              int sum = inputPatterns.fold(0, (a, b) => a + b[i]);
+              outPattern[i] = sum % 2 == 1 ? 1 : 0;
+              break;
+            case 'XNOR':
+              int sum = inputPatterns.fold(0, (a, b) => a + b[i]);
+              outPattern[i] = sum % 2 == 0 ? 1 : 0;
+              break;
+            case 'BUFFER':
+              outPattern[i] = inputPatterns[0][i];
+              break;
             case 'RES':
               outPattern[i] = inputPatterns[0][i] == 1 ? 1 : 0;
               break;
@@ -223,7 +250,6 @@ class EditorModel extends ChangeNotifier {
       }
 
       // ======================================================
-
       return PortRef(gate.id, outPort.id, PortType.output);
     }
 

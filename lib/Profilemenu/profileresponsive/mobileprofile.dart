@@ -58,7 +58,7 @@ class MobileProfile extends StatelessWidget {
                       padding: const EdgeInsets.all(1),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color.fromARGB(0, 212, 7, 7),
+                        color: const Color.fromARGB(253, 255, 255, 255),
                         border: Border.all(color: Colors.transparent),
                       ),
                       child: ClipOval(

@@ -56,7 +56,7 @@ class DynamicQuizUI extends StatelessWidget {
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

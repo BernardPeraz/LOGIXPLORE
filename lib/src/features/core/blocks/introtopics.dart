@@ -34,6 +34,7 @@ The NOT gate (also known as an Inverter) is the most basic digital logic gate, w
     },
     'XOR': {
       'title': 'XOR GATES',
+
       'content': '''
 The XOR gate (Exclusive-OR) is a basic digital logic gate that produces a HIGH (1) signal only when both inputs are unequal. In the case of a two-input gate, the output is 1 when one input is equal to 1 and the other is equal to 0, while the output is 0 when both inputs are equal (both 0 or both 1). The XOR gate is very important to digital systems and used in applications such as binary addition, where it provides the sum bit, and in error detection, where it can be used as an inequality checking tool or parity check. 
 ''',

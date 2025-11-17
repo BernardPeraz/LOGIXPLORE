@@ -5,6 +5,8 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Norlessons extends StatefulWidget {
   final Function(String pdfPath)? onPdfClicked;
@@ -31,12 +33,49 @@ class Norlessons extends StatefulWidget {
 }
 
 class _NorlessonsState extends State<Norlessons> {
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedProgress();
+  }
+
+  void _loadSavedProgress() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('lessons_progress')
+        .doc('NOR')
+        .get();
+
+    if (doc.exists && doc.data()!.containsKey('progress')) {
+      double savedProgress = doc.data()!['progress'] as double;
+
+      setState(() {
+        for (var lesson in Norlessons.lessons) {
+          lesson['progress'] = savedProgress;
+        }
+      });
+    }
+  }
+
   void _openPdf(String pdfPath, int lessonIndex) {
     html.window.open(pdfPath, '_blank');
 
     setState(() {
       Norlessons.lessons[lessonIndex]['progress'] = 1.0;
     });
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('lessons_progress')
+          .doc('NOR')
+          .set({'progress': 1.0, 'updatedAt': DateTime.now()});
+    }
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {
       widget.onPdfClicked!(pdfPath);

@@ -3,10 +3,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/Image.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profileresponsive/updateprofile/usersprofile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 
-class DesktopProfile extends StatelessWidget {
+class DesktopProfile extends StatefulWidget {
   const DesktopProfile({super.key});
+
+  @override
+  State<DesktopProfile> createState() => _DesktopProfileState();
+}
+
+class _DesktopProfileState extends State<DesktopProfile> {
+  @override
+  void initState() {
+    super.initState();
+    _loadUserEmail();
+  }
+
+  void _loadUserEmail() {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      emaiilController.text = user.email ?? "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

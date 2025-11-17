@@ -17,10 +17,7 @@ class _AdminloginState extends State<Adminlogin> {
   final TextEditingController passwordController = TextEditingController();
 
   bool _isLoading = false;
-
-  // ----------------------------------------------------------------
-  // 🔥 FIXED ADMIN LOGIN FUNCTION — NO DELETIONS, ONLY FIXES
-  // ----------------------------------------------------------------
+  // FIXED ADMIN LOGIN FUNCTION — NO DELETIONS, ONLY FIXES
   Future<void> _adminLogin() async {
     final String email = emailController.text.trim();
     final String password = passwordController.text.trim();
@@ -33,7 +30,7 @@ class _AdminloginState extends State<Adminlogin> {
     setState(() => _isLoading = true);
 
     try {
-      // 🔥 FIXED: Correct comparison — MUST use .text, not controller object
+      // FIXED: Correct comparison — MUST use .text, not controller object
       final adminSnapshot = await FirebaseFirestore.instance
           .collection('admin')
           .where('Email', isEqualTo: email) // ← FIXED HERE
@@ -64,9 +61,7 @@ class _AdminloginState extends State<Adminlogin> {
     }
   }
 
-  // ----------------------------------------------------------------
-  // 🔥 ERROR SNACKBAR
-  // ----------------------------------------------------------------
+  // ERROR SNACKBAR
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

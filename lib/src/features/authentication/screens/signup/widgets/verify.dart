@@ -100,7 +100,7 @@ class _VerificationDialogState extends State<VerificationDialog> {
                 const SizedBox(height: 10),
 
                 const Text(
-                  "Please enter the 6-digit code sent to your email/phone.",
+                  "Please enter the 6-digit code sent to your email.",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 13),
                 ),

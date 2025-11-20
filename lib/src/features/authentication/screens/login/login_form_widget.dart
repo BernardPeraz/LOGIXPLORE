@@ -3,7 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/forget_password/forget_password_options/forget_password_model_bottom_sheet.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/forget_password/forget_password_mail/forget_password_mail.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -229,7 +229,8 @@ class _LoginFormState extends State<LoginForm> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  ForgetPasswordScreen.buildShowModalBottomSheet(context);
+                  Navigator.pop(context);
+                  Get.to(() => ForgetPasswordMailScreen());
                 },
                 child: const Text(
                   "Forgot Password?",

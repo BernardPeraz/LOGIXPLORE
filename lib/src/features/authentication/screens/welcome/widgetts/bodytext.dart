@@ -51,11 +51,11 @@ Widget BodyText(double width, bool isDesktop) {
                     shadows: [
                       Shadow(
                         offset: Offset(4, 0),
-                        blurRadius: 16,
+                        blurRadius: 100,
                         color: Colors.black.withValues(alpha: 100),
                       ),
                     ],
-                    fontSize: isDesktop ? width * 0.03 : width * 0.04,
+                    fontSize: isDesktop ? width * 0.03 : width * 0.07,
                     fontFamily: 'Headline',
                     fontWeight: FontWeight.w700,
                     color: const Color.fromARGB(255, 255, 149, 0),

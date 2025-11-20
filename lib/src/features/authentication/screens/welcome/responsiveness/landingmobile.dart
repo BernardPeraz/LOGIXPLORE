@@ -335,7 +335,7 @@ class _LandingmobileState extends State<Landingmobile> {
                                 0,
                                 20,
                                 0,
-                                ' Learn digital electronics with interactive logic gates',
+                                'Understand logic gates through interaction',
                                 false,
                               ),
                               const SizedBox(height: 10),

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/Image.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profileresponsive/updateprofile/usersprofile.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 
 class DesktopProfile extends StatefulWidget {

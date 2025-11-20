@@ -13,8 +13,7 @@ class Passwordsettings extends StatefulWidget {
 
 class _PasswordsettingsState extends State<Passwordsettings> {
   final ValueNotifier<bool> repeatPasswordVisible = ValueNotifier(false);
-  final currentPassword =
-      ''; // TODO: connect to your current password TextFormField
+  final currentPassword = ''; // connect to your current password TextFormField
   final newPassword = ''; // TODO: connect to new password TextFormField
   final repeatPassword = '';
 
@@ -179,27 +178,11 @@ class _PasswordsettingsState extends State<Passwordsettings> {
                                       onPressed: toggleNewPasswordVisibility,
                                     ),
                                     errorText: fieldErrors['password'],
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: const BorderSide(
-                                        color: Colors.blue,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: const BorderSide(
-                                        color: Color.fromARGB(0, 33, 149, 243),
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      borderSide: const BorderSide(
-                                        color: Color.fromARGB(0, 33, 149, 243),
-                                        width: 1.0,
-                                      ),
-                                    ),
+                                    enabledBorder: TInputBorders.enabled,
+                                    focusedBorder: TInputBorders.focused,
+                                    errorBorder: TInputBorders.error,
+                                    focusedErrorBorder:
+                                        TInputBorders.focusedError,
                                   ),
                                 ),
 
@@ -293,37 +276,11 @@ class _PasswordsettingsState extends State<Passwordsettings> {
                                   onPressed: toggleRepeatPasswordVisibility,
                                 ),
                                 errorText: fieldErrors['repeatPassword'],
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.blue,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  borderSide: BorderSide(
-                                    color: const Color.fromARGB(
-                                      0,
-                                      33,
-                                      149,
-                                      243,
-                                    ),
-                                    width: 1.0,
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  borderSide: BorderSide(
-                                    color: const Color.fromARGB(
-                                      0,
-                                      33,
-                                      149,
-                                      243,
-                                    ),
-                                    width: 1.0,
-                                  ),
-                                ),
+
+                                enabledBorder: TInputBorders.enabled,
+                                focusedBorder: TInputBorders.focused,
+                                errorBorder: TInputBorders.error,
+                                focusedErrorBorder: TInputBorders.focusedError,
                               ),
                             );
                           },

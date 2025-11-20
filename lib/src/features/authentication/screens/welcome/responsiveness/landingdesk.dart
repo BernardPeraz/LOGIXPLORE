@@ -213,7 +213,7 @@ class _LandingdesktopState extends State<Landingdesktop>
                             0,
                             20,
                             9,
-                            "Learn digital electronics with interactive logic gates",
+                            "Understand logic gates through interaction",
 
                             false,
                           ),

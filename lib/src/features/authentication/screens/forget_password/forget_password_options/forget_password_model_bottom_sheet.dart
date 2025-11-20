@@ -13,7 +13,7 @@ class ForgetPasswordScreen {
       builder: (context) => Container(
         padding: EdgeInsets.all(tDefaultSize),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Make Selection!",
@@ -38,7 +38,9 @@ class ForgetPasswordScreen {
               btnIcon: Icons.mobile_friendly_rounded,
               title: "Phone No",
               subtitle: "Reset via Phone Verification.",
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),

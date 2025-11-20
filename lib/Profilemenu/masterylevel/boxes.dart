@@ -116,7 +116,7 @@ class _ResponsiveRectanglesState extends State<ResponsiveRectangles> {
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

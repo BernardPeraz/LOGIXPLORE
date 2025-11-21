@@ -13,7 +13,26 @@ class Bufferlessons extends StatefulWidget {
 
   const Bufferlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, dynamic>> lessons = [];
+  static List<Map<String, dynamic>> lessons = [
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/BUFFERGatelessons/buffergatelesson1.pdf',
+      'title': 'BUFFER GATE 1',
+      'progress': 0.0,
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/BUFFERGatelessons/buffergatelesson2.pdf',
+      'title': 'BUFFER GATE 2',
+      'progress': 0.0,
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/BUFFERGatelessons/buffergatelesson3.pdf',
+      'title': 'BUFFER GATE 3',
+      'progress': 0.0,
+    },
+  ];
 
   @override
   State<Bufferlessons> createState() => _BufferlessonsState();

@@ -13,7 +13,26 @@ class Notlessons extends StatefulWidget {
 
   const Notlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, dynamic>> lessons = [];
+  static List<Map<String, dynamic>> lessons = [
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NOTGatelessons/notgatelesson1.pdf',
+      'title': 'NOT GATE 1',
+      'progress': 0.0,
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NOTGatelessons/notgatelesson2.pdf',
+      'title': 'NOT GATE 2',
+      'progress': 0.0,
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NOTGatelessons/notgatelesson2.pdf',
+      'title': 'NOT GATE 2',
+      'progress': 0.0,
+    },
+  ];
 
   @override
   State<Notlessons> createState() => _NotlessonsState();

@@ -29,9 +29,9 @@ class NodeWidget extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-              child: Text(
-                node.label,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              child: Image.asset(
+                'assets/images/' + node.label.toLowerCase() + '.png',
+                height: 40,
               ),
             ),
             // ports

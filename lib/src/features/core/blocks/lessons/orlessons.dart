@@ -12,7 +12,26 @@ class Orlessons extends StatefulWidget {
   final Function(String pdfPath)? onPdfClicked;
 
   const Orlessons({super.key, this.onPdfClicked});
-  static List<Map<String, dynamic>> lessons = [];
+  static List<Map<String, dynamic>> lessons = [
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ORGatelessons/orgatelesson1.pdf',
+      'title': 'OR GATE 1',
+      'progress': 0.0,
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ORGatelessons/orgatelesson2.pdf',
+      'title': 'OR GATE 2',
+      'progress': 0.0,
+    },
+    {
+      'pdfPath':
+          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ORGatelessons/orgatelesson2.pdf',
+      'title': 'OR GATE 3',
+      'progress': 0.0,
+    },
+  ];
 
   @override
   State<Orlessons> createState() => _OrlessonsState();

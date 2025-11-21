@@ -1,107 +1,236 @@
 import 'package:flutter/material.dart';
 
-class SwitchTable extends StatelessWidget {
+class SwitchTable extends StatefulWidget {
   List<int> Aswitch;
   List<int> Bswitch;
   List<int> Cswitch;
+  List<int> Dswitch;
+  List<int> Eswitch;
   List<int> Output;
   List<int> Expected;
+  int nums;
   SwitchTable({
     super.key,
     required this.Aswitch,
     required this.Bswitch,
     required this.Cswitch,
+    required this.Dswitch,
+    required this.Eswitch,
     required this.Output,
     required this.Expected,
+    required this.nums,
   });
 
   @override
+  State<SwitchTable> createState() => _SwitchTableState();
+}
+
+class _SwitchTableState extends State<SwitchTable> {
+  void updateSwitches() {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Table(
-      border: TableBorder.all(color: Colors.black),
+    if (widget.nums == 0) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [ExpectedColumn()],
+      );
+    }
+    if (widget.nums == 1) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [AColumn(), OutputColumn(), ExpectedColumn()],
+      );
+    }
+    if (widget.nums == 2) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [AColumn(), BColumn(), OutputColumn(), ExpectedColumn()],
+      );
+    }
+    if (widget.nums == 3) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AColumn(),
+          BColumn(),
+          CColumn(),
+          OutputColumn(),
+          ExpectedColumn(),
+        ],
+      );
+    }
+    if (widget.nums == 4) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AColumn(),
+          BColumn(),
+          CColumn(),
+          DColumn(),
+          OutputColumn(),
+          ExpectedColumn(),
+        ],
+      );
+    }
+
+    if (widget.nums == 5) {
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AColumn(),
+          BColumn(),
+          CColumn(),
+          DColumn(),
+          EColumn(),
+          OutputColumn(),
+          ExpectedColumn(),
+        ],
+      );
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TableRow(
-          children: [
-            cell("A"),
-            cell("B"),
-            cell("C"),
-            cell("Output"),
-            cell("Expected Output"),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[0].toString()),
-            cell(Aswitch[0].toString()),
-            cell(Aswitch[0].toString()),
-            cell(Output[0].toString()),
-            cell(Expected[0].toString()),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[1].toString()),
-            cell(Bswitch[1].toString()),
-            cell(Cswitch[1].toString()),
-            cell(Output[1].toString()),
-            cell(Expected[1].toString()),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[2].toString()),
-            cell(Bswitch[2].toString()),
-            cell(Cswitch[2].toString()),
-            cell(Output[2].toString()),
-            cell(Expected[2].toString()),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[3].toString()),
-            cell(Bswitch[3].toString()),
-            cell(Cswitch[3].toString()),
-            cell(Output[3].toString()),
-            cell(Expected[3].toString()),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[4].toString()),
-            cell(Bswitch[4].toString()),
-            cell(Cswitch[4].toString()),
-            cell(Output[4].toString()),
-            cell(Expected[4].toString()),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[5].toString()),
-            cell(Bswitch[5].toString()),
-            cell(Cswitch[5].toString()),
-            cell(Output[5].toString()),
-            cell(Expected[5].toString()),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[6].toString()),
-            cell(Bswitch[6].toString()),
-            cell(Cswitch[6].toString()),
-            cell(Output[6].toString()),
-            cell(Expected[6].toString()),
-          ],
-        ),
-        TableRow(
-          children: [
-            cell(Aswitch[7].toString()),
-            cell(Bswitch[7].toString()),
-            cell(Cswitch[7].toString()),
-            cell(Output[7].toString()),
-            cell(Expected[7].toString()),
-          ],
-        ),
+        AColumn(),
+        BColumn(),
+        CColumn(),
+        DColumn(),
+        EColumn(),
+        OutputColumn(),
+        ExpectedColumn(),
       ],
+    );
+  }
+
+  Flexible AColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("A")]),
+            ...widget.Aswitch.map((value) {
+              return TableRow(children: [cell(value.toString())]);
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Flexible BColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("B")]),
+            ...widget.Bswitch.map((value) {
+              return TableRow(children: [cell(value.toString())]);
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Flexible CColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("C")]),
+            ...widget.Cswitch.map((value) {
+              return TableRow(children: [cell(value.toString())]);
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Flexible DColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("D")]),
+            ...widget.Dswitch.map((value) {
+              return TableRow(children: [cell(value.toString())]);
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Flexible EColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("E")]),
+            ...widget.Eswitch.map((value) {
+              return TableRow(children: [cell(value.toString())]);
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Flexible ExpectedColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("Expected Output")]),
+            ...widget.Expected.map((value) {
+              return TableRow(children: [cell(value.toString())]);
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Flexible OutputColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("O")]),
+
+            ...List.generate(widget.Output.length, (i) {
+              bool match = widget.Output[i] == widget.Expected[i];
+              return coloredRow(widget.Output[i].toString(), match);
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  TableRow coloredRow(String text, bool match) {
+    return TableRow(
+      decoration: BoxDecoration(
+        color: match ? Colors.green[200] : Colors.red[200],
+      ),
+      children: [Padding(padding: const EdgeInsets.all(8), child: Text(text))],
     );
   }
 

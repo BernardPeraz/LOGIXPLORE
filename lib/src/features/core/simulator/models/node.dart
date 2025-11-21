@@ -9,12 +9,14 @@ class Node {
   Map<String, Port> ports;
   bool collapsed = false;
   List<int> truthvalue = [];
+
   Node({
     required this.id,
     required this.kind,
     required this.label,
     required this.position,
     required this.ports,
+
     List<int>? truthvalue,
-  }) : truthvalue = truthvalue ?? [0, 0, 0, 0, 0, 0, 0, 0];
+  }) : truthvalue = truthvalue ?? [];
 }

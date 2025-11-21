@@ -67,7 +67,12 @@ class Assessment extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Get.to(() => WhiteScreen(nextPage: Exercises()));
+                          Get.to(
+                            () => WhiteScreen(
+                              nextPage: (questions) =>
+                                  Quizzes(passedQuestions: questions),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(
@@ -92,7 +97,7 @@ class Assessment extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                'EXERCISES',
+                                'QUIZZES',
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: false,
@@ -108,9 +113,7 @@ class Assessment extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Get.to(() => WhiteScreen(nextPage: Quizzes()));
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(
                             color: const Color.fromARGB(255, 0, 0, 0),
@@ -136,7 +139,7 @@ class Assessment extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                'QUIZZES',
+                                'SIMULATOR CHALLENGE',
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 softWrap: false,

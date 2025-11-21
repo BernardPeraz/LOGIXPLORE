@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/main.dart';
 
 class WhiteScreen extends StatefulWidget {
@@ -16,7 +17,22 @@ class _WhiteScreenState extends State<WhiteScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       //LogicEditorPage());
       //LogicSimp()
-      Get.off(() => LogicSimApp());
+      Get.off(
+        () => LogicEditorPage(
+          ExpecOut: [0, 0, 0, 0, 0, 0, 0, 1],
+          allowedGates: [
+            "AND",
+            "OR",
+            "BUFFER",
+            "NOT",
+            "NAND",
+            "NOR",
+            "XOR",
+            "XNOR",
+          ],
+          nextPage: Dashboard(),
+        ),
+      );
     });
   }
 

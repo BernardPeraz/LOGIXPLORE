@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/signup_screen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/responsiveness/About/aboutus.dart';
 
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/bodytext.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/imagecontainer.dart';
@@ -96,7 +97,12 @@ class _LandingdesktopState extends State<Landingdesktop>
           ),
           const SizedBox(width: 15),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AboutUsPage()),
+              );
+            },
             style: ElevatedButton.styleFrom(
               fixedSize: const Size(101, 33),
               backgroundColor: Colors.black,

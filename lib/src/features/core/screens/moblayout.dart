@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 
+String extractGateFromTitle(String title) {
+  return title.split(" ")[0].toUpperCase();
+}
+
 class MobileLayout {
   static Widget build(
     BuildContext context,

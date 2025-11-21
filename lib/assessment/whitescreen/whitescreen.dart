@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class WhiteScreen extends StatefulWidget {
-  final Widget nextPage;
+  final Widget Function(List<Map<String, dynamic>> questions) nextPage;
 
   const WhiteScreen({super.key, required this.nextPage});
 
@@ -14,14 +16,65 @@ class _WhiteScreenState extends State<WhiteScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Delay before going to next page
-    Future.delayed(const Duration(seconds: 5), () {
-      if (!mounted) return; // prevents setState after dispose error
-      Get.off(() => widget.nextPage);
-    });
+    _prepareQuestions(); // <–– ADDED
   }
 
+  // ============================================
+  // ADDED: FETCH QUESTIONS HERE
+  // ============================================
+  Future<void> _prepareQuestions() async {
+    try {
+      final url = Uri.parse("http://localhost:3000/api/questions");
+
+      final response = await http.post(url, body: jsonEncode({"gate": "AND"}));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        dynamic rawQuestions = data["questions"];
+        List<Map<String, dynamic>> parsedQuestions = [];
+
+        // If backend returned LIST (QUESTION_BANK)
+        if (rawQuestions is List) {
+          parsedQuestions = rawQuestions.map<Map<String, dynamic>>((q) {
+            return {
+              "question": q["question"],
+              "choices": List<String>.from(q["choices"]),
+              "answer": q["answer"],
+            };
+          }).toList();
+        }
+        // If backend returned STRING (fallback)
+        else if (rawQuestions is String) {
+          parsedQuestions = rawQuestions
+              .split("\n")
+              .where((line) => line.trim().isNotEmpty)
+              .map<Map<String, dynamic>>((line) {
+                return {
+                  "question": line,
+                  "choices": ["True", "False"],
+                  "answer": "True",
+                };
+              })
+              .toList();
+        }
+
+        // Navigate after 5 seconds
+        Future.delayed(const Duration(seconds: 5), () {
+          if (!mounted) return;
+          Get.off(() => widget.nextPage(parsedQuestions));
+        });
+      } else {
+        print("Error fetching questions: ${response.body}");
+      }
+    } catch (e) {
+      print("Failed to connect: $e");
+    }
+  }
+
+  // ============================================
+  // ORIGINAL UI (UNCHANGED)
+  // ============================================
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +91,7 @@ class _WhiteScreenState extends State<WhiteScreen> {
                 Image.asset('assets/logo/logicon.png', height: 40, width: 40),
                 const SizedBox(width: 8),
                 const Text(
-                  'Preparing your questions...',
+                  'Preparing AI Generated Questions...',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,

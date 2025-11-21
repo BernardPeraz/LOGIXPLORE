@@ -289,6 +289,7 @@ class _BuildBlockState extends State<BuildBlock> {
       image: widget.image,
       text: widget.text,
       progress: _progress,
+
       onButtonPressed: () => _showOptionsDialog(context),
     );
   }

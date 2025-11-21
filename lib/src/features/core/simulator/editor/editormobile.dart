@@ -95,6 +95,7 @@ class EditorModel extends ChangeNotifier {
   void toggleSwitch(String nodeId) {
     final node = nodes[nodeId];
     if (node == null) return;
+
     if (node.kind != 'SWITCH') return;
     // switch has an output port with id 'out'
     final out = node.ports['out'];
@@ -201,8 +202,10 @@ class EditorModel extends ChangeNotifier {
           orElse: () => null as Wire,
         );
 
-        final inputNode = nodes[incomingWire.from.nodeId];
-        if (inputNode != null) inputPatterns.add(inputNode.truthvalue);
+        if (incomingWire != null) {
+          final inputNode = nodes[incomingWire.from.nodeId];
+          if (inputNode != null) inputPatterns.add(inputNode.truthvalue);
+        }
       }
 
       // Guard: No inputs → output pattern = empty

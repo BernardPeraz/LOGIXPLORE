@@ -9,9 +9,10 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/model
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/portref.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/porttype.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/truthtable.dart';
+import 'package:flutter/foundation.dart'; // for listEquals
 
 // ---------- UI ----------
-
+/*        
 void main() {
   runApp(const LogicSimApp());
 }
@@ -25,95 +26,402 @@ class LogicSimApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Logic Gate Simulator',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const LogicEditorPage(),
+      // 👇 ADD YOUR ALLOWED GATES HERE
+      home: const LogicEditorPage(
+        ExpecOut: [0, 0, 0, 1],
+        allowedGates: [
+          'AND',
+            'OR',
+          'NOT',
+          'NAND',
+          'NOR',
+          'XOR',
+          'XNOR',
+          'BUFFER',
+        ],
+        nextPage: LogicEditorPage(
+          ExpecOut: [1, 1, 0, 0],
+          allowedGates: ["NOT"],
+          nextPage: LogicEditorPage(
+            ExpecOut: [1, 0, 0, 0],
+            allowedGates: ["AND", "NOT"],
+            nextPage: Scaffold(),
+          ),
+        ),
+      ),
     );
   }
 }
-
+*/
 class LogicEditorPage extends StatefulWidget {
-  const LogicEditorPage({super.key});
+  // NEW: parameter to control which gates are shown
+  final List<int> ExpecOut;
+  final List<String> allowedGates;
+  final Widget nextPage;
+
+  const LogicEditorPage({
+    super.key,
+    required this.ExpecOut,
+    required this.allowedGates,
+
+    // 'AND',
+    // 'OR',
+    //  'NOT',
+    //  'NAND',
+    //  'NOR',
+    //  'XOR',
+    //  'XNOR',
+    // 'BUFFER',
+    required this.nextPage,
+  });
 
   @override
   State<LogicEditorPage> createState() => _LogicEditorPageState();
 }
 
 class _LogicEditorPageState extends State<LogicEditorPage> {
+  int switchNum = 0;
   final EditorModel model = EditorModel();
   // For simplicity we use a GlobalKey to convert coordinates
   final GlobalKey canvasKey = GlobalKey();
+  List<int> generateTruthValues(int x, String switchNum) {
+    return switchNum == "A"
+        ? x == 1
+              ? [0, 1]
+              : x == 2
+              ? [0, 0, 1, 1]
+              : x == 3
+              ? [0, 0, 0, 0, 1, 1, 1, 1]
+              : x == 4
+              ? [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+              : x == 5
+              ? [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                ]
+              : []
+        : switchNum == "B"
+        ? x == 1
+              ? [0, 0]
+              : x == 2
+              ? [0, 1, 0, 1]
+              : x == 3
+              ? [0, 0, 1, 1, 0, 0, 1, 1]
+              : x == 4
+              ? [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1]
+              : x == 5
+              ? [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                  1,
+                ]
+              : []
+        : switchNum == "C"
+        ? x == 1
+              ? [0, 0]
+              : x == 2
+              ? [0, 0, 0, 0]
+              : x == 3
+              ? [0, 1, 0, 1, 0, 1, 0, 1]
+              : x == 4
+              ? [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1]
+              : x == 5
+              ? [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                ]
+              : []
+        : switchNum == "D"
+        ? x == 1
+              ? [0, 0]
+              : x == 2
+              ? [0, 0, 0, 0]
+              : x == 3
+              ? [0, 0, 0, 0, 0, 0, 0, 0]
+              : x == 4
+              ? [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+              : x == 5
+              ? [
+                  0,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                  0,
+                  0,
+                  1,
+                  1,
+                ]
+              : []
+        : switchNum == "E"
+        ? x == 1
+              ? [0, 0]
+              : x == 2
+              ? [0, 0, 0, 0]
+              : x == 3
+              ? [0, 0, 0, 0, 0, 0, 0, 0]
+              : x == 4
+              ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+              : x == 5
+              ? [
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  1,
+                ]
+              : []
+        : [];
+  }
 
-  final s1 = Node(
-    // first default node
-    id: 's1',
-    kind: 'SWITCH',
-    label: 'A',
-    position: const Offset(40, 40), // position of node
-    ports: {
-      'out': Port(
-        id: 'out',
-        type: PortType.output,
-        value: false,
-        localOffset: const Offset(80, 23),
-        //position of port
-      ),
-    },
-    truthvalue: [0, 0, 0, 0, 1, 1, 1, 1],
-  );
-  final s2 = Node(
-    id: 's2',
-    kind: 'SWITCH',
-    label: 'B',
-    position: const Offset(40, 160),
-    ports: {
-      'out': Port(
-        id: 'out',
-        type: PortType.output,
-        value: false,
-        localOffset: const Offset(80, 23),
-      ),
-    },
-    truthvalue: [0, 0, 1, 1, 0, 0, 1, 1],
-  );
-  final s3 = Node(
-    id: 's3',
-    kind: 'SWITCH',
-    label: 'C',
-    position: const Offset(40, 280),
-    ports: {
-      'out': Port(
-        id: 'out',
-        type: PortType.output,
-        value: false,
-        localOffset: const Offset(80, 23),
-      ),
-    },
-    truthvalue: [0, 1, 0, 1, 0, 1, 0, 1],
-  );
+  late Node s1;
+  late Node s2;
+  late Node s3;
+  late Node s4;
+  late Node s5;
+  late Node not1;
 
-  final not1 = Node(
-    id: 'g2',
-    kind: 'RES',
-    label: 'result',
-    position: const Offset(540, 90),
-    ports: {
-      'in': Port(
-        id: 'in',
-        type: PortType.input,
-        value: false,
-        localOffset: const Offset(0, 20),
-      ),
-      'out': Port(
-        id: 'out',
-        type: PortType.output,
-        value: false,
-        localOffset: const Offset(120, 20),
-      ),
-    },
-  );
-
-  @override
   void initState() {
     super.initState();
+
+    s1 = Node(
+      // first default node
+      id: 's1',
+      kind: 'SWITCH',
+      label: 'A',
+      position: const Offset(40, 40), // position of node
+      ports: {
+        'out': Port(
+          id: 'out',
+          type: PortType.output,
+          value: false,
+          localOffset: const Offset(80, 23),
+          //position of port
+        ),
+      },
+
+      truthvalue: generateTruthValues(switchNum, "A"),
+    );
+    s2 = Node(
+      id: 's2',
+      kind: 'SWITCH',
+      label: 'B',
+      position: const Offset(40, 160),
+      ports: {
+        'out': Port(
+          id: 'out',
+          type: PortType.output,
+          value: false,
+          localOffset: const Offset(80, 23),
+        ),
+      },
+      truthvalue: generateTruthValues(switchNum, "B"),
+    );
+    s3 = Node(
+      id: 's3',
+      kind: 'SWITCH',
+      label: 'C',
+      position: const Offset(40, 280),
+      ports: {
+        'out': Port(
+          id: 'out',
+          type: PortType.output,
+          value: false,
+          localOffset: const Offset(80, 23),
+        ),
+      },
+      truthvalue: generateTruthValues(switchNum, "C"),
+    );
+    s4 = Node(
+      id: 's4',
+      kind: 'SWITCH',
+      label: 'D',
+      position: const Offset(40, 400),
+      ports: {
+        'out': Port(
+          id: 'out',
+          type: PortType.output,
+          value: false,
+          localOffset: const Offset(80, 23),
+        ),
+      },
+      truthvalue: generateTruthValues(switchNum, "D"),
+    );
+    s5 = Node(
+      id: 's5',
+      kind: 'SWITCH',
+      label: 'E',
+      position: const Offset(40, 520),
+      ports: {
+        'out': Port(
+          id: 'out',
+          type: PortType.output,
+          value: false,
+          localOffset: const Offset(80, 23),
+        ),
+      },
+      truthvalue: generateTruthValues(switchNum, "E"),
+    );
+
+    not1 = Node(
+      id: 'output',
+      kind: 'RES',
+      label: 'output',
+      position: const Offset(540, 90),
+      ports: {
+        'in': Port(
+          id: 'in',
+          type: PortType.input,
+          value: false,
+          localOffset: const Offset(0, 20),
+        ),
+        'out': Port(
+          id: 'out',
+          type: PortType.output,
+          value: false,
+          localOffset: const Offset(120, 20),
+        ),
+      },
+    );
     _seedExample();
     model.addListener(() => setState(() {}));
   }
@@ -121,37 +429,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
   void _seedExample() {
     // add a switch
 
-    final and1 = Node(
-      id: 'g1',
-      kind: 'AND',
-      label: 'and',
-      position: const Offset(300, 90),
-      ports: {
-        'a': Port(
-          id: 'a',
-          type: PortType.input,
-          value: false,
-          localOffset: const Offset(10, 10),
-        ),
-        'b': Port(
-          id: 'b',
-          type: PortType.input,
-          value: false,
-          localOffset: const Offset(10, 40),
-        ),
-        'out': Port(
-          id: 'out',
-          type: PortType.output,
-          value: false,
-          localOffset: const Offset(90, 23),
-        ),
-      },
-    );
-
-    model.addNode(s1);
-    model.addNode(s2);
-    model.addNode(s3);
-    model.addNode(and1);
     model.addNode(not1);
   } //above is just adding node
 
@@ -183,18 +460,17 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
     return null;
   }
 
+  // Helper to check if a gate is allowed
+  bool gateAllowed(String type) {
+    return widget.allowedGates.contains(type);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Logic Gate Simulator'),
         actions: [
-          IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(Icons.close_rounded),
-          ),
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: () {
@@ -211,14 +487,80 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           children: [
             Expanded(
               flex: 2,
-              child: Container(
-                child: SwitchTable(
-                  Aswitch: s1.truthvalue,
-                  Bswitch: s2.truthvalue,
-                  Cswitch: s3.truthvalue,
-                  Output: not1.truthvalue,
-                  Expected: [0, 0, 0, 1, 0, 0, 0, 1],
-                ),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: SingleChildScrollView(
+                      child: Container(
+                        child: SwitchTable(
+                          Aswitch: s1.truthvalue,
+                          Bswitch: s2.truthvalue,
+                          Cswitch: s3.truthvalue,
+                          Dswitch: s4.truthvalue,
+                          Eswitch: s5.truthvalue,
+                          Output: not1.truthvalue,
+                          Expected: widget.ExpecOut,
+                          nums: switchNum,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset('assets/images/robotn.png', height: 250),
+                        Positioned(
+                          top: 28,
+
+                          child: Container(
+                            width: 310,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.black, width: 2),
+                            ),
+                            child: Text(
+                              (s1.truthvalue.length == widget.ExpecOut.length)
+                                  ? listEquals(not1.truthvalue, widget.ExpecOut)
+                                        ? 'Good job! The output is correct means you chose gates correctly.'
+                                        : 'Good! the ouput length is correct, now use correct gates to do the expected output'
+                                  : (2 ^ (switchNum + 1) <
+                                        widget.ExpecOut.length)
+                                  ? "Let’s use the switches to get " +
+                                        widget.ExpecOut.toString() +
+                                        " as Expected Output "
+                                  : 'Output length is more than expected output length, please restart',
+
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                        listEquals(not1.truthvalue, widget.ExpecOut)
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => widget.nextPage,
+                                    ),
+                                  );
+                                },
+                                child: Text("Proceed to Next Level"),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -227,6 +569,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                 children: [
                   GestureDetector(
                     onPanDown: (d) {
+                      setState(() {});
                       //mouse click
                       // if starting drag on a port -> start connection
                       final pr = _hitTestPort(d.globalPosition);
@@ -239,6 +582,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                       }
                     },
                     onPanUpdate: (d) {
+                      setState(() {});
+                      model.toggleSwitch("1");
                       //mouse hold
                       if (model.connectingFrom != null) {
                         //not connected yet
@@ -249,6 +594,10 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                       }
                     },
                     onPanEnd: (d) {
+                      setState(() {
+                        model.toggleSwitch("1");
+                      });
+                      model.toggleSwitch("1");
                       //mouse lift
                       if (model.connectingFrom != null) {
                         // try to finish connection on release location                 //not connected yet
@@ -283,6 +632,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                         if (node?.kind == 'SWITCH') {
                           model.toggleSwitch(node!.id);
                         }
+                        model.toggleSwitch(node!.id);
+                        model.toggleSwitch("1");
                       }
                     },
                     child: Container(
@@ -302,6 +653,9 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                   onPanUpdate: (d) {
                                     setState(() {
                                       node.position += d.delta;
+                                      model.propagateFromPort(
+                                        PortRef('s1', 'out', PortType.output),
+                                      );
                                     });
                                     model.notifyListeners();
                                   },
@@ -323,128 +677,436 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                       ),
                     ),
                   ),
-                  // bottom toolbar
+
+                  // --------------------------------------------------
+                  // ------------------- TOOLBAR ----------------------
+                  // --------------------------------------------------
                   Positioned(
                     right: 12,
                     bottom: 12,
                     child: Column(
                       children: [
                         FloatingActionButton.extended(
-                          heroTag: 'addAnd',
+                          heroTag: '✅',
                           onPressed: () {
-                            final id =
-                                'g${DateTime.now().microsecondsSinceEpoch}';
-                            final n = Node(
-                              id: id,
-                              kind: 'AND',
-                              label: 'and',
-                              position: const Offset(120, 120),
-                              ports: {
-                                'a': Port(
-                                  id: 'a',
-                                  type: PortType.input,
-                                  localOffset: const Offset(0, 10),
-                                ),
-                                'b': Port(
-                                  id: 'b',
-                                  type: PortType.input,
-                                  localOffset: const Offset(0, 40),
-                                ),
-                                'out': Port(
-                                  id: 'out',
-                                  type: PortType.output,
-                                  localOffset: const Offset(120, 25),
-                                ),
-                              },
-                            );
-                            model.addNode(n);
+                            setState(() {
+                              switchNum = 0;
+                              model.nodes.clear();
+                              model.addNode(not1);
+                            });
                           },
-                          label: const Text('Add AND'),
+                          label: const Text('RESET'),
                         ),
-                        const SizedBox(height: 8),
                         FloatingActionButton.extended(
-                          heroTag: 'addOr',
+                          heroTag: '✅',
                           onPressed: () {
-                            final id =
-                                'g${DateTime.now().microsecondsSinceEpoch}';
-                            final n = Node(
-                              id: id,
-                              kind: 'OR',
-                              label: 'or',
-                              position: const Offset(120, 220),
-                              ports: {
-                                'a': Port(
-                                  id: 'a',
-                                  type: PortType.input,
-                                  localOffset: const Offset(0, 10),
-                                ),
-                                'b': Port(
-                                  id: 'b',
-                                  type: PortType.input,
-                                  localOffset: const Offset(0, 40),
-                                ),
-                                'out': Port(
-                                  id: 'out',
-                                  type: PortType.output,
-                                  localOffset: const Offset(120, 25),
-                                ),
-                              },
-                            );
-                            model.addNode(n);
+                            if (not1.truthvalue == widget.ExpecOut) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Title here"),
+                                    content: Text(
+                                      "This is the message inside the dialog.",
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(
+                                            context,
+                                          ); // close dialog
+                                        },
+                                        child: Text("OK"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                            setState(() {
+                              model.toggleSwitch("s1");
+                              model.toggleSwitch("s2");
+                              model.toggleSwitch("s3");
+                              model.toggleSwitch("s4");
+                              model.toggleSwitch("s5");
+                              model.toggleSwitch("s1");
+                              model.toggleSwitch("s2");
+                              model.toggleSwitch("s3");
+                              model.toggleSwitch("s4");
+                              model.toggleSwitch("s5");
+                              model.toggleSwitch("s1");
+                              model.toggleSwitch("s2");
+                              model.toggleSwitch("s3");
+                              model.toggleSwitch("s4");
+                              model.toggleSwitch("s5");
+                              model.toggleSwitch("s1");
+                              model.toggleSwitch("s2");
+                              model.toggleSwitch("s3");
+                              model.toggleSwitch("s4");
+                              model.toggleSwitch("s5");
+                            });
                           },
-                          label: const Text('Add OR'),
+                          label: const Text('Submit'),
                         ),
-                        const SizedBox(height: 8),
-                        FloatingActionButton.extended(
-                          heroTag: 'addNot',
-                          onPressed: () {
-                            final id =
-                                'g${DateTime.now().microsecondsSinceEpoch}';
-                            final n = Node(
-                              id: id,
-                              kind: 'NOT',
-                              label: 'not',
-                              position: const Offset(120, 320),
-                              ports: {
-                                'in': Port(
-                                  id: 'in',
-                                  type: PortType.input,
-                                  localOffset: const Offset(0, 20),
-                                ),
-                                'out': Port(
-                                  id: 'out',
-                                  type: PortType.output,
-                                  localOffset: const Offset(120, 20),
-                                ),
-                              },
-                            );
-                            model.addNode(n);
-                          },
-                          label: const Text('Add NOT'),
-                        ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
+                        // ------------------- ADD SWITCH -------------------
                         FloatingActionButton.extended(
                           heroTag: 'addSwitch',
                           onPressed: () {
-                            final id =
-                                's${DateTime.now().microsecondsSinceEpoch}';
-                            final n = Node(
-                              id: id,
-                              kind: 'SWITCH',
-                              label: 'switch',
-                              position: const Offset(40, 360),
-                              ports: {
-                                'out': Port(
-                                  id: 'out',
-                                  type: PortType.output,
-                                  localOffset: const Offset(80, 20),
-                                ),
-                              },
-                            );
-                            model.addNode(n);
+                            if (switchNum < 5) {
+                              switchNum = switchNum + 1;
+                              setState(() {
+                                if (switchNum == 1) {
+                                  model.addNode(s1);
+                                } else if (switchNum == 2) {
+                                  model.addNode(s2);
+                                } else if (switchNum == 3) {
+                                  model.addNode(s3);
+                                } else if (switchNum == 4) {
+                                  model.addNode(s4);
+                                } else if (switchNum == 5) {
+                                  model.addNode(s5);
+                                }
+                                setState(() {
+                                  s1.truthvalue = generateTruthValues(
+                                    switchNum,
+                                    "A",
+                                  );
+                                });
+                                setState(() {
+                                  s2.truthvalue = generateTruthValues(
+                                    switchNum,
+                                    "B",
+                                  );
+                                });
+                                setState(() {
+                                  s3.truthvalue = generateTruthValues(
+                                    switchNum,
+                                    "C",
+                                  );
+                                });
+                              });
+                              setState(() {
+                                s4.truthvalue = generateTruthValues(
+                                  switchNum,
+                                  "D",
+                                );
+                              });
+                              setState(() {
+                                s5.truthvalue = generateTruthValues(
+                                  switchNum,
+                                  "E",
+                                );
+                              });
+                            } else
+                              () {
+                                //what to do after reaching maximum input counts
+                              };
                           },
                           label: const Text('Add Switch'),
                         ),
+                        const SizedBox(height: 8),
+                        // ------------------- AND -------------------
+                        if (gateAllowed('AND'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addAnd',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'AND',
+                                label: 'and',
+                                position: const Offset(120, 120),
+                                ports: {
+                                  'a': Port(
+                                    id: 'a',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 10),
+                                  ),
+                                  'b': Port(
+                                    id: 'b',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 40),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 25),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                              setState(() {});
+                            },
+                            label: Image.asset(
+                              'assets/images/Annd.png',
+                              height: 40,
+                            ),
+                          ),
+                        if (gateAllowed('AND')) const SizedBox(height: 8),
+
+                        // ------------------- OR -------------------
+                        if (gateAllowed('OR'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addOr',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'OR',
+                                label: 'or',
+                                position: const Offset(120, 220),
+                                ports: {
+                                  'a': Port(
+                                    id: 'a',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 10),
+                                  ),
+                                  'b': Port(
+                                    id: 'b',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 40),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 25),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                            },
+                            label: Image.asset(
+                              'assets/images/Ooor.png',
+                              height: 40,
+                            ),
+                          ),
+                        if (gateAllowed('OR')) const SizedBox(height: 8),
+
+                        // ------------------- NOT -------------------
+                        if (gateAllowed('NOT'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addNot',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'NOT',
+                                label: 'not',
+                                position: const Offset(120, 320),
+                                ports: {
+                                  'in': Port(
+                                    id: 'in',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 20),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 20),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                            },
+                            label: Image.asset(
+                              'assets/images/Noot.png',
+                              height: 40,
+                            ),
+                          ),
+                        if (gateAllowed('NOT')) const SizedBox(height: 8),
+
+                        // ------------------- NAND -------------------
+                        if (gateAllowed('NAND'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addNand',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'NAND',
+                                label: 'nand',
+                                position: const Offset(120, 420),
+                                ports: {
+                                  'a': Port(
+                                    id: 'a',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 10),
+                                  ),
+                                  'b': Port(
+                                    id: 'b',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 40),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 25),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                            },
+                            label: Image.asset(
+                              'assets/images/Naand.png',
+                              height: 40,
+                            ),
+                          ),
+                        if (gateAllowed('NAND')) const SizedBox(height: 8),
+
+                        // ------------------- NOR -------------------
+                        if (gateAllowed('NOR'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addNor',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'NOR',
+                                label: 'nor',
+                                position: const Offset(120, 520),
+                                ports: {
+                                  'a': Port(
+                                    id: 'a',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 10),
+                                  ),
+                                  'b': Port(
+                                    id: 'b',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 40),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 25),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                            },
+                            label: Image.asset(
+                              'assets/images/Noor.png',
+                              height: 40,
+                            ),
+                          ),
+                        if (gateAllowed('NOR')) const SizedBox(height: 8),
+
+                        // ------------------- XOR -------------------
+                        if (gateAllowed('XOR'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addXor',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'XOR',
+                                label: 'xor',
+                                position: const Offset(120, 620),
+                                ports: {
+                                  'a': Port(
+                                    id: 'a',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 10),
+                                  ),
+                                  'b': Port(
+                                    id: 'b',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 40),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 25),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                            },
+                            label: Image.asset(
+                              'assets/images/Xoor.png',
+                              height: 40,
+                            ),
+                          ),
+                        if (gateAllowed('XOR')) const SizedBox(height: 8),
+
+                        // ------------------- XNOR -------------------
+                        if (gateAllowed('XNOR'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addXnor',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'XNOR',
+                                label: 'xnor',
+                                position: const Offset(120, 620),
+                                ports: {
+                                  'a': Port(
+                                    id: 'a',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 10),
+                                  ),
+                                  'b': Port(
+                                    id: 'b',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 40),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 25),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                            },
+                            label: Image.asset(
+                              'assets/images/Xnoor.png',
+                              height: 40,
+                            ),
+                          ),
+                        if (gateAllowed('XNOR')) const SizedBox(height: 8),
+
+                        // ------------------- BUFFER -------------------
+                        if (gateAllowed('BUFFER'))
+                          FloatingActionButton.extended(
+                            heroTag: 'addBuffer',
+                            onPressed: () {
+                              final id =
+                                  'g${DateTime.now().microsecondsSinceEpoch}';
+                              final n = Node(
+                                id: id,
+                                kind: 'BUFFER',
+                                label: 'buffer',
+                                position: const Offset(120, 620),
+                                ports: {
+                                  'in': Port(
+                                    id: 'in',
+                                    type: PortType.input,
+                                    localOffset: const Offset(0, 20),
+                                  ),
+                                  'out': Port(
+                                    id: 'out',
+                                    type: PortType.output,
+                                    localOffset: const Offset(120, 20),
+                                  ),
+                                },
+                              );
+                              model.addNode(n);
+                            },
+                            label: Image.asset(
+                              'assets/images/Bufffer.png',
+                              height: 40,
+                            ),
+                          ),
                       ],
                     ),
                   ),

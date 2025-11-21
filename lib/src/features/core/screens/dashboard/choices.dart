@@ -4,6 +4,8 @@ import 'package:studydesign2zzdatabaseplaylist/assessment/exercises/exercises.da
 import 'package:studydesign2zzdatabaseplaylist/assessment/exercises/quizzes/quizzes.dart';
 import 'package:studydesign2zzdatabaseplaylist/assessment/whitescreen/whitescreen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/main.dart';
 
 class Assessment extends StatelessWidget {
   const Assessment({super.key});
@@ -113,7 +115,27 @@ class Assessment extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LogicEditorPage(
+                                ExpecOut: [0, 0, 0, 1, 0, 0, 0, 1],
+                                allowedGates: [
+                                  "AND",
+                                  "OR",
+                                  "NAND",
+                                  "NOR",
+                                  "NOT",
+                                  "XOR",
+                                  "XNOR",
+                                  "BUFFER",
+                                ],
+                                nextPage: Dashboard(),
+                              ),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(
                             color: const Color.fromARGB(255, 0, 0, 0),

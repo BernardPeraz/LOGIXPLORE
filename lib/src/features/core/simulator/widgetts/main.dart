@@ -839,9 +839,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                               setState(() {});
                             },
-                            label: Image.asset(
-                              'assets/images/Annd.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: "AND GATE",
+                              child: Image.asset(
+                                'assets/images/Annd.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                         if (gateAllowed('AND')) const SizedBox(height: 8),

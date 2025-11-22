@@ -9,6 +9,7 @@ import 'package:studydesign2zzdatabaseplaylist/Profilemenu/passwordsettings/pass
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/Multipagedialog.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blocknavigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/whitescreen.dart';
 
@@ -84,6 +85,35 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     if (screenWidth < 600 && user != null)
                       _buildProfilePopupItem(user, isDark),
+                    if (screenWidth <= 748)
+                      _buildPopupMenuItem(
+                        icon: Icons.dark_mode,
+                        text: "Dark Mode",
+                        isDark: isDark,
+                        onTap: () {
+                          _hidePopupMenu();
+                          bool isCurrentlyDark =
+                              Theme.of(context).brightness == Brightness.dark;
+                          Get.changeThemeMode(
+                            isCurrentlyDark ? ThemeMode.light : ThemeMode.dark,
+                          );
+                        },
+                      ),
+
+                    // SIMULATOR moves to menu when width <= 735
+                    if (screenWidth <= 735)
+                      _buildPopupMenuItem(
+                        icon: Icons.computer,
+                        text: "Simulator",
+                        isDark: isDark,
+                        onTap: () {
+                          _hidePopupMenu();
+                          whitescreen();
+                          Future.delayed(const Duration(milliseconds: 300), () {
+                            Get.to(() => WhiteScreen());
+                          });
+                        },
+                      ),
                     _buildPopupMenuItem(
                       icon: Icons.star,
                       text: "Mastery Level",
@@ -359,9 +389,38 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  void _showWelcomeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        double dialogWidth = screenWidth * 0.9;
+        double dialogHeight = screenHeight * 0.75;
+
+        dialogWidth = dialogWidth > 590 ? 590 : dialogWidth;
+        dialogHeight = dialogHeight > 390 ? 390 : dialogHeight;
+
+        return MultiPageDialog(width: dialogWidth, height: dialogHeight);
+      },
+    );
+  }
+
   Future<void> _signOutUser() async {
     await FirebaseAuth.instance.signOut();
     await GoogleSignIn().signOut();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Auto show dialog AFTER the first frame is drawn
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showWelcomeDialog(context);
+    });
   }
 
   @override
@@ -374,68 +433,101 @@ class _DashboardState extends State<Dashboard> {
         ? (screenWidth / 2) - 30
         : screenWidth - 80;
 
+    bool moveDarkMode = screenWidth <= 748;
+    bool moveSimulator = screenWidth <= 735;
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset('assets/logo/logicon.png', height: 9, width: 5),
-        title: Text(
-          "LOGIXPLORE",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        elevation: 1,
-        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _hidePopupMenu();
-
-              // Pupunta muna sa white screen
-              Get.to(() => WhiteScreen());
-            },
-            icon: Container(
-              padding: const EdgeInsets.all(
-                4,
-              ), // spacing between image and border
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: const Color.fromARGB(0, 0, 0, 0),
-                  width: 2,
-                ), // black border
-                shape:
-                    BoxShape.circle, // or BoxShape.rectangle kung gusto mo box
+        title: Row(
+          children: [
+            if (screenWidth > 506)
+              Text(
+                "LOGIXPLORE",
+                style: Theme.of(context).textTheme.headlineMedium,
+                overflow: TextOverflow.ellipsis, // para hindi mag overflow
+                maxLines: 1,
+              ),
+            SizedBox(width: 50),
+            ElevatedButton(
+              onPressed: () {
+                _showWelcomeDialog(context);
+              },
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(5), // adjust size
+                backgroundColor: Colors.yellow,
+                // optional color
               ),
               child: Tooltip(
-                message: 'Simulator',
-                child: Image.asset(
-                  'assets/logo/iconbutton.png',
-                  width: 40, // adjust size
-                  height: 40,
+                message: "What is Logic Gates?",
+                child: const Icon(
+                  Icons.lightbulb, // optional icon OR text
+                  size: 40,
+                  color: Colors.white,
                 ),
               ),
             ),
-          ),
+          ],
+        ),
+        elevation: 1,
+        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
 
-          Container(
-            margin: const EdgeInsets.only(right: 20, top: 7),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: const Color.fromARGB(0, 247, 246, 241),
-            ),
-            child: IconButton(
+        actions: [
+          if (screenWidth > 735)
+            IconButton(
               onPressed: () {
-                ThemeData theme = Theme.of(context);
-                bool isDark = theme.brightness == Brightness.light;
-                Get.changeThemeMode(isDark ? ThemeMode.dark : ThemeMode.light);
+                _hidePopupMenu();
+
+                // Pupunta muna sa white screen
+                Get.to(() => WhiteScreen());
               },
-              icon: Icon(
-                Theme.of(context).brightness == Brightness.dark
-                    ? Icons.light_mode
-                    : Icons.dark_mode,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.black,
+              icon: Container(
+                padding: const EdgeInsets.all(
+                  4,
+                ), // spacing between image and border
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color.fromARGB(0, 0, 0, 0),
+                    width: 2,
+                  ), // black border
+                  shape: BoxShape
+                      .circle, // or BoxShape.rectangle kung gusto mo box
+                ),
+                child: Tooltip(
+                  message: 'Simulator',
+                  child: Image.asset(
+                    'assets/logo/iconbutton.png',
+                    width: 40, // adjust size
+                    height: 40,
+                  ),
+                ),
               ),
             ),
-          ),
+          if (screenWidth > 748)
+            Container(
+              margin: const EdgeInsets.only(right: 20, top: 7),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: const Color.fromARGB(0, 247, 246, 241),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  ThemeData theme = Theme.of(context);
+                  bool isDark = theme.brightness == Brightness.light;
+                  Get.changeThemeMode(
+                    isDark ? ThemeMode.dark : ThemeMode.light,
+                  );
+                },
+                icon: Icon(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Icons.light_mode
+                      : Icons.dark_mode,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+              ),
+            ),
           Tooltip(message: 'Profile', child: ProfileMenuBox()),
           CompositedTransformTarget(
             link: _layerLink,

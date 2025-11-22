@@ -78,6 +78,7 @@ flutter:
     - assets/images/forget_password/
     - assets/images/background_images/
     - assets/logo/
+    - assets/
    
   #   - images/a_dot_ham.jpeg
 

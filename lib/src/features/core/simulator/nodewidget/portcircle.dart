@@ -8,11 +8,11 @@ class PortCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 24,
-      height: 24,
+      width: 20,
+      height: 20,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.black54),
+        // border: Border.all(color: Colors.black54),
         color: port.value ? Colors.yellowAccent : Colors.white,
       ),
     );

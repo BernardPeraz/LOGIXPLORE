@@ -816,7 +816,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'AND',
-                                label: 'and',
+                                label: 'annd',
                                 position: const Offset(120, 120),
                                 ports: {
                                   'a': Port(
@@ -832,7 +832,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                   'out': Port(
                                     id: 'out',
                                     type: PortType.output,
-                                    localOffset: const Offset(120, 25),
+                                    localOffset: const Offset(90, 25),
                                   ),
                                 },
                               );
@@ -859,7 +859,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'OR',
-                                label: 'or',
+                                label: 'ooor',
                                 position: const Offset(120, 220),
                                 ports: {
                                   'a': Port(
@@ -898,7 +898,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'NOT',
-                                label: 'not',
+                                label: 'noot',
                                 position: const Offset(120, 320),
                                 ports: {
                                   'in': Port(
@@ -932,7 +932,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'NAND',
-                                label: 'nand',
+                                label: 'naand',
                                 position: const Offset(120, 420),
                                 ports: {
                                   'a': Port(
@@ -971,7 +971,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'NOR',
-                                label: 'nor',
+                                label: 'noor',
                                 position: const Offset(120, 520),
                                 ports: {
                                   'a': Port(
@@ -1010,7 +1010,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'XOR',
-                                label: 'xor',
+                                label: 'xoor',
                                 position: const Offset(120, 620),
                                 ports: {
                                   'a': Port(
@@ -1049,7 +1049,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'XNOR',
-                                label: 'xnor',
+                                label: 'xnoor',
                                 position: const Offset(120, 620),
                                 ports: {
                                   'a': Port(
@@ -1088,7 +1088,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'BUFFER',
-                                label: 'buffer',
+                                label: 'bufffer',
                                 position: const Offset(120, 620),
                                 ports: {
                                   'in': Port(

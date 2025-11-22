@@ -14,9 +14,7 @@ class NodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = 120.0;
     final height = 70.0;
-    return Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(8),
+    return SizedBox(
       child: Container(
         width: width,
         height: height,
@@ -24,14 +22,13 @@ class NodeWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: _nodeColor(node),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black12),
         ),
         child: Stack(
           children: [
             Center(
               child: Image.asset(
                 'assets/images/' + node.label.toLowerCase() + '.png',
-                height: 40,
+                height: 60,
               ),
             ),
             // ports
@@ -78,25 +75,25 @@ class NodeWidget extends StatelessWidget {
   Color _nodeColor(Node n) {
     switch (n.kind) {
       case 'SWITCH':
-        return Colors.orange.shade200;
+        return Colors.transparent;
       case 'AND':
-        return Colors.lightBlue.shade100;
+        return Colors.transparent;
       case 'OR':
-        return Colors.green.shade100;
+        return Colors.transparent;
       case 'NOT':
-        return Colors.purple.shade100;
+        return Colors.transparent;
       case 'NAND':
-        return Colors.red.shade100;
+        return Colors.transparent;
       case 'NOR':
-        return Colors.teal.shade100;
+        return Colors.transparent;
       case 'XOR':
-        return Colors.yellow.shade100;
+        return Colors.transparent;
       case 'XNOR':
-        return Colors.pink.shade100;
+        return Colors.transparent;
       case 'BUFFER':
-        return Colors.cyan.shade100;
+        return Colors.transparent;
       default:
-        return Colors.grey.shade200;
+        return Colors.transparent;
     }
   }
 }

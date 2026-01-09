@@ -14,7 +14,7 @@ class NodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = 120.0;
     final height = 70.0;
-    return Material(
+    return SizedBox(
       child: Container(
         width: width,
         height: height,

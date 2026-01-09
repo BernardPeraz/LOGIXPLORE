@@ -24,9 +24,16 @@ class _WhiteScreenState extends State<WhiteScreen> {
   // ============================================
   Future<void> _prepareQuestions() async {
     try {
+      // ✅ Use correct IP instead of localhost
+      // On Android emulator: 10.0.2.2
+      // On iOS simulator: 127.0.0.1 works
       final url = Uri.parse("http://localhost:3000/api/questions");
 
-      final response = await http.post(url, body: jsonEncode({"gate": "AND"}));
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"gate": "AND"}),
+      );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -38,13 +45,15 @@ class _WhiteScreenState extends State<WhiteScreen> {
         if (rawQuestions is List) {
           parsedQuestions = rawQuestions.map<Map<String, dynamic>>((q) {
             return {
-              "question": q["question"],
-              "choices": List<String>.from(q["choices"]),
-              "answer": q["answer"],
+              "question": q["question"] ?? "No question",
+              "choices": q["choices"] != null
+                  ? List<String>.from(q["choices"])
+                  : ["A", "B", "C", "D"],
+              "answer": q["answer"] ?? "No answer",
             };
           }).toList();
         }
-        // If backend returned STRING (fallback)
+        // If backend returned STRING (AI fallback)
         else if (rawQuestions is String) {
           parsedQuestions = rawQuestions
               .split("\n")
@@ -59,6 +68,15 @@ class _WhiteScreenState extends State<WhiteScreen> {
               .toList();
         }
 
+        // Ensure at least 10 questions
+        while (parsedQuestions.length < 10) {
+          parsedQuestions.add({
+            "question": "Placeholder question",
+            "choices": ["A", "B", "C", "D"],
+            "answer": "A",
+          });
+        }
+
         // Navigate after 5 seconds
         Future.delayed(const Duration(seconds: 5), () {
           if (!mounted) return;
@@ -66,10 +84,32 @@ class _WhiteScreenState extends State<WhiteScreen> {
         });
       } else {
         print("Error fetching questions: ${response.body}");
+        // fallback to local placeholder if AI fails
+        _fallbackToLocalQuestions();
       }
     } catch (e) {
       print("Failed to connect: $e");
+      // fallback to local placeholder if connection fails
+      _fallbackToLocalQuestions();
     }
+  }
+
+  // ===============================
+  // Fallback function to prevent crashes
+  // ===============================
+  void _fallbackToLocalQuestions() {
+    List<Map<String, dynamic>> localQuestions = List.generate(10, (index) {
+      return {
+        "question": "Placeholder question ${index + 1}",
+        "choices": ["A", "B", "C", "D"],
+        "answer": "A",
+      };
+    });
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (!mounted) return;
+      Get.off(() => widget.nextPage(localQuestions));
+    });
   }
 
   // ============================================

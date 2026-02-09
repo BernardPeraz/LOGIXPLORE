@@ -4,7 +4,7 @@ class MultiPageDialog extends StatefulWidget {
   final double width;
   final double height;
 
-  const MultiPageDialog({required this.width, required this.height});
+  const MultiPageDialog({super.key, required this.width, required this.height});
 
   @override
   State<MultiPageDialog> createState() => _MultiPageDialogState();

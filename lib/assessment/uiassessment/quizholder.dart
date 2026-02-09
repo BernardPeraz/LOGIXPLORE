@@ -84,7 +84,7 @@ class _DynamicQuizUIState extends State<DynamicQuizUI> {
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

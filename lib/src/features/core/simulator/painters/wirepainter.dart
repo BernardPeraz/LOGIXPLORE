@@ -55,8 +55,9 @@ class TempLinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (model.connectingFrom == null || model.currentDragPosition == null)
+    if (model.connectingFrom == null || model.currentDragPosition == null) {
       return;
+    }
     final fromRef = model.connectingFrom!;
     final fromNode = model.nodes[fromRef.nodeId];
     if (fromNode == null) return;

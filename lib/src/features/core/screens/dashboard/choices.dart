@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:studydesign2zzdatabaseplaylist/assessment/exercises/exercises.dart';
 import 'package:studydesign2zzdatabaseplaylist/assessment/exercises/quizzes/quizzes.dart';
 import 'package:studydesign2zzdatabaseplaylist/assessment/whitescreen/whitescreen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';

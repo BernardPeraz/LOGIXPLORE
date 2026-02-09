@@ -114,7 +114,7 @@ class _SwitchTableState extends State<SwitchTable> {
             TableRow(children: [cell("A")]),
             ...widget.Aswitch.map((value) {
               return TableRow(children: [cell(value.toString())]);
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -131,7 +131,7 @@ class _SwitchTableState extends State<SwitchTable> {
             TableRow(children: [cell("B")]),
             ...widget.Bswitch.map((value) {
               return TableRow(children: [cell(value.toString())]);
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -148,7 +148,7 @@ class _SwitchTableState extends State<SwitchTable> {
             TableRow(children: [cell("C")]),
             ...widget.Cswitch.map((value) {
               return TableRow(children: [cell(value.toString())]);
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -165,7 +165,7 @@ class _SwitchTableState extends State<SwitchTable> {
             TableRow(children: [cell("D")]),
             ...widget.Dswitch.map((value) {
               return TableRow(children: [cell(value.toString())]);
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -182,7 +182,7 @@ class _SwitchTableState extends State<SwitchTable> {
             TableRow(children: [cell("E")]),
             ...widget.Eswitch.map((value) {
               return TableRow(children: [cell(value.toString())]);
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -199,7 +199,7 @@ class _SwitchTableState extends State<SwitchTable> {
             TableRow(children: [cell("Expected Output")]),
             ...widget.Expected.map((value) {
               return TableRow(children: [cell(value.toString())]);
-            }).toList(),
+            }),
           ],
         ),
       ),

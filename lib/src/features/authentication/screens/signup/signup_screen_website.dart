@@ -228,17 +228,17 @@ Future<bool> login(BuildContext context) async {
         builder: (_) => const Center(child: CircularProgressIndicator()),
       );
 
-      // ✅ Get email from Google user
+      //  Get email from Google user
       final email = googleUser.email;
 
-      // 3️⃣ Check Firestore manually if account already exists (simple if–else)
+      // 3️Check Firestore manually if account already exists (simple if–else)
       final existingUser = await FirebaseFirestore.instance
           .collection('users')
           .where('Email', isEqualTo: email)
           .get();
 
       if (existingUser.docs.isNotEmpty) {
-        // 🚫 Account already exists (from manual registration)
+        // Account already exists (from manual registration)
         Navigator.pop(context); // close loading dialog
 
         await showDialog(
@@ -258,12 +258,12 @@ Future<bool> login(BuildContext context) async {
           ),
         );
 
-        // 👇 Sign out from Google to cancel the login process
+        //  Sign out from Google to cancel the login process
         await GoogleSignIn().signOut();
 
         return false;
       } else {
-        // ✅ No duplicate found, continue Google authentication
+        // No duplicate found, continue Google authentication
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
 

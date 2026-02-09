@@ -320,6 +320,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
   late Node s5;
   late Node not1;
 
+  @override
   void initState() {
     super.initState();
 
@@ -531,9 +532,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                         : 'Good! the ouput length is correct, now use correct gates to do the expected output'
                                   : (2 ^ (switchNum + 1) <
                                         widget.ExpecOut.length)
-                                  ? "Let’s use the switches to get " +
-                                        widget.ExpecOut.toString() +
-                                        " as Expected Output "
+                                  ? "Let’s use the switches to get ${widget.ExpecOut} as Expected Output "
                                   : 'Output length is more than expected output length, please restart',
 
                               textAlign: TextAlign.center,
@@ -798,10 +797,11 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                   "E",
                                 );
                               });
-                            } else
+                            } else {
                               () {
                                 //what to do after reaching maximum input counts
                               };
+                            }
                           },
                           label: const Text('Add Switch'),
                         ),

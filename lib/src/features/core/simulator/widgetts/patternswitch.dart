@@ -10,14 +10,12 @@ class PatternSwitch extends Node {
   int index = 0;
 
   PatternSwitch({
-    required String id,
-    required Offset position,
+    required super.id,
+    required super.position,
     required this.pattern,
   }) : super(
-         id: id,
          kind: 'PATTERN_SWITCH',
          label: 'PatternSwitch',
-         position: position,
          ports: {
            'out': Port(
              id: 'out',

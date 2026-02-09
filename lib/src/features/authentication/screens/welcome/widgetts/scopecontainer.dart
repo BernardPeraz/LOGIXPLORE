@@ -28,7 +28,7 @@ Widget ScopeContainer(
             child: Text(
               text,
               style: TextStyle(
-                fontSize: isDesktop ? 17 : 18,
+                fontSize: isDesktop ? 17 : 15,
                 fontWeight: FontWeight.w900,
                 color: Colors.black,
               ),

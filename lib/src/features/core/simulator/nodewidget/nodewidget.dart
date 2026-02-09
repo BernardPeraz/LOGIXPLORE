@@ -27,7 +27,7 @@ class NodeWidget extends StatelessWidget {
           children: [
             Center(
               child: Image.asset(
-                'assets/images/' + node.label.toLowerCase() + '.png',
+                'assets/images/${node.label.toLowerCase()}.png',
                 height: 60,
               ),
             ),

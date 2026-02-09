@@ -202,10 +202,8 @@ class EditorModel extends ChangeNotifier {
           orElse: () => null as Wire,
         );
 
-        if (incomingWire != null) {
-          final inputNode = nodes[incomingWire.from.nodeId];
-          if (inputNode != null) inputPatterns.add(inputNode.truthvalue);
-        }
+        final inputNode = nodes[incomingWire.from.nodeId];
+        if (inputNode != null) inputPatterns.add(inputNode.truthvalue);
       }
 
       // Guard: No inputs → output pattern = empty

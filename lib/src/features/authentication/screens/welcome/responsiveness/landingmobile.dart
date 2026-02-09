@@ -312,6 +312,7 @@ class _LandingmobileState extends State<Landingmobile> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        Padding(padding: const EdgeInsets.only(top: 50)),
                         Row(
                           children: [
                             ImageContainer(
@@ -337,6 +338,7 @@ class _LandingmobileState extends State<Landingmobile> {
                                 0,
                                 'Understand logic gates through interaction',
                                 false,
+                                true,
                               ),
                               const SizedBox(height: 10),
                               ScopeContainer(
@@ -345,6 +347,7 @@ class _LandingmobileState extends State<Landingmobile> {
                                 0,
                                 'Learn basic logic gates and their functions',
                                 false,
+                                true,
                               ),
                               const SizedBox(height: 10),
                               ScopeContainer(
@@ -353,6 +356,7 @@ class _LandingmobileState extends State<Landingmobile> {
                                 0,
                                 'Build your digital logic skills step by step',
                                 false,
+                                true,
                               ),
                               const SizedBox(height: 10),
                               ScopeContainer(
@@ -361,6 +365,7 @@ class _LandingmobileState extends State<Landingmobile> {
                                 0,
                                 'Practice with interactive circuit designs.',
                                 false,
+                                true,
                               ),
                             ],
                           ),

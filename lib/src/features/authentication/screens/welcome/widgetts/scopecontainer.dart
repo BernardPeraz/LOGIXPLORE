@@ -5,7 +5,8 @@ Widget ScopeContainer(
   int ActualContainer,
   int lastSpace,
   String text,
-  bool isDesktop, // DAGDAG: Added isDesktop parameter
+  bool isDesktop,
+  bool isMobile, // DAGDAG: Added isMobile parameter
 ) {
   return Row(
     children: [
@@ -28,7 +29,11 @@ Widget ScopeContainer(
             child: Text(
               text,
               style: TextStyle(
-                fontSize: isDesktop ? 17 : 15,
+                fontSize: isMobile
+                    ? 16
+                    : isDesktop
+                    ? 17
+                    : 18, // tablet or default
                 fontWeight: FontWeight.w900,
                 color: Colors.black,
               ),

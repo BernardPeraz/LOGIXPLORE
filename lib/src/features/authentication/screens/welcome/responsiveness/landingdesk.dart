@@ -222,6 +222,7 @@ class _LandingdesktopState extends State<Landingdesktop>
                             "Understand logic gates through interaction",
 
                             false,
+                            true,
                           ),
                           const SizedBox(height: 10),
                           ScopeContainer(
@@ -230,6 +231,7 @@ class _LandingdesktopState extends State<Landingdesktop>
                             6,
                             "Learn basic logic gates and their functions",
                             false,
+                            true,
                           ),
                           const SizedBox(height: 10),
                           ScopeContainer(
@@ -238,6 +240,7 @@ class _LandingdesktopState extends State<Landingdesktop>
                             3,
                             "Build your digital logic skills step by step",
                             false,
+                            true,
                           ),
                           const SizedBox(height: 10),
                           ScopeContainer(
@@ -246,6 +249,7 @@ class _LandingdesktopState extends State<Landingdesktop>
                             0,
                             "Explore logic operations visually",
                             false,
+                            true,
                           ),
                         ],
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/signup_screen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/responsiveness/About/aboutus.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/bodytext.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/imagecontainer.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/widgetts/scopecontainer.dart';
@@ -164,6 +165,10 @@ class _LandingmobileState extends State<Landingmobile> {
         Get.to(() => const LoginScreen());
       });
     } else if (label == 'About') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => const AboutUsPage()),
+      );
       // Handle About action
     } else if (label == 'Home') {
       // Handle Home action

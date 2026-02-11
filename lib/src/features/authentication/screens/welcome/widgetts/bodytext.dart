@@ -5,7 +5,7 @@ Widget BodyText(double width, bool isDesktop) {
     flex: 4,
     child: SizedBox(
       // Mas magandang height calculation base sa screen size
-      height: isDesktop ? 355 : 200,
+      height: isDesktop ? 355 : 300,
       width: width,
       child: Center(
         child: Column(

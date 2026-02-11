@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/nodewidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/painters/wirepainter.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/editor/editormobile.dart';

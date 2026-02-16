@@ -180,7 +180,7 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                             child: IconButton(
                               icon: Icon(Icons.close, color: Colors.black),
                               onPressed: () {
-                                Get.offAll(Landingpagee());
+                                Navigator.of(context).pop();
                                 resetFormFields(
                                   updateUI: () => setState(() {}),
                                 );
@@ -210,10 +210,13 @@ Future<bool> login(BuildContext context) async {
   try {
     if (kIsWeb) {
       GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
       await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
+      // success
       return FirebaseAuth.instance.currentUser != null;
     } else {
-      // 1️⃣ Trigger Google Sign-In
+      // 1Trigger Google Sign-In
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       if (googleUser == null) {
@@ -221,7 +224,7 @@ Future<bool> login(BuildContext context) async {
         return false;
       }
 
-      // 2️⃣ Show loading while checking Firestore
+      //  Show loading while checking Firestore
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -281,7 +284,7 @@ Future<bool> login(BuildContext context) async {
   } catch (e) {
     print("Google Sign-In Error: $e");
 
-    if (Navigator.canPop(context)) Navigator.pop(context);
+    debugPrint("Google Sign-In cancelled (WEB): $e");
 
     return false;
   }

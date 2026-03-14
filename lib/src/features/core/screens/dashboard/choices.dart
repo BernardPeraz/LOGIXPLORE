@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:studydesign2zzdatabaseplaylist/assessment/exercises/quizzes/quizzes.dart';
-import 'package:studydesign2zzdatabaseplaylist/assessment/whitescreen/whitescreen.dart';
+import 'package:studydesign2zzdatabaseplaylist/QuizGenerator/screens/quiz_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/main.dart';
@@ -68,12 +67,7 @@ class Assessment extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Get.to(
-                            () => WhiteScreen(
-                              nextPage: (questions) =>
-                                  Quizzes(passedQuestions: questions),
-                            ),
-                          );
+                          Get.to(() => QuizScreen(gate: "And"));
                         },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(

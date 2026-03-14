@@ -3,6 +3,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/lessons_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,6 +28,8 @@ class Andlessons extends StatefulWidget {
 }
 
 class _AndlessonsState extends State<Andlessons> {
+  bool editMode = false; // added for edit/delete toggle
+
   @override
   void initState() {
     super.initState();
@@ -70,7 +73,6 @@ class _AndlessonsState extends State<Andlessons> {
           .doc('AND')
           .set({'progress': 1.0, 'updatedAt': DateTime.now()});
     }
-    // Call the callback to update progress
     if (widget.onPdfClicked != null) {
       widget.onPdfClicked!(pdfPath);
     }
@@ -90,7 +92,6 @@ class _AndlessonsState extends State<Andlessons> {
       appBar: AppBar(
         leading: Image.asset('assets/logo/and.png', fit: BoxFit.contain),
         title: Text('AND GATE LESSONS'),
-
         actions: [
           Tooltip(
             message: 'Home',
@@ -119,7 +120,6 @@ class _AndlessonsState extends State<Andlessons> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
-
                   Text(
                     'Available Lessons',
                     style: TextStyle(
@@ -128,7 +128,6 @@ class _AndlessonsState extends State<Andlessons> {
                     ),
                   ),
                   const SizedBox(height: 3),
-
                   Text(
                     'Select a lesson to open the PDF',
                     style: TextStyle(
@@ -136,30 +135,63 @@ class _AndlessonsState extends State<Andlessons> {
                       color: Colors.grey[600],
                     ),
                   ),
+                  const SizedBox(height: 10),
 
-                  SizedBox(height: Responsive.getPadding(context)),
+                  // EDIT BUTTON
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: Icon(
+                        editMode ? Icons.check : Icons.edit,
+                        color: Colors.orange,
+                      ),
+                      tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
+                      onPressed: () {
+                        setState(() {
+                          editMode = !editMode;
+                        });
+                      },
+                    ),
+                  ),
 
+                  // LESSONS LIST WITH DELETE IN EDIT MODE
                   Column(
                     children: Andlessons.lessons.map((lesson) {
-                      int index = Andlessons.lessons.indexOf(
-                        lesson,
-                      ); // index finder
+                      int index = Andlessons.lessons.indexOf(lesson);
 
                       return Padding(
                         padding: EdgeInsets.only(
                           bottom: Responsive.getPadding(context) / 2,
                         ),
-                        child: LessonButton(
-                          pdfPath: lesson['pdfPath'],
-                          lessonTitle: lesson['title'],
-                          onPressed: () => _openPdf(lesson['pdfPath'], index),
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            LessonButton(
+                              pdfPath: lesson['pdfPath'],
+                              lessonTitle: lesson['title'],
+                              onPressed: () =>
+                                  _openPdf(lesson['pdfPath'], index),
+                            ),
+                            if (editMode)
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    Andlessons.lessons.removeAt(index);
+                                    // TODO: optionally remove from other lesson lists as needed
+                                  });
+                                },
+                              ),
+                          ],
                         ),
                       );
                     }).toList(),
                   ),
 
                   const SizedBox(height: 60),
-
                   Align(
                     alignment: Alignment.bottomRight,
                     child: SizedBox(
@@ -169,6 +201,14 @@ class _AndlessonsState extends State<Andlessons> {
                   ),
 
                   const SizedBox(height: 40),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: SizedBox(
+                      width: DialogController.getButtonWidth(context),
+                      //admin lang dapat makakakita nito
+                      child: UploadButton(targetLessonList: Andlessons.lessons),
+                    ),
+                  ),
                 ],
               ),
             ),

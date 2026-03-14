@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class DynamicQuizUI extends StatefulWidget {
   final String question;
   final List<String> choices;

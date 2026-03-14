@@ -3,6 +3,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/lessons_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,6 +34,7 @@ class Norlessons extends StatefulWidget {
 }
 
 class _NorlessonsState extends State<Norlessons> {
+  bool editMode = false; // added for edit/delete toggle
   @override
   void initState() {
     super.initState();
@@ -143,7 +145,24 @@ class _NorlessonsState extends State<Norlessons> {
                     ),
                   ),
 
-                  SizedBox(height: Responsive.getPadding(context)),
+                  const SizedBox(height: 10),
+
+                  // EDIT BUTTON
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: Icon(
+                        editMode ? Icons.check : Icons.edit,
+                        color: Colors.orange,
+                      ),
+                      tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
+                      onPressed: () {
+                        setState(() {
+                          editMode = !editMode;
+                        });
+                      },
+                    ),
+                  ),
 
                   Column(
                     children: Norlessons.lessons.map((lesson) {
@@ -155,10 +174,29 @@ class _NorlessonsState extends State<Norlessons> {
                         padding: EdgeInsets.only(
                           bottom: Responsive.getPadding(context) / 2,
                         ),
-                        child: LessonButton(
-                          pdfPath: lesson['pdfPath'],
-                          lessonTitle: lesson['title'],
-                          onPressed: () => _openPdf(lesson['pdfPath'], index),
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            LessonButton(
+                              pdfPath: lesson['pdfPath'],
+                              lessonTitle: lesson['title'],
+                              onPressed: () =>
+                                  _openPdf(lesson['pdfPath'], index),
+                            ),
+                            if (editMode)
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    Norlessons.lessons.removeAt(index);
+                                    // TODO: optionally remove from other lesson lists as needed
+                                  });
+                                },
+                              ),
+                          ],
                         ),
                       );
                     }).toList(),
@@ -175,6 +213,14 @@ class _NorlessonsState extends State<Norlessons> {
                   ),
 
                   const SizedBox(height: 40),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: SizedBox(
+                      width: DialogController.getButtonWidth(context),
+                      //admin lang dapat makakakita nito
+                      child: UploadButton(targetLessonList: Norlessons.lessons),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -93,8 +93,9 @@ class _MultiPageDialogState extends State<MultiPageDialog> {
                 page["title"],
                 style: const TextStyle(
                   fontSize: 26,
+                  color: Colors.black,
 
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -118,7 +119,8 @@ class _MultiPageDialogState extends State<MultiPageDialog> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   page["text"],
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+
                   textAlign: TextAlign.justify,
                 ),
               ),
@@ -139,14 +141,20 @@ class _MultiPageDialogState extends State<MultiPageDialog> {
                         },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: const Text("Back", style: TextStyle(fontSize: 18)),
+                    child: const Text(
+                      "Back",
+                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    ),
                   ),
                 ),
 
                 // CLOSE
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Close", style: TextStyle(fontSize: 18)),
+                  child: const Text(
+                    "Close",
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
                 ),
 
                 // NEXT
@@ -156,7 +164,10 @@ class _MultiPageDialogState extends State<MultiPageDialog> {
                       : () {
                           setState(() => pageIndex++);
                         },
-                  child: const Text("Next", style: TextStyle(fontSize: 18)),
+                  child: const Text(
+                    "Next",
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
                 ),
               ],
             ),

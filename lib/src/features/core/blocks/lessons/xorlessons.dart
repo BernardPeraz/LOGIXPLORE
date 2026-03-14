@@ -207,7 +207,10 @@ class _XorlessonsState extends State<Xorlessons> {
                     alignment: Alignment.centerRight,
                     child: SizedBox(
                       width: DialogController.getButtonWidth(context),
-                      child: TaskButton(progress: _calculateOverallProgress()),
+                      child: TaskButton(
+                        progress: _calculateOverallProgress(),
+                        title: 'XOR',
+                      ),
                     ),
                   ),
 

@@ -4,12 +4,16 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/choices.dart';
 
 class TaskButton extends StatefulWidget {
-  final double progress; //  parameter para sa progress
+  final double progress;
+  final String title; //1403
 
   const TaskButton({
     super.key,
     required this.progress,
-  }); // ADD THIS: constructor
+    required this.title, //1403
+  });
+
+  // ADD THIS: constructor
 
   @override
   _TaskButtonState createState() => _TaskButtonState();
@@ -29,7 +33,9 @@ class _TaskButtonState extends State<TaskButton> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Assessment()),
+                      MaterialPageRoute(
+                        builder: (context) => Assessment(title: widget.title),
+                      ),
                     );
                   },
                   style: ElevatedButton.styleFrom(

@@ -6,7 +6,9 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboa
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/main.dart';
 
 class Assessment extends StatelessWidget {
-  const Assessment({super.key});
+  final String title;
+
+  const Assessment({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +69,7 @@ class Assessment extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Get.to(() => QuizScreen(gate: "And"));
+                          Get.to(() => QuizScreen(gate: title));
                         },
                         style: ElevatedButton.styleFrom(
                           side: BorderSide(

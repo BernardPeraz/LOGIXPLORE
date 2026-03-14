@@ -86,7 +86,7 @@ class MobileLayout {
             SizedBox(height: 10),
             SizedBox(
               width: DialogController.getButtonWidth(context),
-              child: TaskButton(progress: progress),
+              child: TaskButton(progress: progress, title: lesson['title']!),
             ),
           ],
         ),

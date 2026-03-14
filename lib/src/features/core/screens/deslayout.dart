@@ -126,7 +126,10 @@ class DesktopLayout {
                             ),
 
                             const SizedBox(height: 20),
-                            TaskButton(progress: progress),
+                            TaskButton(
+                              progress: progress,
+                              title: lesson['title']!,
+                            ), //1403
                           ],
                         ),
                       ],

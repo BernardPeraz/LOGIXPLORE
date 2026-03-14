@@ -196,7 +196,10 @@ class _AndlessonsState extends State<Andlessons> {
                     alignment: Alignment.bottomRight,
                     child: SizedBox(
                       width: DialogController.getButtonWidth(context),
-                      child: TaskButton(progress: _calculateOverallProgress()),
+                      child: TaskButton(
+                        progress: _calculateOverallProgress(),
+                        title: 'And',
+                      ),
                     ),
                   ),
 

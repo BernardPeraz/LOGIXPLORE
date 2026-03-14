@@ -214,7 +214,10 @@ class _NotlessonsState extends State<Notlessons> {
                     alignment: Alignment.centerRight,
                     child: SizedBox(
                       width: DialogController.getButtonWidth(context),
-                      child: TaskButton(progress: _calculateOverallProgress()),
+                      child: TaskButton(
+                        progress: _calculateOverallProgress(),
+                        title: 'Not',
+                      ),
                     ),
                   ),
 

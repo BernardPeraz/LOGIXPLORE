@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,8 @@ class Adminlogin extends StatefulWidget {
 }
 
 class _AdminloginState extends State<Adminlogin> {
+  bool isAdminLoggedIn = false;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -32,7 +35,7 @@ class _AdminloginState extends State<Adminlogin> {
     try {
       // FIXED: Correct comparison — MUST use .text, not controller object
       final adminSnapshot = await FirebaseFirestore.instance
-          .collection('admin')
+          .collection('admin1')
           .where('Email', isEqualTo: email) // ← FIXED HERE
           .limit(1)
           .get();
@@ -51,7 +54,17 @@ class _AdminloginState extends State<Adminlogin> {
         setState(() => _isLoading = false);
         return;
       }
+      if (adminData['Password'] != password) {
+        _showError("Incorrect password.");
+        setState(() => _isLoading = false);
+        return;
+      }
 
+      // ✅ ADD THIS: FirebaseAuth sign-in
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       // SUCCESS — proceed to dashboard
       setState(() => _isLoading = false);
       Get.off(() => const Admindashboard());

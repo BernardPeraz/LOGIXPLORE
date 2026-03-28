@@ -8,6 +8,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditi
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/adminconditions.dart';
 
 class Xorlessons extends StatefulWidget {
   final Function(String pdfPath)? onPdfClicked;
@@ -34,10 +35,21 @@ class Xorlessons extends StatefulWidget {
 
 class _XorlessonsState extends State<Xorlessons> {
   bool editMode = false;
+  bool isAdmin = false;
+  bool isLoadingAdmin = true;
   @override
   void initState() {
     super.initState();
     _loadSavedProgress();
+    checkAdmin();
+  }
+
+  Future<void> checkAdmin() async {
+    isAdmin = await AdminConditions.isAdmin();
+
+    setState(() {
+      isLoadingAdmin = false;
+    });
   }
 
   void _loadSavedProgress() async {
@@ -147,21 +159,22 @@ class _XorlessonsState extends State<Xorlessons> {
                   const SizedBox(height: 10),
 
                   // EDIT BUTTON
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(
-                        editMode ? Icons.check : Icons.edit,
-                        color: Colors.orange,
+                  if (isAdmin)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        icon: Icon(
+                          editMode ? Icons.check : Icons.edit,
+                          color: Colors.orange,
+                        ),
+                        tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
+                        onPressed: () {
+                          setState(() {
+                            editMode = !editMode;
+                          });
+                        },
                       ),
-                      tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
-                      onPressed: () {
-                        setState(() {
-                          editMode = !editMode;
-                        });
-                      },
                     ),
-                  ),
 
                   Column(
                     children: Xorlessons.lessons.map((lesson) {

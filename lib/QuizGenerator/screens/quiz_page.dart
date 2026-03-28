@@ -34,7 +34,7 @@ class _QuizPageState extends State<QuizPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("${widget.gate} Gate Quiz")),
+      appBar: AppBar(title: Text("${widget.gate} Quiz")),
       body: PageView.builder(
         itemCount: questions.length,
         physics: const NeverScrollableScrollPhysics(),

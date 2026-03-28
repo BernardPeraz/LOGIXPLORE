@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UploadButton extends StatefulWidget {
   /// Pass the specific lesson list from the parent page
@@ -12,8 +14,55 @@ class UploadButton extends StatefulWidget {
 }
 
 class _UploadButtonState extends State<UploadButton> {
+  bool isAdmin = false;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfAdmin();
+  }
+
+  Future<void> checkIfAdmin() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      setState(() {
+        isAdmin = false;
+        isLoading = false;
+      });
+      return;
+    }
+
+    final snapshot = await FirebaseFirestore.instance
+        .collection('admin1')
+        .where('Email', isEqualTo: user.email) // 👈 FIX
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      final data = snapshot.docs.first.data();
+
+      if (data['role'] == 'Admin') {
+        // 👈 mas tamang check
+        isAdmin = true;
+      }
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const SizedBox(); // habang chine-check role
+    }
+
+    if (!isAdmin) {
+      return const SizedBox(); // 👈 hidden sa users
+    }
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       height: 43,

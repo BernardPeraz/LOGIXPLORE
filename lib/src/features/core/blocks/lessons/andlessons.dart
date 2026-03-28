@@ -8,6 +8,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/adminconditions.dart';
 
 class Andlessons extends StatefulWidget {
   final Function(String pdfPath)? onPdfClicked;
@@ -29,11 +30,22 @@ class Andlessons extends StatefulWidget {
 
 class _AndlessonsState extends State<Andlessons> {
   bool editMode = false; // added for edit/delete toggle
+  bool isAdmin = false;
+  bool isLoadingAdmin = true;
 
   @override
   void initState() {
     super.initState();
     _loadSavedProgress();
+    checkAdmin();
+  }
+
+  Future<void> checkAdmin() async {
+    isAdmin = await AdminConditions.isAdmin();
+
+    setState(() {
+      isLoadingAdmin = false;
+    });
   }
 
   void _loadSavedProgress() async {
@@ -138,21 +150,22 @@ class _AndlessonsState extends State<Andlessons> {
                   const SizedBox(height: 10),
 
                   // EDIT BUTTON
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(
-                        editMode ? Icons.check : Icons.edit,
-                        color: Colors.orange,
+                  if (isAdmin)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        icon: Icon(
+                          editMode ? Icons.check : Icons.edit,
+                          color: Colors.orange,
+                        ),
+                        tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
+                        onPressed: () {
+                          setState(() {
+                            editMode = !editMode;
+                          });
+                        },
                       ),
-                      tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
-                      onPressed: () {
-                        setState(() {
-                          editMode = !editMode;
-                        });
-                      },
                     ),
-                  ),
 
                   // LESSONS LIST WITH DELETE IN EDIT MODE
                   Column(

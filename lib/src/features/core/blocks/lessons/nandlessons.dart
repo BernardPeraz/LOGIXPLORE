@@ -8,6 +8,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditi
 import 'package:universal_html/html.dart' as html;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/adminconditions.dart';
 
 class Nandlessons extends StatefulWidget {
   final Function(String pdfPath)? onPdfClicked;
@@ -41,10 +42,21 @@ class Nandlessons extends StatefulWidget {
 
 class _NandlessonsState extends State<Nandlessons> {
   bool editMode = false; // added for edit/delete toggle
+  bool isAdmin = false;
+  bool isLoadingAdmin = true;
   @override
   void initState() {
     super.initState();
     _loadSavedProgress();
+    checkAdmin();
+  }
+
+  Future<void> checkAdmin() async {
+    isAdmin = await AdminConditions.isAdmin();
+
+    setState(() {
+      isLoadingAdmin = false;
+    });
   }
 
   void _loadSavedProgress() async {
@@ -152,22 +164,22 @@ class _NandlessonsState extends State<Nandlessons> {
                     ),
                   ),
                   const SizedBox(height: 10),
-
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      icon: Icon(
-                        editMode ? Icons.check : Icons.edit,
-                        color: Colors.orange,
+                  if (isAdmin)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        icon: Icon(
+                          editMode ? Icons.check : Icons.edit,
+                          color: Colors.orange,
+                        ),
+                        tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
+                        onPressed: () {
+                          setState(() {
+                            editMode = !editMode;
+                          });
+                        },
                       ),
-                      tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
-                      onPressed: () {
-                        setState(() {
-                          editMode = !editMode;
-                        });
-                      },
                     ),
-                  ),
 
                   Column(
                     children: Nandlessons.lessons.map((lesson) {

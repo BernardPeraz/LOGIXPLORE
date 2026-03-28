@@ -167,7 +167,7 @@ class _XorlessonsState extends State<Xorlessons> {
                           editMode ? Icons.check : Icons.edit,
                           color: Colors.orange,
                         ),
-                        tooltip: editMode ? 'Done Editing' : 'Edit Lessons',
+                        tooltip: editMode ? 'Done Editing' : 'Edit Lesson',
                         onPressed: () {
                           setState(() {
                             editMode = !editMode;

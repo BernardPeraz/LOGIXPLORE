@@ -99,7 +99,7 @@ class _QuizScreenState extends State<QuizScreen> {
               const SizedBox(height: 30),
 
               Text(
-                "Generating ${widget.gate} Gate Quiz",
+                "Generating ${widget.gate} Quiz",
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 22,

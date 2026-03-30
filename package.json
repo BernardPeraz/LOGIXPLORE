@@ -11,6 +11,10 @@
   "version": "1.0.0",
   "description": "A new Flutter project.",
   "main": "index.js",
+   "type": "module",
+  "scripts": {
+  "start": "node index.js"
+},
   "directories": {
     "lib": "lib",
     "test": "test"

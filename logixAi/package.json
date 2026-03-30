@@ -2,7 +2,7 @@
   "name": "logixplore-ai",
   "version": "1.0.0",
   "description": "LogiX AI agent for generating logic gate questions",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

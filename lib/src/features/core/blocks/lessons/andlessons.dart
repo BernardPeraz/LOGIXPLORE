@@ -4,6 +4,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,14 +16,7 @@ class Andlessons extends StatefulWidget {
 
   const Andlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, dynamic>> lessons = [
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ANDGatelessons/ANDGatelesson.pdf',
-      'title': 'AND GATE 1',
-      'progress': 0.0,
-    },
-  ];
+  static List<Map<String, dynamic>> lessons = [];
 
   @override
   State<Andlessons> createState() => _AndlessonsState();
@@ -32,10 +26,30 @@ class _AndlessonsState extends State<Andlessons> {
   bool editMode = false; // added for edit/delete toggle
   bool isAdmin = false;
   bool isLoadingAdmin = true;
+  //bagong idinagdag ko
+  Future<void> _loadLessons() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('lessons')
+        .where('gateType', isEqualTo: 'AND')
+        .get();
+
+    setState(() {
+      Andlessons.lessons = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return {
+          'id': doc.id,
+          'pdfPath': data['pdfPath'] ?? '',
+          'title': data['title'] ?? 'No Title',
+          'progress': (data['progress'] ?? 0.0).toDouble(),
+        };
+      }).toList();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    _loadLessons();
     _loadSavedProgress();
     checkAdmin();
   }
@@ -60,7 +74,7 @@ class _AndlessonsState extends State<Andlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'] as double;
+      double savedProgress = doc.data()!['progress'].toDouble();
 
       setState(() {
         for (var lesson in Andlessons.lessons) {
@@ -93,7 +107,8 @@ class _AndlessonsState extends State<Andlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Andlessons.lessons) {
-      total += (lesson['progress'] as double);
+      //binago
+      total += (lesson['progress'] ?? 0.0).toDouble();
     }
     return total / Andlessons.lessons.length;
   }
@@ -191,10 +206,28 @@ class _AndlessonsState extends State<Andlessons> {
                                   Icons.delete,
                                   color: Colors.red,
                                 ),
-                                onPressed: () {
+                                //binago
+                                onPressed: () async {
+                                  final lesson = Andlessons.lessons[index];
+
+                                  String pdfUrl = lesson['pdfPath'];
+                                  String filePath = pdfUrl
+                                      .split('/pdfsave/')
+                                      .last;
+                                  final docId = lesson['id'];
+
+                                  // 1. delete sa Firestore
+                                  await FirebaseFirestore.instance
+                                      .collection('lessons')
+                                      .doc(docId)
+                                      .delete();
+                                  await Supabase.instance.client.storage
+                                      .from('pdfsave')
+                                      .remove([filePath]);
+
+                                  // 2. remove sa UI
                                   setState(() {
                                     Andlessons.lessons.removeAt(index);
-                                    // TODO: optionally remove from other lesson lists as needed
                                   });
                                 },
                               ),
@@ -222,7 +255,10 @@ class _AndlessonsState extends State<Andlessons> {
                     child: SizedBox(
                       width: DialogController.getButtonWidth(context),
                       //admin lang dapat makakakita nito
-                      child: UploadButton(targetLessonList: Andlessons.lessons),
+                      child: UploadButton(
+                        targetLessonList: Andlessons.lessons,
+                        gatesType: 'AND',
+                      ),
                     ),
                   ),
                 ],

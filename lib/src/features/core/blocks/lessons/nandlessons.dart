@@ -5,6 +5,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,26 +16,7 @@ class Nandlessons extends StatefulWidget {
 
   const Nandlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, dynamic>> lessons = [
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NANDGatelessons/nandgatelesson1.pdf',
-      'title': 'NAND GATE 1',
-      'progress': 0.0,
-    },
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NANDGatelessons/nandgatelesson2.pdf',
-      'title': 'NAND GATE 2',
-      'progress': 0.0,
-    },
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/NANDGatelessons/nandgatelesson3.pdf',
-      'title': 'NAND GATE 3',
-      'progress': 0.0,
-    },
-  ];
+  static List<Map<String, dynamic>> lessons = [];
 
   @override
   State<Nandlessons> createState() => _NandlessonsState();
@@ -44,9 +26,31 @@ class _NandlessonsState extends State<Nandlessons> {
   bool editMode = false; // added for edit/delete toggle
   bool isAdmin = false;
   bool isLoadingAdmin = true;
+  //bagong idinagdag ko
+  Future<void> _loadLessons() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('lessons')
+        .where('gateType', isEqualTo: 'NAND')
+        .get();
+
+    setState(() {
+      Nandlessons.lessons = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return {
+          'id': doc.id,
+          'pdfPath': data['pdfPath'] ?? '',
+          'title': data['title'] ?? 'No Title',
+          'progress': (data['progress'] ?? 0.0).toDouble(),
+        };
+      }).toList();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    //ito pa
+    _loadLessons();
     _loadSavedProgress();
     checkAdmin();
   }
@@ -105,7 +109,7 @@ class _NandlessonsState extends State<Nandlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Nandlessons.lessons) {
-      total += (lesson['progress'] as double);
+      total += (lesson['progress'] ?? 0.0).toDouble();
     }
     return total / Nandlessons.lessons.length;
   }
@@ -206,10 +210,25 @@ class _NandlessonsState extends State<Nandlessons> {
                                   Icons.delete,
                                   color: Colors.red,
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
+                                  final lesson = Nandlessons.lessons[index];
+
+                                  String pdfUrl = lesson['pdfPath'];
+                                  String fileName = pdfUrl.split('/').last;
+                                  final docId = lesson['id'];
+
+                                  // 1. delete sa Firestore
+                                  await FirebaseFirestore.instance
+                                      .collection('lessons')
+                                      .doc(docId)
+                                      .delete();
+                                  await Supabase.instance.client.storage
+                                      .from('pdfsave')
+                                      .remove([fileName]);
+
+                                  // 2. remove sa UI
                                   setState(() {
                                     Nandlessons.lessons.removeAt(index);
-                                    // TODO: optionally remove from other lesson lists as needed
                                   });
                                 },
                               ),
@@ -240,6 +259,7 @@ class _NandlessonsState extends State<Nandlessons> {
                       //admin lang dapat makakakita nito
                       child: UploadButton(
                         targetLessonList: Nandlessons.lessons,
+                        gatesType: 'NAND',
                       ),
                     ),
                   ),

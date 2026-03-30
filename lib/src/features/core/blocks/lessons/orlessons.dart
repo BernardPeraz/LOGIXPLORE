@@ -4,6 +4,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,26 +15,7 @@ class Orlessons extends StatefulWidget {
   final Function(String pdfPath)? onPdfClicked;
 
   const Orlessons({super.key, this.onPdfClicked});
-  static List<Map<String, dynamic>> lessons = [
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ORGatelessons/orgatelesson1.pdf',
-      'title': 'OR GATE 1',
-      'progress': 0.0,
-    },
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ORGatelessons/orgatelesson2.pdf',
-      'title': 'OR GATE 2',
-      'progress': 0.0,
-    },
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/ORGatelessons/orgatelesson2.pdf',
-      'title': 'OR GATE 3',
-      'progress': 0.0,
-    },
-  ];
+  static List<Map<String, dynamic>> lessons = [];
 
   @override
   State<Orlessons> createState() => _OrlessonsState();
@@ -43,9 +25,30 @@ class _OrlessonsState extends State<Orlessons> {
   bool editMode = false;
   bool isAdmin = false;
   bool isLoadingAdmin = true;
+  //bagong idinagdag ko
+  Future<void> _loadLessons() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('lessons')
+        .where('gateType', isEqualTo: 'OR')
+        .get();
+
+    setState(() {
+      Orlessons.lessons = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return {
+          'id': doc.id,
+          'pdfPath': data['pdfPath'] ?? '',
+          'title': data['title'] ?? 'No Title',
+          'progress': (data['progress'] ?? 0.0).toDouble(),
+        };
+      }).toList();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _loadLessons();
     _loadSavedProgress();
     checkAdmin();
   }
@@ -70,7 +73,7 @@ class _OrlessonsState extends State<Orlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'] as double;
+      double savedProgress = doc.data()!['progress'].toDouble();
 
       setState(() {
         for (var lesson in Orlessons.lessons) {
@@ -104,7 +107,7 @@ class _OrlessonsState extends State<Orlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Orlessons.lessons) {
-      total += (lesson['progress'] as double);
+      total += (lesson['progress'] ?? 0.0).toDouble();
     }
     return total / Orlessons.lessons.length;
   }
@@ -208,10 +211,25 @@ class _OrlessonsState extends State<Orlessons> {
                                   Icons.delete,
                                   color: Colors.red,
                                 ),
-                                onPressed: () {
+                                onPressed: () async {
+                                  final lesson = Orlessons.lessons[index];
+
+                                  String pdfUrl = lesson['pdfPath'];
+                                  String fileName = pdfUrl.split('/').last;
+                                  final docId = lesson['id'];
+
+                                  // 1. delete sa Firestore
+                                  await FirebaseFirestore.instance
+                                      .collection('lessons')
+                                      .doc(docId)
+                                      .delete();
+                                  await Supabase.instance.client.storage
+                                      .from('pdfsave')
+                                      .remove([fileName]);
+
+                                  // 2. remove sa UI
                                   setState(() {
                                     Orlessons.lessons.removeAt(index);
-                                    // TODO: optionally remove from other lesson lists as needed
                                   });
                                 },
                               ),
@@ -240,7 +258,10 @@ class _OrlessonsState extends State<Orlessons> {
                     child: SizedBox(
                       width: DialogController.getButtonWidth(context),
                       //admin lang dapat makakakita nito
-                      child: UploadButton(targetLessonList: Orlessons.lessons),
+                      child: UploadButton(
+                        targetLessonList: Orlessons.lessons,
+                        gatesType: 'OR',
+                      ),
                     ),
                   ),
                 ],

@@ -148,7 +148,13 @@ class _AdmindashboardState extends State<Admindashboard> {
                                               foregroundColor: Colors.white,
                                             ),
                                             onPressed: () {
-                                              Navigator.of(context).pop(true);
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => Adminlogin(),
+                                                ),
+                                                (route) => false,
+                                              );
                                             },
                                             child: Text("Logout"),
                                           ),

@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,8 +9,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UploadButton extends StatefulWidget {
   /// Pass the specific lesson list from the parent page
   final List<Map<String, dynamic>> targetLessonList;
-
-  const UploadButton({super.key, required this.targetLessonList});
+  final String gatesType;
+  const UploadButton({
+    super.key,
+    required this.targetLessonList,
+    required this.gatesType,
+  });
 
   @override
   State<UploadButton> createState() => _UploadButtonState();
@@ -105,7 +112,6 @@ class _UploadButtonState extends State<UploadButton> {
       final files = uploadInput.files;
       if (files != null && files.isNotEmpty) {
         final file = files[0];
-        final tempUrl = html.Url.createObjectUrl(file);
 
         // Show the dialog with Upload / Discard options
         showDialog(
@@ -119,7 +125,7 @@ class _UploadButtonState extends State<UploadButton> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    _discardFile(tempUrl, file.name);
+                    _discardFile(file.name, file.name);
                     Navigator.of(context).pop();
                   },
                   child: const Text(
@@ -129,7 +135,7 @@ class _UploadButtonState extends State<UploadButton> {
                 ),
                 TextButton(
                   onPressed: () {
-                    _uploadFile(tempUrl, file.name);
+                    _uploadFile(file);
                     Navigator.of(context).pop();
                   },
                   child: const Text(
@@ -145,24 +151,49 @@ class _UploadButtonState extends State<UploadButton> {
     });
   }
 
-  void _uploadFile(String url, String fileName) {
-    setState(() {
-      // Add to the specific lesson list passed from parent
-      widget.targetLessonList.add({
-        'pdfPath': url,
-        'title': fileName,
-        'progress': 0.0,
-      });
-      print("Uploaded to selected lessons list: $fileName");
+  Future<void> _uploadFile(html.File file) async {
+    try {
+      final supabase = Supabase.instance.client;
 
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("File '$fileName' uploaded successfully!"),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    });
+      // ✅ Convert file to Uint8List
+      final reader = html.FileReader();
+      reader.readAsArrayBuffer(file);
+      await reader.onLoad.first;
+      final bytes = reader.result as Uint8List;
+
+      // 1. Upload to Supabase
+      await supabase.storage
+          .from('pdfsave')
+          .uploadBinary(
+            file.name,
+            bytes,
+            fileOptions: const FileOptions(upsert: true),
+          );
+
+      // 2. Get public URL
+      final publicUrl = supabase.storage
+          .from('pdfsave')
+          .getPublicUrl(file.name);
+
+      // 3. Save to Firestore
+      await FirebaseFirestore.instance.collection('lessons').add({
+        'title': file.name,
+        'pdfPath': publicUrl,
+        'progress': 0.0,
+        'createdAt': FieldValue.serverTimestamp(),
+        'gateType': widget.gatesType,
+      });
+
+      setState(() {
+        widget.targetLessonList.add({'pdfPath': publicUrl, 'title': file.name});
+      });
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Uploaded & saved successfully!")));
+    } catch (e) {
+      print("Upload error: $e");
+    }
   }
 
   void _discardFile(String url, String fileName) {

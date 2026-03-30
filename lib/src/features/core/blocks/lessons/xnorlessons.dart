@@ -6,6 +6,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/lessonbutton/lessonbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/adminconditions.dart';
@@ -15,20 +16,7 @@ class Xnorlessons extends StatefulWidget {
 
   const Xnorlessons({super.key, this.onPdfClicked});
 
-  static List<Map<String, dynamic>> lessons = [
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XNORGatelessons/xnorgatelesson1.pdf',
-      'title': 'XNOR GATE 1',
-      'progress': 0.0,
-    },
-    {
-      'pdfPath':
-          'https://yumufbsbqiwnjnzkacnn.supabase.co/storage/v1/object/public/pdfs/XNORGatelessons/xnorgatelesson2..pdf',
-      'title': 'XNOR GATE 2',
-      'progress': 0.0,
-    },
-  ];
+  static List<Map<String, dynamic>> lessons = [];
 
   @override
   State<Xnorlessons> createState() => _XnorlessonsState();
@@ -38,9 +26,30 @@ class _XnorlessonsState extends State<Xnorlessons> {
   bool editMode = false;
   bool isAdmin = false;
   bool isLoadingAdmin = true;
+  //bagong idinagdag ko
+  Future<void> _loadLessons() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('lessons')
+        .where('gateType', isEqualTo: 'XNOR')
+        .get();
+
+    setState(() {
+      Xnorlessons.lessons = snapshot.docs.map((doc) {
+        final data = doc.data();
+        return {
+          'id': doc.id,
+          'pdfPath': data['pdfPath'] ?? '',
+          'title': data['title'] ?? 'No Title',
+          'progress': (data['progress'] ?? 0.0).toDouble(),
+        };
+      }).toList();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _loadLessons();
     _loadSavedProgress();
     checkAdmin();
   }
@@ -65,7 +74,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'] as double;
+      double savedProgress = doc.data()!['progress'].toDouble();
 
       setState(() {
         for (var lesson in Xnorlessons.lessons) {
@@ -98,7 +107,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Xnorlessons.lessons) {
-      total += (lesson['progress'] as double);
+      total += (lesson['progress'] ?? 0.0).toDouble();
     }
     return total / Xnorlessons.lessons.length;
   }
@@ -201,10 +210,28 @@ class _XnorlessonsState extends State<Xnorlessons> {
                                   Icons.delete,
                                   color: Colors.red,
                                 ),
-                                onPressed: () {
+                                //binago
+                                onPressed: () async {
+                                  final lesson = Xnorlessons.lessons[index];
+
+                                  String pdfUrl = lesson['pdfPath'];
+                                  String filePath = pdfUrl
+                                      .split('/pdfsave/')
+                                      .last;
+                                  final docId = lesson['id'];
+
+                                  // 1. delete sa Firestore
+                                  await FirebaseFirestore.instance
+                                      .collection('lessons')
+                                      .doc(docId)
+                                      .delete();
+                                  await Supabase.instance.client.storage
+                                      .from('pdfsave')
+                                      .remove([filePath]);
+
+                                  // 2. remove sa UI
                                   setState(() {
                                     Xnorlessons.lessons.removeAt(index);
-                                    // TODO: optionally remove from other lesson lists as needed
                                   });
                                 },
                               ),
@@ -236,6 +263,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
                       //admin lang dapat makakakita nito
                       child: UploadButton(
                         targetLessonList: Xnorlessons.lessons,
+                        gatesType: 'XNOR',
                       ),
                     ),
                   ),

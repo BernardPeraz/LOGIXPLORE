@@ -4,7 +4,6 @@
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "groq-sdk": "^0.36.0",
     "openai": "^6.27.0"
   },
   "name": "logixplorelol-main",
@@ -17,7 +16,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+   "start": "node index.js"
   },
   "repository": {
     "type": "git",

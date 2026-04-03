@@ -129,7 +129,15 @@ class _QuizScreenState extends State<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.gate} Gate Quiz (${currentIndex + 1}/10)"),
+        leading: BackButton(
+          color: Colors.black,
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          "${widget.gate} Gate Quiz (${currentIndex + 1}/10)",
+          style: const TextStyle(color: Colors.black),
+        ),
+        backgroundColor: const Color.fromARGB(255, 53, 207, 250),
       ),
       body: Container(
         width: double.infinity,
@@ -137,7 +145,7 @@ class _QuizScreenState extends State<QuizScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-              'assets/images/background_images/light-bg-image.jpg',
+              'assets/images/background_images/Rectangle 1.png',
             ),
             fit: BoxFit.cover,
           ),
@@ -148,8 +156,32 @@ class _QuizScreenState extends State<QuizScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 90),
-                Text(question.question, style: const TextStyle(fontSize: 20)),
-                const SizedBox(height: 50),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+
+                  child: Text(
+                    question.question,
+
+                    style: const TextStyle(
+                      color: Colors.black,
+
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 35),
 
                 ...List.generate(4, (index) {
                   final letter = letters[index];
@@ -166,14 +198,22 @@ class _QuizScreenState extends State<QuizScreen> {
                   }
 
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: color,
+                        minimumSize: const Size(double.infinity, 60),
+                        backgroundColor: color ?? Colors.white,
                       ),
                       onPressed: () => selectAnswer(letter),
-                      child: Text("$letter. $choice"),
+                      child: Text(
+                        "$letter. $choice",
+
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   );
                 }),

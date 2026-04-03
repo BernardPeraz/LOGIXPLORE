@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/QuizGenerator/models/question.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/whitescreen.dart';
 import 'quiz_screen.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -48,7 +50,10 @@ class ResultScreen extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // back to gate selection
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => Dashboard()),
+                );
               },
               child: const Text("Back to Gate Selection"),
             ),

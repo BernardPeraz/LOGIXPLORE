@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -104,62 +104,57 @@ class _UploadButtonState extends State<UploadButton> {
     );
   }
 
-  void _pickFileAndAdd(BuildContext context) {
-    final uploadInput = html.FileUploadInputElement()..accept = '.pdf';
-    uploadInput.click();
+  void _pickFileAndAdd(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
 
-    uploadInput.onChange.listen((e) {
-      final files = uploadInput.files;
-      if (files != null && files.isNotEmpty) {
-        final file = files[0];
+    if (result != null && result.files.isNotEmpty) {
+      final file = result.files.first;
 
-        // Show the dialog with Upload / Discard options
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("Upload PDF"),
-              content: Text(
-                "Do you want to upload '${file.name}' or discard it?",
+      // Show the dialog with Upload / Discard options
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Upload PDF"),
+            content: Text(
+              "Do you want to upload '${file.name}' or discard it?",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  _discardFile(file.name, file.name);
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  "Discard",
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    _discardFile(file.name, file.name);
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    "Discard",
-                    style: TextStyle(color: Colors.red),
-                  ),
+              TextButton(
+                onPressed: () {
+                  _uploadFile(file);
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  "Upload",
+                  style: TextStyle(color: Colors.green),
                 ),
-                TextButton(
-                  onPressed: () {
-                    _uploadFile(file);
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    "Upload",
-                    style: TextStyle(color: Colors.green),
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    });
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
-  Future<void> _uploadFile(html.File file) async {
+  Future<void> _uploadFile(PlatformFile file) async {
     try {
       final supabase = Supabase.instance.client;
 
-      // ✅ Convert file to Uint8List
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(file);
-      await reader.onLoad.first;
-      final bytes = reader.result as Uint8List;
+      final bytes = file.bytes!;
 
       // 1. Upload to Supabase
       await supabase.storage
@@ -197,7 +192,7 @@ class _UploadButtonState extends State<UploadButton> {
   }
 
   void _discardFile(String url, String fileName) {
-    html.Url.revokeObjectUrl(url);
+    // No action needed for file_picker
     print("File discarded: $fileName");
 
     ScaffoldMessenger.of(context).showSnackBar(

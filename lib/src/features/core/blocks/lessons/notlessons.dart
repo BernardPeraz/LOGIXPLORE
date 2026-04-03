@@ -5,7 +5,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/blocks/lessons/
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/taskbutton.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/conditionassessment/uploadbutton.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -84,8 +84,12 @@ class _NotlessonsState extends State<Notlessons> {
     }
   }
 
-  void _openPdf(String pdfPath, int lessonIndex) {
-    html.window.open(pdfPath, '_blank');
+  Future<void> _openPdf(String pdfPath, int lessonIndex) async {
+    final Uri url = Uri.parse(pdfPath);
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
     setState(() {
       Notlessons.lessons[lessonIndex]['progress'] = 1.0;
     });

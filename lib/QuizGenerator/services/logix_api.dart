@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/question.dart';
 
 class LogixApi {
-  static const String baseUrl = "http://localhost:3000";
+  static const String baseUrl = "https://logixplore.onrender.com";
 
   static Future<List<Question>> fetchQuiz(String gate) async {
     final response = await http.post(

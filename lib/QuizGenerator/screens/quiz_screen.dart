@@ -134,7 +134,7 @@ class _QuizScreenState extends State<QuizScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "${widget.gate} Gate Quiz (${currentIndex + 1}/10)",
+          "${widget.gate} Quiz (${currentIndex + 1}/10)",
           style: const TextStyle(color: Colors.black),
         ),
         backgroundColor: const Color.fromARGB(255, 53, 207, 250),

@@ -37,7 +37,7 @@ class StudentProgressPage extends StatelessWidget {
                   "Student Progress Overview",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
 
                 // TABLE HEADER (Full Name + 8 Gate Columns)
                 //

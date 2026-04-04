@@ -1,8 +1,10 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/adminlogin.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/resultscores.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/studentprogress.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
@@ -27,9 +29,8 @@ class _AdmindashboardState extends State<Admindashboard> {
 
   final List<Widget> pages = [
     StudentProgressPage(),
-    Center(child: Text("User Management", style: TextStyle(fontSize: 22))),
-    Center(child: Text("Settings", style: TextStyle(fontSize: 22))),
-    Dashboard(),
+    ResultScores(),
+    Center(child: Text("Simulator", style: TextStyle(fontSize: 22))),
   ];
 
   @override
@@ -47,52 +48,34 @@ class _AdmindashboardState extends State<Admindashboard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 100),
-
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            child: Text(
-                              "Student Progress",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-
+                          const SizedBox(height: 110),
                           const Divider(),
 
                           ListTile(
                             leading: Icon(Icons.bar_chart),
-                            title: const Text("Dashboard"),
+                            title: const Text("Student Progress"),
                             onTap: () {
                               setState(() => selectedIndex = 0);
                             },
                           ),
-
+                          const Divider(),
                           ListTile(
-                            leading: Icon(Icons.people),
-                            title: const Text("Quizzes"),
+                            leading: Icon(Icons.quiz),
+                            title: const Text("Quiz Results"),
                             onTap: () {
                               setState(() => selectedIndex = 1);
                             },
                           ),
-
+                          const Divider(),
                           ListTile(
-                            leading: Icon(Icons.settings),
+                            leading: Icon(Icons.bubble_chart),
                             title: const Text("Simulator"),
                             onTap: () {
                               setState(() => selectedIndex = 2);
                             },
                           ),
-                          ListTile(
-                            leading: Icon(Icons.settings),
-                            title: const Text("Lessons"),
-                            onTap: () {
-                              setState(() => selectedIndex = 3);
-                            },
-                          ),
 
+                          const Divider(),
                           ListTile(
                             leading: const Icon(
                               Icons.logout,

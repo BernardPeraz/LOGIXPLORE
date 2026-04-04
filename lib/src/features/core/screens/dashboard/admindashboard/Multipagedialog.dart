@@ -79,108 +79,105 @@ class _MultiPageDialogState extends State<MultiPageDialog> {
 
     return Center(
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: AlertDialog(
-            backgroundColor: Colors.white,
-            contentPadding: EdgeInsets.zero,
-            content: SizedBox(
-              width: widget.width,
-              height: widget.height,
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  // Title
+        scrollDirection: Axis.vertical,
+        child: AlertDialog(
+          backgroundColor: Colors.white,
+          contentPadding: EdgeInsets.zero,
+          content: SizedBox(
+            width: widget.width,
+            height: widget.height,
+            child: Column(
+              children: [
+                SizedBox(height: 20),
+                // Title
+                Padding(
+                  padding: const EdgeInsets.all(18),
+                  child: Text(
+                    page["title"],
+                    style: const TextStyle(
+                      fontSize: 26,
+                      color: Colors.black,
+
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+
+                // IMAGE (if exists)
+                if (page["image"] != null)
                   Padding(
-                    padding: const EdgeInsets.all(18),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Image.asset(
+                      page["image"],
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+
+                // DESCRIPTION
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      page["title"],
+                      page["text"],
                       style: const TextStyle(
-                        fontSize: 26,
-                        color: Colors.black,
-
-                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Colors.black87,
                       ),
-                      textAlign: TextAlign.center,
+
+                      textAlign: TextAlign.justify,
                     ),
                   ),
+                ),
 
-                  // IMAGE (if exists)
-                  if (page["image"] != null)
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Image.asset(
-                        page["image"],
-                        width: 150,
-                        height: 150,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+                const SizedBox(height: 20),
 
-                  // DESCRIPTION
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        page["text"],
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black87,
-                        ),
-
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // BUTTONS
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // BACK
-                      TextButton(
-                        onPressed: pageIndex == 0
-                            ? null
-                            : () {
-                                setState(() => pageIndex--);
-                              },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: const Text(
-                            "Back",
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                          ),
-                        ),
-                      ),
-
-                      // CLOSE
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
+                // BUTTONS
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // BACK
+                    TextButton(
+                      onPressed: pageIndex == 0
+                          ? null
+                          : () {
+                              setState(() => pageIndex--);
+                            },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: const Text(
-                          "Close",
+                          "Back",
                           style: TextStyle(fontSize: 18, color: Colors.black),
                         ),
                       ),
+                    ),
 
-                      // NEXT
-                      TextButton(
-                        onPressed: pageIndex == pages.length - 1
-                            ? null
-                            : () {
-                                setState(() => pageIndex++);
-                              },
-                        child: const Text(
-                          "Next",
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                        ),
+                    // CLOSE
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        "Close",
+                        style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+
+                    // NEXT
+                    TextButton(
+                      onPressed: pageIndex == pages.length - 1
+                          ? null
+                          : () {
+                              setState(() => pageIndex++);
+                            },
+                      child: const Text(
+                        "Next",
+                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

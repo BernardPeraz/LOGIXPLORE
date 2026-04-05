@@ -12,29 +12,46 @@ class NodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = 120.0;
-    final height = 70.0;
+    final width = 50.0;
+    final height = 80.0;
     return SizedBox(
       child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 3,
+              offset: const Offset(2, 2),
+              blurStyle: BlurStyle.normal, // changes position of shadow
+            ),
+          ],
+          color: _nodeColor(node),
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(80),
+            topRight: const Radius.circular(80),
+            bottomLeft: const Radius.circular(80),
+            bottomRight: const Radius.circular(80),
+          ),
+        ),
         width: width,
         height: height,
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-          color: _nodeColor(node),
-          borderRadius: BorderRadius.circular(8),
-        ),
+
         child: Stack(
           children: [
             Center(
               child: Image.asset(
                 'assets/images/${node.label.toLowerCase()}.png',
-                height: 60,
+                height: 50,
+                width: 50,
+
+                fit: BoxFit.contain,
               ),
             ),
             // ports
             for (final port in node.ports.values)
               Positioned(
-                left: port.localOffset.dx - 8,
+                left: port.localOffset.dx - 1,
                 top: port.localOffset.dy - 8,
                 child: GestureDetector(
                   onPanStart: (d) {

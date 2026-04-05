@@ -16,7 +16,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController emailOrNumberController = TextEditingController();
+  final TextEditingController emailOrUsernameController =
+      TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final ValueNotifier<bool> passwordVisible = ValueNotifier(false);
@@ -28,7 +29,7 @@ class _LoginFormState extends State<LoginForm> {
   String? _passwordError;
 
   Future<void> _login() async {
-    final input = emailOrNumberController.text.trim();
+    final input = emailOrUsernameController.text.trim();
     final password = passwordController.text.trim();
 
     setState(() {
@@ -39,7 +40,7 @@ class _LoginFormState extends State<LoginForm> {
     if (input.isEmpty || password.isEmpty) {
       setState(() {
         if (input.isEmpty) {
-          _emailError = "Please enter your email or phone number.";
+          _emailError = "Please enter your email or username.";
         }
         if (password.isEmpty) _passwordError = "Please enter your password.";
       });
@@ -62,25 +63,19 @@ class _LoginFormState extends State<LoginForm> {
 
       if (input.contains('@')) {
         email = input;
-      } else if (input.startsWith('09') || input.startsWith('+639')) {
+      } else {
         final snapshot = await FirebaseFirestore.instance
             .collection('users')
-            .where('Mobile Number', isEqualTo: input)
+            .where('Username', isEqualTo: input)
             .get();
 
-        if (snapshot.docs.isNotEmpty) {
-          email = snapshot.docs.first['Email'];
-        } else {
+        if (snapshot.docs.isEmpty) {
           throw FirebaseAuthException(
             code: 'user-not-found',
-            message: 'Phone number not registered.',
+            message: 'Username not found',
           );
         }
-      } else {
-        throw FirebaseAuthException(
-          code: 'invalid-input',
-          message: 'Enter a valid email or phone number.',
-        );
+        email = snapshot.docs.first['Email'];
       }
 
       await _auth.signInWithEmailAndPassword(email: email!, password: password);
@@ -88,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
       //BLOCK ADMIN FROM SIGNING IN HERE
       final uid = _auth.currentUser!.uid;
       final adminDoc = await FirebaseFirestore.instance
-          .collection('admin')
+          .collection('admin1')
           .doc(uid)
           .get();
 
@@ -126,7 +121,7 @@ class _LoginFormState extends State<LoginForm> {
         } else if (e.code == 'invalid-email') {
           _emailError = 'Invalid email format.';
         } else if (e.code == 'invalid-input') {
-          _emailError = 'Please enter a valid email or phone number.';
+          _emailError = 'Please enter a valid email or username.';
         } else {
           _emailError = 'Login failed. Please try again.';
         }
@@ -166,12 +161,12 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             SizedBox(height: 30),
             TextFormField(
-              controller: emailOrNumberController,
+              controller: emailOrUsernameController,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.person_outline_outlined),
-                labelText: "Email or Phone Number",
+                labelText: "Email or Username",
                 filled: true,
-                hintText: "Email or Phone Number",
+                hintText: "Email or Username",
                 enabledBorder: TInputBorders.enabled,
                 focusedBorder: TInputBorders.focused,
                 errorBorder: TInputBorders.error,

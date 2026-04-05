@@ -635,7 +635,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                     },
                     child: Container(
                       key: canvasKey,
-                      color: Colors.grey.shade100,
+                      color: Colors.lightBlueAccent,
                       child: CustomPaint(
                         painter: WirePainter(model: model),
                         size: Size.infinite,

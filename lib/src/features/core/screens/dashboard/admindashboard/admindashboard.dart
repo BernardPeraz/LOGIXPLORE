@@ -5,6 +5,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart'
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/adminlogin.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/resultscores.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/studentprogress.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
 class Admindashboard extends StatefulWidget {
   const Admindashboard({super.key});
@@ -26,7 +27,7 @@ class _AdmindashboardState extends State<Admindashboard> {
   int selectedIndex = 0;
 
   final List<Widget> pages = [
-    Center(child: Text("Admin Dashboard", style: TextStyle(fontSize: 22))),
+    Dashboard(),
     StudentProgressPage(),
     ResultScores(),
     Center(child: Text("Simulator", style: TextStyle(fontSize: 22))),
@@ -83,7 +84,7 @@ class _AdmindashboardState extends State<Admindashboard> {
                               ),
                             ),
                             onTap: () {
-                              setState(() => selectedIndex = 0);
+                              setState(() => selectedIndex = 1);
                             },
                           ),
                           const Divider(color: Colors.black, thickness: 2),
@@ -98,7 +99,7 @@ class _AdmindashboardState extends State<Admindashboard> {
                               ),
                             ),
                             onTap: () {
-                              setState(() => selectedIndex = 1);
+                              setState(() => selectedIndex = 2);
                             },
                           ),
                           const Divider(color: Colors.black, thickness: 2),
@@ -116,7 +117,7 @@ class _AdmindashboardState extends State<Admindashboard> {
                               ),
                             ),
                             onTap: () {
-                              setState(() => selectedIndex = 2);
+                              setState(() => selectedIndex = 3);
                             },
                           ),
 

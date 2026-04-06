@@ -30,7 +30,8 @@ class _AdminloginState extends State<Adminlogin> {
       return;
     }
 
-    setState(() => _isLoading = true);
+    if (!mounted) return;
+    setState(() => _isLoading = false);
 
     try {
       // FIXED: Correct comparison — MUST use .text, not controller object
@@ -54,21 +55,18 @@ class _AdminloginState extends State<Adminlogin> {
         setState(() => _isLoading = false);
         return;
       }
-      if (adminData['Password'] != password) {
-        _showError("Incorrect password.");
-        setState(() => _isLoading = false);
-        return;
-      }
 
       // ✅ ADD THIS: FirebaseAuth sign-in
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      // SUCCESS — proceed to dashboard
+      if (!mounted) return;
       setState(() => _isLoading = false);
+
       Get.off(() => const Admindashboard());
     } catch (e) {
+      if (!mounted) return;
       _showError("Something went wrong: $e");
       setState(() => _isLoading = false);
     }
@@ -76,6 +74,7 @@ class _AdminloginState extends State<Adminlogin> {
 
   // ERROR SNACKBAR
   void _showError(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: const TextStyle(color: Colors.white)),

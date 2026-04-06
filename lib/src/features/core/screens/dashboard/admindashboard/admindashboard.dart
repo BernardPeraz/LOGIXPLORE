@@ -26,6 +26,7 @@ class _AdmindashboardState extends State<Admindashboard> {
   int selectedIndex = 0;
 
   final List<Widget> pages = [
+    Center(child: Text("Admin Dashboard", style: TextStyle(fontSize: 22))),
     StudentProgressPage(),
     ResultScores(),
     Center(child: Text("Simulator", style: TextStyle(fontSize: 22))),
@@ -42,46 +43,96 @@ class _AdmindashboardState extends State<Admindashboard> {
               isSidebarVisible
                   ? Container(
                       width: 200,
-                      color: const Color.fromARGB(255, 246, 185, 95),
+                      color: const Color.fromARGB(255, 100, 1, 249),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 110),
-                          const Divider(),
+                          const Divider(color: Colors.black, thickness: 2),
 
                           ListTile(
-                            leading: Icon(Icons.bar_chart),
-                            title: const Text("Student Progress"),
+                            leading: Icon(
+                              Icons.bar_chart,
+                              color: Colors.orange,
+                            ),
+                            title: const Text(
+                              "Admin Dashboard",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
                             onTap: () {
                               setState(() => selectedIndex = 0);
                             },
                           ),
-                          const Divider(),
+                          const Divider(color: Colors.black, thickness: 2),
+
                           ListTile(
-                            leading: Icon(Icons.quiz),
-                            title: const Text("Quiz Results"),
+                            leading: Icon(
+                              Icons.bar_chart,
+                              color: Colors.orange,
+                            ),
+                            title: const Text(
+                              "Student Progress",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() => selectedIndex = 0);
+                            },
+                          ),
+                          const Divider(color: Colors.black, thickness: 2),
+                          ListTile(
+                            leading: Icon(Icons.quiz, color: Colors.blue),
+                            title: const Text(
+                              "Quiz Results",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
                             onTap: () {
                               setState(() => selectedIndex = 1);
                             },
                           ),
-                          const Divider(),
+                          const Divider(color: Colors.black, thickness: 2),
                           ListTile(
-                            leading: Icon(Icons.bubble_chart),
-                            title: const Text("Simulator"),
+                            leading: Icon(
+                              Icons.bubble_chart,
+                              color: Colors.green,
+                            ),
+                            title: const Text(
+                              "Simulator",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
                             onTap: () {
                               setState(() => selectedIndex = 2);
                             },
                           ),
 
-                          const Divider(),
+                          const Divider(color: Colors.black, thickness: 2),
                           ListTile(
                             leading: const Icon(
                               Icons.logout,
-                              color: Colors.red,
+                              color: Colors.black,
                             ),
                             title: const Text(
                               "Logout",
-                              style: TextStyle(color: Colors.red),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
                             ),
                             onTap: () async {
                               bool? shouldLogout = await showDialog<bool>(

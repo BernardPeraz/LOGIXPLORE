@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/QuizGenerator/models/question.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
 import 'quiz_screen.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
   final int score;
   final List<String> selectedAnswers; // pinili ng user
   final List<Question> questions;
@@ -19,6 +21,50 @@ class ResultScreen extends StatelessWidget {
     required this.questions,
     required this.selectedAnswer,
   });
+
+  @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+  bool isSaved = false;
+  @override
+  void initState() {
+    super.initState();
+    _saveResult();
+  }
+
+  Future<void> _saveResult() async {
+    if (isSaved) return;
+
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    int total = widget.questions.length;
+    double progress = widget.score / total;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('quiz_scores')
+        .add({
+          'gate': widget.gate,
+          'score': widget.score,
+          'total': total,
+          'percentage': progress,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+    // 🔥 Update progress (best score logic optional)
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('lessons_progress')
+        .doc(widget.gate)
+        .set({'progress': progress, 'updatedAt': FieldValue.serverTimestamp()});
+
+    isSaved = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +110,7 @@ class ResultScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 28),
                     Text(
-                      "$score / 10",
+                      "${widget.score} / ${widget.questions.length}",
                       style: const TextStyle(
                         fontSize: 38,
                         fontWeight: FontWeight.bold,
@@ -77,7 +123,7 @@ class ResultScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => QuizScreen(gate: gate),
+                            builder: (_) => QuizScreen(gate: widget.gate),
                           ),
                         );
                       },

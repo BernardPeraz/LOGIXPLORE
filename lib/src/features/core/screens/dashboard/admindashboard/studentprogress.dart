@@ -19,7 +19,7 @@ class StudentProgressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 88, 166, 233), // Light Blue Background
+      color: const Color.fromARGB(255, 122, 183, 236), // Light Blue Background
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (context, snapshot) {
@@ -83,6 +83,9 @@ class StudentProgressPage extends StatelessWidget {
                       final fullName =
                           "${data['First Name'] ?? ''} ${data['Last Name'] ?? ''}"
                               .trim();
+                      if (fullName.isEmpty) {
+                        return SizedBox.shrink();
+                      }
                       if (data['hidden'] == true) {
                         return SizedBox.shrink(); // 🔥 Hide this user
                       }

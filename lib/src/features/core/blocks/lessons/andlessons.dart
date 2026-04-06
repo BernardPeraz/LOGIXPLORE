@@ -40,7 +40,7 @@ class _AndlessonsState extends State<Andlessons> {
           'id': doc.id,
           'pdfPath': data['pdfPath'] ?? '',
           'title': data['title'] ?? 'No Title',
-          'progress': (data['progress'] ?? 0.0).toDouble(),
+          'progress': 0.0,
         };
       }).toList();
     });
@@ -74,12 +74,16 @@ class _AndlessonsState extends State<Andlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'].toDouble();
-
       setState(() {
-        for (var lesson in Andlessons.lessons) {
-          lesson['progress'] = savedProgress;
-        }
+        List progressList = doc.data()!['progress'];
+
+        setState(() {
+          for (int i = 0; i < Andlessons.lessons.length; i++) {
+            Andlessons.lessons[i]['progress'] = i < progressList.length
+                ? progressList[i]
+                : 0.0;
+          }
+        });
       });
     }
   }
@@ -96,12 +100,20 @@ class _AndlessonsState extends State<Andlessons> {
     });
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      FirebaseFirestore.instance
+      List<double> progressList = Andlessons.lessons.map((lesson) {
+        var value = lesson['progress'];
+
+        if (value is double) return value;
+        if (value is int) return value.toDouble();
+        return 0.0;
+      }).toList();
+
+      await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .collection('lessons_progress')
           .doc('AND')
-          .set({'progress': 1.0, 'updatedAt': DateTime.now()});
+          .set({'progress': progressList, 'updatedAt': DateTime.now()});
     }
     if (widget.onPdfClicked != null) {
       widget.onPdfClicked!(pdfPath);
@@ -112,7 +124,7 @@ class _AndlessonsState extends State<Andlessons> {
     double total = 0.0;
     for (var lesson in Andlessons.lessons) {
       //binago
-      total += (lesson['progress'] ?? 0.0).toDouble();
+      total += (lesson['progress'] as num?)?.toDouble() ?? 0.0;
     }
     return total / Andlessons.lessons.length;
   }
@@ -248,7 +260,7 @@ class _AndlessonsState extends State<Andlessons> {
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(
                         progress: _calculateOverallProgress(),
-                        title: 'And',
+                        title: 'AND GATE',
                       ),
                     ),
                   ),

@@ -90,12 +90,12 @@ class StudentProgressPage extends StatelessWidget {
                         return SizedBox.shrink(); // 🔥 Hide this user
                       }
 
-                      return FutureBuilder<QuerySnapshot>(
-                        future: FirebaseFirestore.instance
+                      return StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
                             .collection('users')
                             .doc(userId)
                             .collection('lessons_progress')
-                            .get(),
+                            .snapshots(),
                         builder: (context, progressSnapshot) {
                           if (!progressSnapshot.hasData) {
                             return _loadingRow(fullName);
@@ -113,8 +113,21 @@ class StudentProgressPage extends StatelessWidget {
                             final value =
                                 (gateDoc.data() as Map<String, dynamic>);
                             if (value.containsKey("progress")) {
-                              gateProgress[name] = (value["progress"] as num)
-                                  .toDouble();
+                              final progressData = value["progress"];
+
+                              if (progressData is List) {
+                                int completed = progressData
+                                    .where((p) => p == 1.0)
+                                    .length;
+                                double progress = progressData.isNotEmpty
+                                    ? completed / progressData.length
+                                    : 0.0;
+
+                                gateProgress[name] = progress;
+                              } else if (progressData is num) {
+                                // fallback (in case old data exists)
+                                gateProgress[name] = progressData.toDouble();
+                              }
                             }
                           }
 

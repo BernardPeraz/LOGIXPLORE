@@ -39,7 +39,7 @@ class _OrlessonsState extends State<Orlessons> {
           'id': doc.id,
           'pdfPath': data['pdfPath'] ?? '',
           'title': data['title'] ?? 'No Title',
-          'progress': (data['progress'] ?? 0.0).toDouble(),
+          'progress': 0.0,
         };
       }).toList();
     });
@@ -61,7 +61,7 @@ class _OrlessonsState extends State<Orlessons> {
     });
   }
 
-  void _loadSavedProgress() async {
+  Future<void> _loadSavedProgress() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -73,13 +73,13 @@ class _OrlessonsState extends State<Orlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'].toDouble();
+      List progressList = doc.data()!['progress'];
 
-      setState(() {
-        for (var lesson in Orlessons.lessons) {
-          lesson['progress'] = savedProgress;
-        }
-      });
+      for (int i = 0; i < Orlessons.lessons.length; i++) {
+        Orlessons.lessons[i]['progress'] = i < progressList.length
+            ? progressList[i]
+            : 0.0;
+      }
     }
   }
 
@@ -93,6 +93,9 @@ class _OrlessonsState extends State<Orlessons> {
     setState(() {
       Orlessons.lessons[lessonIndex]['progress'] = 1.0;
     });
+    List<double> progressList = Orlessons.lessons
+        .map((lesson) => (lesson['progress'] as num?)?.toDouble() ?? 0.0)
+        .toList();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       FirebaseFirestore.instance
@@ -100,7 +103,7 @@ class _OrlessonsState extends State<Orlessons> {
           .doc(user.uid)
           .collection('lessons_progress')
           .doc('OR')
-          .set({'progress': 1.0, 'updatedAt': DateTime.now()});
+          .set({'progress': progressList, 'updatedAt': DateTime.now()});
     }
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {
@@ -111,7 +114,7 @@ class _OrlessonsState extends State<Orlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Orlessons.lessons) {
-      total += (lesson['progress'] ?? 0.0).toDouble();
+      total += (lesson['progress'] as num?)?.toDouble() ?? 0.0;
     }
     return total / Orlessons.lessons.length;
   }
@@ -251,7 +254,7 @@ class _OrlessonsState extends State<Orlessons> {
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(
                         progress: _calculateOverallProgress(),
-                        title: 'OR',
+                        title: 'OR GATE',
                       ),
                     ),
                   ),

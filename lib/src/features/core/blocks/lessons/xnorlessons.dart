@@ -40,18 +40,21 @@ class _XnorlessonsState extends State<Xnorlessons> {
           'id': doc.id,
           'pdfPath': data['pdfPath'] ?? '',
           'title': data['title'] ?? 'No Title',
-          'progress': (data['progress'] ?? 0.0).toDouble(),
+          'progress': 0.0,
         };
       }).toList();
     });
   }
 
+  Future<void> _initialize() async {
+    await _loadLessons();
+    await _loadSavedProgress();
+  }
+
   @override
   void initState() {
     super.initState();
-    _loadLessons();
-    _loadSavedProgress();
-    checkAdmin();
+    _initialize();
   }
 
   Future<void> checkAdmin() async {
@@ -62,7 +65,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
     });
   }
 
-  void _loadSavedProgress() async {
+  Future<void> _loadSavedProgress() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -74,13 +77,13 @@ class _XnorlessonsState extends State<Xnorlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'].toDouble();
+      List progressList = doc.data()!['progress'];
 
-      setState(() {
-        for (var lesson in Xnorlessons.lessons) {
-          lesson['progress'] = savedProgress;
-        }
-      });
+      for (int i = 0; i < Xnorlessons.lessons.length; i++) {
+        Xnorlessons.lessons[i]['progress'] = i < progressList.length
+            ? progressList[i]
+            : 0.0;
+      }
     }
   }
 
@@ -93,6 +96,9 @@ class _XnorlessonsState extends State<Xnorlessons> {
     setState(() {
       Xnorlessons.lessons[lessonIndex]['progress'] = 1.0;
     });
+    List<double> progressList = Xnorlessons.lessons
+        .map((lesson) => (lesson['progress'] as num?)?.toDouble() ?? 0.0)
+        .toList();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       FirebaseFirestore.instance
@@ -100,7 +106,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
           .doc(user.uid)
           .collection('lessons_progress')
           .doc('XNOR')
-          .set({'progress': 1.0, 'updatedAt': DateTime.now()});
+          .set({'progress': progressList, 'updatedAt': DateTime.now()});
     }
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {
@@ -111,7 +117,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Xnorlessons.lessons) {
-      total += (lesson['progress'] ?? 0.0).toDouble();
+      total += (lesson['progress'] as num?)?.toDouble() ?? 0.0;
     }
     return total / Xnorlessons.lessons.length;
   }
@@ -253,7 +259,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(
                         progress: _calculateOverallProgress(),
-                        title: 'XNOR',
+                        title: 'XNOR GATE',
                       ),
                     ),
                   ),

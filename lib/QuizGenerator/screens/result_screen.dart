@@ -55,15 +55,9 @@ class _ResultScreenState extends State<ResultScreen> {
           'timestamp': FieldValue.serverTimestamp(),
         });
 
-    // 🔥 Update progress (best score logic optional)
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('lessons_progress')
-        .doc(widget.gate)
-        .set({'progress': progress, 'updatedAt': FieldValue.serverTimestamp()});
-
-    isSaved = true;
+    setState(() {
+      isSaved = true;
+    });
   }
 
   @override

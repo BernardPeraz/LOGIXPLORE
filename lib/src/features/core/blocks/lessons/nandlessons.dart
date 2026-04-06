@@ -26,6 +26,7 @@ class _NandlessonsState extends State<Nandlessons> {
   bool editMode = false; // added for edit/delete toggle
   bool isAdmin = false;
   bool isLoadingAdmin = true;
+
   //bagong idinagdag ko
   Future<void> _loadLessons() async {
     final snapshot = await FirebaseFirestore.instance
@@ -40,10 +41,15 @@ class _NandlessonsState extends State<Nandlessons> {
           'id': doc.id,
           'pdfPath': data['pdfPath'] ?? '',
           'title': data['title'] ?? 'No Title',
-          'progress': (data['progress'] ?? 0.0).toDouble(),
+          'progress': 0.0,
         };
       }).toList();
     });
+  }
+
+  Future<void> _initialize() async {
+    await _loadLessons();
+    await _loadSavedProgress();
   }
 
   @override
@@ -52,6 +58,7 @@ class _NandlessonsState extends State<Nandlessons> {
     //ito pa
     _loadLessons();
     _loadSavedProgress();
+    _initialize();
     checkAdmin();
   }
 
@@ -63,7 +70,7 @@ class _NandlessonsState extends State<Nandlessons> {
     });
   }
 
-  void _loadSavedProgress() async {
+  Future<void> _loadSavedProgress() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -75,13 +82,13 @@ class _NandlessonsState extends State<Nandlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'] as double;
+      List progressList = doc.data()!['progress'];
 
-      setState(() {
-        for (var lesson in Nandlessons.lessons) {
-          lesson['progress'] = savedProgress;
-        }
-      });
+      for (int i = 0; i < Nandlessons.lessons.length; i++) {
+        Nandlessons.lessons[i]['progress'] = i < progressList.length
+            ? progressList[i]
+            : 0.0;
+      }
     }
   }
 
@@ -95,6 +102,9 @@ class _NandlessonsState extends State<Nandlessons> {
     setState(() {
       Nandlessons.lessons[lessonIndex]['progress'] = 1.0;
     });
+    List<double> progressList = Nandlessons.lessons
+        .map((lesson) => (lesson['progress'] as num?)?.toDouble() ?? 0.0)
+        .toList();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       FirebaseFirestore.instance
@@ -102,7 +112,7 @@ class _NandlessonsState extends State<Nandlessons> {
           .doc(user.uid)
           .collection('lessons_progress')
           .doc('NAND')
-          .set({'progress': 1.0, 'updatedAt': DateTime.now()});
+          .set({'progress': progressList, 'updatedAt': DateTime.now()});
     }
 
     if (widget.onPdfClicked != null) {
@@ -113,7 +123,7 @@ class _NandlessonsState extends State<Nandlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Nandlessons.lessons) {
-      total += (lesson['progress'] ?? 0.0).toDouble();
+      total += (lesson['progress'] as num?)?.toDouble() ?? 0.0;
     }
     return total / Nandlessons.lessons.length;
   }
@@ -250,7 +260,7 @@ class _NandlessonsState extends State<Nandlessons> {
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(
                         progress: _calculateOverallProgress(),
-                        title: 'Nand',
+                        title: 'NAND GATE',
                       ),
                     ),
                   ),

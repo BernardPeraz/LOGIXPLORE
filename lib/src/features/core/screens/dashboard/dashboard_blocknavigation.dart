@@ -39,8 +39,6 @@ class BuildBlock extends StatefulWidget {
 
 class _BuildBlockState extends State<BuildBlock> {
   double _progress = 0.0;
-  bool _hasBeenCompleted = false;
-  final Set<String> _completedPdfs = {};
 
   //  FIX: LOAD PROGRESS FROM FIRESTORE PER GATE
   Future<void> _loadProgressFromFirestore() async {
@@ -61,11 +59,14 @@ class _BuildBlockState extends State<BuildBlock> {
       if (data == null) return;
 
       setState(() {
-        _progress = (data['progress'] ?? 0.0).toDouble();
-        _hasBeenCompleted = data['completed'] ?? false;
+        if (data['progress'] is List) {
+          List progressList = data['progress'];
 
-        if (data['completed_pdfs'] != null) {
-          _completedPdfs.addAll(List<String>.from(data['completed_pdfs']));
+          int completed = progressList.where((p) => p == 1.0).length;
+
+          _progress = progressList.isNotEmpty
+              ? completed / progressList.length
+              : 0.0;
         }
       });
     } catch (e) {
@@ -84,11 +85,7 @@ class _BuildBlockState extends State<BuildBlock> {
           .doc(user.uid)
           .collection('lessons_progress')
           .doc(widget.text.toUpperCase())
-          .set({
-            'progress': _progress,
-            'completed': _hasBeenCompleted,
-            'completed_pdfs': _completedPdfs.toList(),
-          }, SetOptions(merge: true));
+          .set({'progress': _progress}, SetOptions(merge: true));
     } catch (e) {
       print("Progress save error: $e");
     }
@@ -137,32 +134,10 @@ class _BuildBlockState extends State<BuildBlock> {
 
   bool get isTaskCompleted => _progress == 1.0;
 
-  // FIXED — Save each lesson completion
-  void _onPdfClicked(String pdfPath) {
-    setState(() {
-      if (!_completedPdfs.contains(pdfPath)) {
-        _completedPdfs.add(pdfPath);
-
-        int totalLessons = _getTotalLessonsForBlock(widget.text);
-        _progress = _completedPdfs.length / totalLessons;
-
-        if (_progress >= 1.0) _progress = 1.0;
-        if (_progress == 1.0) _hasBeenCompleted = true;
-
-        _saveProgressToFirestore();
-
-        print('Progress updated: ${(_progress * 100).toStringAsFixed(0)}%');
-        print('Completed PDFs: $_completedPdfs');
-      }
-    });
-  }
-
   void updateProgress(int pagesCompleted) {
     setState(() {
       int totalPages = _getTotalLessonsForBlock(widget.text);
       _progress = pagesCompleted / totalPages;
-
-      if (_progress == 1.0) _hasBeenCompleted = true;
 
       _saveProgressToFirestore();
     });
@@ -235,22 +210,22 @@ class _BuildBlockState extends State<BuildBlock> {
 
   void _navigateToLessonPage() {
     final Map<String, Widget> lessonPages = {
-      'AND GATES': Andlessons(onPdfClicked: _onPdfClicked),
-      'AND': Andlessons(onPdfClicked: _onPdfClicked),
-      'NAND GATES': Nandlessons(onPdfClicked: _onPdfClicked),
-      'NAND': Nandlessons(onPdfClicked: _onPdfClicked),
-      'OR GATE': Orlessons(onPdfClicked: _onPdfClicked),
-      'OR': Orlessons(onPdfClicked: _onPdfClicked),
-      'NOR GATE': Norlessons(onPdfClicked: _onPdfClicked),
-      'NOR': Norlessons(onPdfClicked: _onPdfClicked),
-      'NOT GATE': Notlessons(onPdfClicked: _onPdfClicked),
-      'NOT': Notlessons(onPdfClicked: _onPdfClicked),
-      'XOR GATES': Xorlessons(onPdfClicked: _onPdfClicked),
-      'XOR': Xorlessons(onPdfClicked: _onPdfClicked),
-      'XNOR GATE': Xnorlessons(onPdfClicked: _onPdfClicked),
-      'XNOR': Xnorlessons(onPdfClicked: _onPdfClicked),
-      'BUFFER GATE': Bufferlessons(onPdfClicked: _onPdfClicked),
-      'BUFFER': Bufferlessons(onPdfClicked: _onPdfClicked),
+      'AND GATES': Andlessons(),
+      'AND': Andlessons(),
+      'NAND GATES': Nandlessons(),
+      'NAND': Nandlessons(),
+      'OR GATE': Orlessons(),
+      'OR': Orlessons(),
+      'NOR GATE': Norlessons(),
+      'NOR': Norlessons(),
+      'NOT GATE': Notlessons(),
+      'NOT': Notlessons(),
+      'XOR GATES': Xorlessons(),
+      'XOR': Xorlessons(),
+      'XNOR GATES': Xnorlessons(),
+      'XNOR': Xnorlessons(),
+      'BUFFER GATES': Bufferlessons(),
+      'BUFFER': Bufferlessons(),
     };
 
     final Widget? selectedPage = lessonPages[widget.text.toUpperCase().trim()];
@@ -260,24 +235,10 @@ class _BuildBlockState extends State<BuildBlock> {
         context,
         MaterialPageRoute(builder: (context) => selectedPage),
       ).then((result) {
-        if (result != null && result is int) {
-          updateProgress(result);
-        } else if (result == true && !_hasBeenCompleted) {
-          int totalPages = _getTotalPagesForBlock(widget.text);
-          if (totalPages == 1) {
-            setState(() {
-              _progress = 1.0;
-              _hasBeenCompleted = true;
-            });
-            _saveProgressToFirestore();
-          }
-        }
+        _loadProgressFromFirestore();
       });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No lesson page found for ${widget.text}')),
-      );
     }
+    ;
   }
 
   @override

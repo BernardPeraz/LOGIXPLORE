@@ -40,7 +40,7 @@ class _NorlessonsState extends State<Norlessons> {
           'id': doc.id,
           'pdfPath': data['pdfPath'] ?? '',
           'title': data['title'] ?? 'No Title',
-          'progress': (data['progress'] ?? 0.0).toDouble(),
+          'progress': 0.0,
         };
       }).toList();
     });
@@ -74,13 +74,13 @@ class _NorlessonsState extends State<Norlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'].toDouble();
+      List progressList = doc.data()!['progress'];
 
-      setState(() {
-        for (var lesson in Norlessons.lessons) {
-          lesson['progress'] = savedProgress;
-        }
-      });
+      for (int i = 0; i < Norlessons.lessons.length; i++) {
+        Norlessons.lessons[i]['progress'] = i < progressList.length
+            ? progressList[i]
+            : 0.0;
+      }
     }
   }
 
@@ -94,6 +94,9 @@ class _NorlessonsState extends State<Norlessons> {
     setState(() {
       Norlessons.lessons[lessonIndex]['progress'] = 1.0;
     });
+    List<double> progressList = Norlessons.lessons
+        .map((lesson) => (lesson['progress'] as num?)?.toDouble() ?? 0.0)
+        .toList();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       FirebaseFirestore.instance
@@ -101,7 +104,7 @@ class _NorlessonsState extends State<Norlessons> {
           .doc(user.uid)
           .collection('lessons_progress')
           .doc('NOR')
-          .set({'progress': 1.0, 'updatedAt': DateTime.now()});
+          .set({'progress': progressList, 'updatedAt': DateTime.now()});
     }
     // Call the callback to update progress
     if (widget.onPdfClicked != null) {
@@ -112,7 +115,7 @@ class _NorlessonsState extends State<Norlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Norlessons.lessons) {
-      total += (lesson['progress'] ?? 0.0).toDouble();
+      total += (lesson['progress'] as num?)?.toDouble() ?? 0.0;
     }
     return total / Norlessons.lessons.length;
   }
@@ -252,7 +255,7 @@ class _NorlessonsState extends State<Norlessons> {
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(
                         progress: _calculateOverallProgress(),
-                        title: 'NOR',
+                        title: 'NOR GATE',
                       ),
                     ),
                   ),

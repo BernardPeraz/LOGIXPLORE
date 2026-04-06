@@ -40,7 +40,7 @@ class _NotlessonsState extends State<Notlessons> {
           'id': doc.id,
           'pdfPath': data['pdfPath'] ?? '',
           'title': data['title'] ?? 'No Title',
-          'progress': (data['progress'] ?? 0.0).toDouble(),
+          'progress': 0.0,
         };
       }).toList();
     });
@@ -62,7 +62,7 @@ class _NotlessonsState extends State<Notlessons> {
     });
   }
 
-  void _loadSavedProgress() async {
+  Future<void> _loadSavedProgress() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
@@ -74,13 +74,13 @@ class _NotlessonsState extends State<Notlessons> {
         .get();
 
     if (doc.exists && doc.data()!.containsKey('progress')) {
-      double savedProgress = doc.data()!['progress'].toDouble();
+      List progressList = doc.data()!['progress'];
 
-      setState(() {
-        for (var lesson in Notlessons.lessons) {
-          lesson['progress'] = savedProgress;
-        }
-      });
+      for (int i = 0; i < Notlessons.lessons.length; i++) {
+        Notlessons.lessons[i]['progress'] = i < progressList.length
+            ? progressList[i]
+            : 0.0;
+      }
     }
   }
 
@@ -93,6 +93,9 @@ class _NotlessonsState extends State<Notlessons> {
     setState(() {
       Notlessons.lessons[lessonIndex]['progress'] = 1.0;
     });
+    List<double> progressList = Notlessons.lessons
+        .map((lesson) => (lesson['progress'] as num?)?.toDouble() ?? 0.0)
+        .toList();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       FirebaseFirestore.instance
@@ -100,7 +103,7 @@ class _NotlessonsState extends State<Notlessons> {
           .doc(user.uid)
           .collection('lessons_progress')
           .doc('NOT')
-          .set({'progress': 1.0, 'updatedAt': DateTime.now()});
+          .set({'progress': progressList, 'updatedAt': DateTime.now()});
     }
 
     // Call the callback to update progress
@@ -112,7 +115,7 @@ class _NotlessonsState extends State<Notlessons> {
   double _calculateOverallProgress() {
     double total = 0.0;
     for (var lesson in Notlessons.lessons) {
-      total += (lesson['progress'] ?? 0.0).toDouble();
+      total += (lesson['progress'] as num?)?.toDouble() ?? 0.0;
     }
     return total / Notlessons.lessons.length;
   }
@@ -253,7 +256,7 @@ class _NotlessonsState extends State<Notlessons> {
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(
                         progress: _calculateOverallProgress(),
-                        title: 'Not',
+                        title: 'NOT GATE',
                       ),
                     ),
                   ),

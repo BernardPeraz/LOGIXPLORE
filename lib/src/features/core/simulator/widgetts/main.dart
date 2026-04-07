@@ -840,7 +840,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                             label: Tooltip(
                               message: "AND GATE",
                               child: Image.asset(
-                                'assets/images/Annd.png',
+                                'assets/images/annd.png',
                                 height: 40,
                               ),
                             ),
@@ -880,7 +880,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                             },
                             label: Image.asset(
-                              'assets/images/Ooor.png',
+                              'assets/images/ooor.png',
                               height: 40,
                             ),
                           ),
@@ -914,7 +914,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                             },
                             label: Image.asset(
-                              'assets/images/Noot.png',
+                              'assets/images/noot.png',
                               height: 40,
                             ),
                           ),
@@ -953,7 +953,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                             },
                             label: Image.asset(
-                              'assets/images/Naand.png',
+                              'assets/images/naand.png',
                               height: 40,
                             ),
                           ),
@@ -992,7 +992,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                             },
                             label: Image.asset(
-                              'assets/images/Noor.png',
+                              'assets/images/noor.png',
                               height: 40,
                             ),
                           ),
@@ -1031,7 +1031,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                             },
                             label: Image.asset(
-                              'assets/images/Xoor.png',
+                              'assets/images/xoor.png',
                               height: 40,
                             ),
                           ),
@@ -1070,7 +1070,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                             },
                             label: Image.asset(
-                              'assets/images/Xnoor.png',
+                              'assets/images/xnoor.png',
                               height: 40,
                             ),
                           ),
@@ -1104,7 +1104,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               model.addNode(n);
                             },
                             label: Image.asset(
-                              'assets/images/Bufffer.png',
+                              'assets/images/bufffer.png',
                               height: 40,
                             ),
                           ),

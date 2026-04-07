@@ -1071,7 +1071,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                             },
                             label: Image.asset(
                               'assets/images/Xnoor.png',
-                              height: 40,
+                              height: 40.1,
                             ),
                           ),
                         if (gateAllowed('XNOR')) const SizedBox(height: 8),

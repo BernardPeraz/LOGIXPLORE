@@ -404,7 +404,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
     not1 = Node(
       id: 'output',
       kind: 'RES',
-      label: 'output',
+      label: 'Output',
       position: const Offset(540, 90),
       ports: {
         'in': Port(
@@ -814,7 +814,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'AND',
-                                label: 'annd',
+                                label: 'Annd',
                                 position: const Offset(120, 120),
                                 ports: {
                                   'a': Port(
@@ -857,7 +857,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'OR',
-                                label: 'ooor',
+                                label: 'Ooor',
                                 position: const Offset(120, 220),
                                 ports: {
                                   'a': Port(
@@ -896,7 +896,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'NOT',
-                                label: 'noot',
+                                label: 'Noot',
                                 position: const Offset(120, 320),
                                 ports: {
                                   'in': Port(
@@ -930,7 +930,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'NAND',
-                                label: 'naand',
+                                label: 'Naand',
                                 position: const Offset(120, 420),
                                 ports: {
                                   'a': Port(
@@ -969,7 +969,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'NOR',
-                                label: 'noor',
+                                label: 'Noor',
                                 position: const Offset(120, 520),
                                 ports: {
                                   'a': Port(
@@ -1008,7 +1008,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'XOR',
-                                label: 'xoor',
+                                label: 'Xoor',
                                 position: const Offset(120, 620),
                                 ports: {
                                   'a': Port(
@@ -1047,7 +1047,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'XNOR',
-                                label: 'xnoor',
+                                label: 'Xnoor',
                                 position: const Offset(120, 620),
                                 ports: {
                                   'a': Port(
@@ -1071,7 +1071,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                             },
                             label: Image.asset(
                               'assets/images/Xnoor.png',
-                              height: 40.1,
+                              height: 40,
                             ),
                           ),
                         if (gateAllowed('XNOR')) const SizedBox(height: 8),
@@ -1086,7 +1086,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               final n = Node(
                                 id: id,
                                 kind: 'BUFFER',
-                                label: 'bufffer',
+                                label: 'Bufffer',
                                 position: const Offset(120, 620),
                                 ports: {
                                   'in': Port(

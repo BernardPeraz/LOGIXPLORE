@@ -24,7 +24,14 @@ class NodeWidget extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-              child: Image.asset('assets/images/${node.label}.png', height: 60),
+              child: Image.asset(
+                'assets/images/${node.label}.png',
+                height: 60,
+                errorBuilder: (context, error, stackTrace) {
+                  print("IMAGE ERROR: $error");
+                  return const Icon(Icons.error);
+                },
+              ),
             ),
             // ports
             for (final port in node.ports.values)

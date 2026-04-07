@@ -12,21 +12,31 @@ class NodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = 120.0;
-    final height = 70.0;
+    const double portRadius = 6; // adjust depende sa size ng PortCircle
+
     return Material(
       child: Container(
-        color: Colors.white,
-        width: width,
-        height: height,
-        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.white),
+          boxShadow: portRadius > 0
+              ? [
+                  BoxShadow(
+                    color: Colors.white,
+                    blurRadius: 4,
+                    offset: const Offset(2, 2),
+                  ),
+                ]
+              : null,
+        ),
 
         child: Stack(
           children: [
             Center(
               child: Image.asset(
                 'assets/images/${node.label}.png',
-                height: 80,
+                height: 65,
+                width: 115,
                 errorBuilder: (context, error, stackTrace) {
                   print("IMAGE ERROR: $error");
                   return const Icon(Icons.error);
@@ -36,24 +46,27 @@ class NodeWidget extends StatelessWidget {
             // ports
             for (final port in node.ports.values)
               Positioned(
-                left: port.localOffset.dx - 0.9,
-                top: port.localOffset.dy - 2,
+                left: port.localOffset.dx,
+                top: port.localOffset.dy,
                 child: GestureDetector(
                   onPanStart: (d) {
                     // if starting from output start connection
                     if (port.type == PortType.output) {
                       final gpos = (context.findRenderObject() as RenderBox)
-                          .localToGlobal(port.localOffset + node.position);
-                      model.startConnection(
-                        PortRef(node.id, port.id, PortType.output),
-                        gpos,
-                      );
+                          .localToGlobal(
+                            port.localOffset +
+                                node.position +
+                                const Offset(portRadius, portRadius),
+                          );
                     }
                   },
                   onPanUpdate: (d) {
                     final gpos = (context.findRenderObject() as RenderBox)
-                        .localToGlobal(port.localOffset + node.position);
-                    model.updateConnectionDrag(gpos + d.delta);
+                        .localToGlobal(
+                          port.localOffset +
+                              node.position +
+                              const Offset(portRadius, portRadius),
+                        );
                   },
                   onPanEnd: (d) {
                     // finish by checking nearest input at release

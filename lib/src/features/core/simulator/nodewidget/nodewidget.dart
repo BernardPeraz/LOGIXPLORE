@@ -14,29 +14,26 @@ class NodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = 120.0;
     final height = 70.0;
-    return SizedBox(
+    return Material(
       child: Container(
-        padding: const EdgeInsets.all(12),
-
         width: width,
         height: height,
+        padding: const EdgeInsets.all(6),
+        color: Colors.transparent,
 
         child: Stack(
           children: [
             Center(
               child: Image.asset(
                 'assets/images/${node.label.toLowerCase()}.png',
-                height: 50,
-                width: 65,
-
-                fit: BoxFit.contain,
+                height: 60,
               ),
             ),
             // ports
             for (final port in node.ports.values)
               Positioned(
-                left: port.localOffset.dx - 1,
-                top: port.localOffset.dy - 6,
+                left: port.localOffset.dx - 8,
+                top: port.localOffset.dy - 8,
                 child: GestureDetector(
                   onPanStart: (d) {
                     // if starting from output start connection
@@ -76,25 +73,25 @@ class NodeWidget extends StatelessWidget {
   Color _nodeColor(Node n) {
     switch (n.kind) {
       case 'SWITCH':
-        return Colors.transparent;
+        return Colors.orange.shade100;
       case 'AND':
-        return Colors.transparent;
+        return Colors.lightBlue.shade100;
       case 'OR':
-        return Colors.transparent;
+        return Colors.green.shade100;
       case 'NOT':
-        return Colors.transparent;
+        return Colors.purple.shade100;
       case 'NAND':
-        return Colors.transparent;
+        return Colors.red.shade100;
       case 'NOR':
-        return Colors.transparent;
+        return Colors.teal.shade100;
       case 'XOR':
-        return Colors.transparent;
+        return Colors.yellow.shade100;
       case 'XNOR':
-        return Colors.transparent;
+        return Colors.pink.shade100;
       case 'BUFFER':
-        return Colors.transparent;
+        return Colors.cyan.shade100;
       default:
-        return Colors.transparent;
+        return Colors.grey.shade200;
     }
   }
 }

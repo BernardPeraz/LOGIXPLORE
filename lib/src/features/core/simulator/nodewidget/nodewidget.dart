@@ -16,17 +16,17 @@ class NodeWidget extends StatelessWidget {
     final height = 70.0;
     return Material(
       child: Container(
+        color: Colors.white,
         width: width,
         height: height,
-        padding: const EdgeInsets.all(6),
-        color: Colors.transparent,
+        padding: const EdgeInsets.all(3),
 
         child: Stack(
           children: [
             Center(
               child: Image.asset(
                 'assets/images/${node.label}.png',
-                height: 60,
+                height: 80,
                 errorBuilder: (context, error, stackTrace) {
                   print("IMAGE ERROR: $error");
                   return const Icon(Icons.error);
@@ -36,8 +36,8 @@ class NodeWidget extends StatelessWidget {
             // ports
             for (final port in node.ports.values)
               Positioned(
-                left: port.localOffset.dx - 8,
-                top: port.localOffset.dy - 8,
+                left: port.localOffset.dx - 0.9,
+                top: port.localOffset.dy - 2,
                 child: GestureDetector(
                   onPanStart: (d) {
                     // if starting from output start connection

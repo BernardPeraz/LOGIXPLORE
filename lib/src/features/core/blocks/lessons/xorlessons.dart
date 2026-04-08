@@ -45,15 +45,12 @@ class _XorlessonsState extends State<Xorlessons> {
     });
   }
 
-  Future<void> _initialize() async {
-    await _loadLessons();
-    await _loadSavedProgress();
-  }
-
   @override
   void initState() {
     super.initState();
-    _initialize();
+    _loadLessons();
+    _loadSavedProgress();
+    checkAdmin();
   }
 
   Future<void> checkAdmin() async {

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/QuizGenerator/models/question.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:studydesign2zzdatabaseplaylist/achievementui/badge.dart';
 
 import 'quiz_screen.dart';
 
@@ -32,6 +33,19 @@ class _ResultScreenState extends State<ResultScreen> {
   void initState() {
     super.initState();
     _saveResult();
+  }
+
+  Future<void> _handleResult() async {
+    await _saveResult();
+
+    if (widget.score == widget.questions.length) {
+      Future.delayed(Duration.zero, () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const PerfectUi()),
+        );
+      });
+    }
   }
 
   Future<void> _saveResult() async {

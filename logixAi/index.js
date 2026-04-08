@@ -8,6 +8,10 @@ require("dotenv").config();
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
+
 
 // ------------------------------------
 // OPENAI CLIENT
@@ -56,6 +60,7 @@ FORMAT:
 // API ROUTE — GENERATE QUIZ
 // ------------------------------------
 app.post("/api/questions", async (req, res) => {
+  
   try {
     const { gate } = req.body;
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/portcircle.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/editor/editormobile.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/node.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/portref.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/porttype.dart';
 
 class NodeWidget extends StatelessWidget {

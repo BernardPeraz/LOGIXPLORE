@@ -258,7 +258,7 @@ class _XorlessonsState extends State<Xorlessons> {
                       width: DialogController.getButtonWidth(context),
                       child: TaskButton(
                         progress: _calculateOverallProgress(),
-                        title: 'XOR',
+                        title: 'XOR GATE',
                       ),
                     ),
                   ),

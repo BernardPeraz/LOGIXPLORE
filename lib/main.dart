@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
       darkTheme: TAppTheme.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      transitionDuration: const Duration(milliseconds: 500),
+      transitionDuration: const Duration(milliseconds: 600),
       home: FirebaseAuth.instance.currentUser != null
           ? const Dashboard()
           : SplashScreen(),

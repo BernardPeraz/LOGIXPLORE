@@ -28,21 +28,25 @@ class ResultScreen extends StatefulWidget {
 }
 
 class _ResultScreenState extends State<ResultScreen> {
+  bool showPerfectUi = false;
   bool isSaved = false;
   @override
   void initState() {
     super.initState();
     _saveResult();
+    _handleResult();
   }
 
   Future<void> _handleResult() async {
     await _saveResult();
 
     if (widget.score == widget.questions.length) {
-      Future.delayed(Duration.zero, () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const PerfectUi()),
+      Future.delayed(const Duration(milliseconds: 800), () {
+        showDialog(
+          context: context,
+          barrierColor: Colors.transparent,
+          barrierDismissible: false,
+          builder: (_) => const PerfectUi(),
         );
       });
     }

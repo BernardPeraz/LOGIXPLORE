@@ -41,9 +41,21 @@ class _ResponsiveRectanglesState extends State<ResponsiveRectangles> {
           .doc(gate)
           .get();
 
-      progressMap[gate] = doc.exists
-          ? (doc.data()?["progress"] ?? 0.0).toDouble()
-          : 0.0;
+      if (doc.exists) {
+        final rawProgress = doc.data()?['progress'];
+
+        if (rawProgress is List) {
+          int completed = rawProgress.where((item) => item == 1).length;
+
+          progressMap[gate] = rawProgress.isNotEmpty
+              ? completed / rawProgress.length
+              : 0.0;
+        } else {
+          progressMap[gate] = 0.0;
+        }
+      } else {
+        progressMap[gate] = 0.0;
+      }
     }
 
     setState(() {});
@@ -58,7 +70,6 @@ class _ResponsiveRectanglesState extends State<ResponsiveRectangles> {
         // 📌 BREAKPOINTS
         bool isDesktop = screenWidth >= 1024;
         bool isTablet = screenWidth >= 600 && screenWidth < 1024;
-        bool isMobile = screenWidth < 600;
 
         // 📌 Responsive Rectangle Size
         double rectWidth = isDesktop

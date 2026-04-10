@@ -70,7 +70,7 @@ Future<void> showAchievementDialogForGate({
       if (completed) {
         badges.add({
           'image': 'assets/images/background_images/Module_completed.png',
-          'title': 'Module Complete',
+          'title': 'Module Completed!',
         });
       }
     }

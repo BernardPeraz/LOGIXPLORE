@@ -32,6 +32,7 @@ STRICT RULES:
 - Do NOT include other gate types.
 - Each question must have exactly 4 choices.
 - Choices are labeled by order as A, B, C, D.
+- correctAnswer MUST be ONLY ONE LETTER: "A", "B", "C", or "D".
 - Do NOT return true/false.
 - Do NOT return 0 or 1.
 - Output ONLY valid JSON.
@@ -49,7 +50,7 @@ FORMAT:
         "Choice C",
         "Choice D"
       ],
-   
+      "correctAnswer": "A"
     }
   ]
 }
@@ -71,13 +72,14 @@ app.post("/api/questions", async (req, res) => {
 Generate 10 multiple choice questions.
 - ALL questions must be about ${gate} gates ONLY.
 - Each question must have 4 choices (A, B, C, D).
+- Provide correct answer letter only.
 Return in JSON format:
 {
   "questions": [
     {
       "question": "",
       "choices": ["", "", "", ""],
-     
+      "correctAnswer": ""
     }
   ]
 }

@@ -42,6 +42,8 @@ Future<void> showAchievementDialogForGate({
 
     List<Map<String, String>> badges = [];
 
+    List<int> progress = [];
+
     if (latestSnapshot.docs.isNotEmpty) {
       final data = latestSnapshot.docs.first.data();
       currentScore = data['score'];
@@ -60,13 +62,14 @@ Future<void> showAchievementDialogForGate({
     }
 
     if (lessonSnapshot.exists) {
-      List progress = lessonSnapshot['progress'];
+      progress = List<int>.from(lessonSnapshot['progress'] ?? []);
 
-      bool completed = progress.every((item) => item == 1);
+      bool completed =
+          progress.isNotEmpty && progress.every((item) => item == 1);
 
       if (completed) {
         badges.add({
-          'image': 'assets/images/background_images/robotn.png',
+          'image': 'assets/images/background_images/Module_completed.png',
           'title': 'Module Complete',
         });
       }
@@ -79,6 +82,7 @@ Future<void> showAchievementDialogForGate({
         totalQuestions: totalQuestions,
         bestScore: bestScore,
         earnedBadges: badges,
+        lessonProgress: progress,
       ),
     );
   } catch (e) {

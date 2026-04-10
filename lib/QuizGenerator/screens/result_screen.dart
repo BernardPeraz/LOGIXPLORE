@@ -41,7 +41,7 @@ class _ResultScreenState extends State<ResultScreen> {
     await _saveResult();
 
     if (widget.score == widget.questions.length) {
-      Future.delayed(const Duration(milliseconds: 800), () {
+      Future.delayed(const Duration(milliseconds: 500), () {
         showDialog(
           context: context,
           barrierColor: Colors.transparent,

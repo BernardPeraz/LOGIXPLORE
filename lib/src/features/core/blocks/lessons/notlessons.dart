@@ -1,3 +1,4 @@
+import 'package:studydesign2zzdatabaseplaylist/achievementui/achievementlogic.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/lessons_controller.dart';
@@ -122,6 +123,7 @@ class _NotlessonsState extends State<Notlessons> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset('assets/logo/not.png', fit: BoxFit.cover),
@@ -171,6 +173,49 @@ class _NotlessonsState extends State<Notlessons> {
                       fontSize: Responsive.getFontSize(context),
                       color: Colors.grey[600],
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          showAchievementDialogForGate(
+                            context: context,
+                            quizGateName: 'NOT GATE',
+                            lessonDocName: 'NOT',
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.01,
+                            vertical: screenWidth * 0.015,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.emoji_events,
+                              color: Colors.amber,
+                              size: Responsive.getFontSize(context) + 6,
+                            ),
+
+                            SizedBox(width: screenWidth * 0.01),
+
+                            Text(
+                              'Achievements earned',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: (screenWidth * 0.025).clamp(12, 17),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
 
                   const SizedBox(height: 10),

@@ -33,7 +33,6 @@ class _PerfectUiState extends State<PerfectUi> {
 
     final imageSize = screenWidth * 0.30; // 30% of screen width
     final closeSize = screenWidth * 0.06; // responsive icon size
-    final topPadding = screenHeight * 0.02;
 
     return Dialog(
       backgroundColor: Colors.transparent,

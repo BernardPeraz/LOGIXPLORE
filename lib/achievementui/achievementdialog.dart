@@ -4,6 +4,7 @@ class AchievementDialog extends StatelessWidget {
   final int currentScore;
   final int totalQuestions;
   final int bestScore;
+  final List lessonProgress;
   final List<Map<String, String>> earnedBadges;
   const AchievementDialog({
     super.key,
@@ -11,6 +12,7 @@ class AchievementDialog extends StatelessWidget {
     required this.totalQuestions,
     required this.bestScore,
     required this.earnedBadges,
+    required this.lessonProgress,
   });
 
   @override
@@ -104,39 +106,23 @@ class AchievementDialog extends StatelessWidget {
                 spacing: 18,
                 runSpacing: 18,
                 alignment: WrapAlignment.center,
-                children: [
-                  Column(
+                children: earnedBadges.map((badge) {
+                  return Column(
                     children: [
                       Image.asset(
-                        'assets/images/background_images/perfectscore.png',
+                        badge['image']!,
                         width: badgeSize,
                         height: badgeSize,
                       ),
                       SizedBox(height: 7),
                       Text(
-                        'Module Complete',
+                        badge['title']!,
                         style: TextStyle(fontSize: titleSize * 0.9),
                       ),
                     ],
-                  ),
-
-                  Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/background_images/perfectscore.png',
-                        width: badgeSize,
-                        height: badgeSize,
-                      ),
-                      SizedBox(height: 7),
-                      Text(
-                        'Perfect Score',
-                        style: TextStyle(fontSize: titleSize * 0.9),
-                      ),
-                    ],
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
-
               SizedBox(height: screenWidth * 0.06),
 
               ElevatedButton(

@@ -1,4 +1,3 @@
-import 'package:studydesign2zzdatabaseplaylist/achievementui/achievementdialog.dart';
 import 'package:studydesign2zzdatabaseplaylist/achievementui/achievementlogic.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/dialog_controller.dart';
@@ -214,8 +213,7 @@ class _AndlessonsState extends State<Andlessons> {
                               'Achievements earned',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: (screenWidth * 0.025).clamp(12, 17),
-                                color: Colors.black,
+                                fontSize: Responsive.getFontSize(context) + 1,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

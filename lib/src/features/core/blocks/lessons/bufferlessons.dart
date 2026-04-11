@@ -218,8 +218,7 @@ class _BufferlessonsState extends State<Bufferlessons> {
                               'Achievements earned',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: (screenWidth * 0.025).clamp(12, 17),
-                                color: Colors.black,
+                                fontSize: Responsive.getFontSize(context) + 1,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

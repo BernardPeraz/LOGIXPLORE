@@ -94,7 +94,6 @@ class AchievementDialog extends StatelessWidget {
                   'Achievements Earned',
                   style: TextStyle(
                     fontSize: titleSize + 1,
-                    fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),

@@ -199,19 +199,28 @@ class _QuizScreenState extends State<QuizScreen> {
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
+
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 60),
+                        shadowColor: Colors.black,
+                        minimumSize: const Size(450, 60),
                         backgroundColor: color ?? Colors.white,
+                        side: BorderSide(style: BorderStyle.none),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onPressed: () => selectAnswer(letter),
-                      child: Text(
-                        "$letter. $choice",
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          "$letter. $choice",
 
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),

@@ -11,30 +11,39 @@ Future<void> showAchievementDialogForGate({
   try {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
-
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
     final quizRef = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('quiz_scores');
 
-    final latestSnapshot = await quizRef
-        .where('gate', isEqualTo: quizGateName)
-        .orderBy('timestamp', descending: true)
-        .limit(1)
-        .get();
+    final results = await Future.wait([
+      quizRef
+          .where('gate', isEqualTo: quizGateName)
+          .orderBy('timestamp', descending: true)
+          .limit(1)
+          .get(),
 
-    final bestSnapshot = await quizRef
-        .where('gate', isEqualTo: quizGateName)
-        .orderBy('score', descending: true)
-        .limit(1)
-        .get();
+      quizRef
+          .where('gate', isEqualTo: quizGateName)
+          .orderBy('score', descending: true)
+          .limit(1)
+          .get(),
 
-    final lessonSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('lessons_progress')
-        .doc(lessonDocName)
-        .get();
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('lessons_progress')
+          .doc(lessonDocName)
+          .get(),
+    ]);
+    final QuerySnapshot latestSnapshot = results[0] as QuerySnapshot;
+    final QuerySnapshot bestSnapshot = results[1] as QuerySnapshot;
+    final DocumentSnapshot lessonSnapshot = results[2] as DocumentSnapshot;
 
     int currentScore = 0;
     int totalQuestions = 0;
@@ -45,13 +54,14 @@ Future<void> showAchievementDialogForGate({
     List<int> progress = [];
 
     if (latestSnapshot.docs.isNotEmpty) {
-      final data = latestSnapshot.docs.first.data();
-      currentScore = data['score'];
-      totalQuestions = data['total'];
+      final data = latestSnapshot.docs.first.data() as Map<String, dynamic>;
+
+      currentScore = data['score'] ?? 0;
+      totalQuestions = data['total'] ?? 0;
     }
 
     if (bestSnapshot.docs.isNotEmpty) {
-      bestScore = bestSnapshot.docs.first['score'];
+      bestScore = bestSnapshot.docs.first.get('score') ?? 0;
     }
 
     if (bestScore == totalQuestions && totalQuestions > 0) {
@@ -62,7 +72,11 @@ Future<void> showAchievementDialogForGate({
     }
 
     if (lessonSnapshot.exists) {
-      progress = List<int>.from(lessonSnapshot['progress'] ?? []);
+      final data = lessonSnapshot.data() as Map<String, dynamic>?;
+
+      if (data != null && data['progress'] != null) {
+        progress = (data['progress'] as List).map((e) => e as int).toList();
+      }
 
       bool completed =
           progress.isNotEmpty && progress.every((item) => item == 1);
@@ -74,7 +88,8 @@ Future<void> showAchievementDialogForGate({
         });
       }
     }
-
+    if (!context.mounted) return;
+    Navigator.pop(context);
     showDialog(
       context: context,
       builder: (_) => AchievementDialog(

@@ -15,7 +15,9 @@ class _PerfectUiState extends State<PerfectUi> {
   void initState() {
     super.initState();
 
-    _controllerCenter = ConfettiController(duration: const Duration(days: 1));
+    _controllerCenter = ConfettiController(
+      duration: const Duration(milliseconds: 500),
+    );
 
     _controllerCenter.play();
   }

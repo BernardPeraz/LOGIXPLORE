@@ -879,9 +879,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               );
                               model.addNode(n);
                             },
-                            label: Image.asset(
-                              'assets/images/Ooor.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: 'OR GATE',
+                              child: Image.asset(
+                                'assets/images/Ooor.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                         if (gateAllowed('OR')) const SizedBox(height: 8),
@@ -913,9 +916,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               );
                               model.addNode(n);
                             },
-                            label: Image.asset(
-                              'assets/images/Noot.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: 'NOT GATE',
+                              child: Image.asset(
+                                'assets/images/Noot.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                         if (gateAllowed('NOT')) const SizedBox(height: 8),
@@ -952,9 +958,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               );
                               model.addNode(n);
                             },
-                            label: Image.asset(
-                              'assets/images/Naand.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: 'NAND GATE',
+                              child: Image.asset(
+                                'assets/images/Naand.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                         if (gateAllowed('NAND')) const SizedBox(height: 8),
@@ -991,9 +1000,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               );
                               model.addNode(n);
                             },
-                            label: Image.asset(
-                              'assets/images/Noor.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: 'NOR GATE',
+                              child: Image.asset(
+                                'assets/images/Noor.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                         if (gateAllowed('NOR')) const SizedBox(height: 8),
@@ -1030,9 +1042,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               );
                               model.addNode(n);
                             },
-                            label: Image.asset(
-                              'assets/images/Xoor.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: 'XOR GATE',
+                              child: Image.asset(
+                                'assets/images/Xoor.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                         if (gateAllowed('XOR')) const SizedBox(height: 8),
@@ -1069,9 +1084,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               );
                               model.addNode(n);
                             },
-                            label: Image.asset(
-                              'assets/images/Xnoor.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: 'XNOR GATE',
+                              child: Image.asset(
+                                'assets/images/Xnoor.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                         if (gateAllowed('XNOR')) const SizedBox(height: 8),
@@ -1103,9 +1121,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               );
                               model.addNode(n);
                             },
-                            label: Image.asset(
-                              'assets/images/Bufffer.png',
-                              height: 40,
+                            label: Tooltip(
+                              message: 'BUFFER GATE',
+                              child: Image.asset(
+                                'assets/images/Bufffer.png',
+                                height: 40,
+                              ),
                             ),
                           ),
                       ],

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart'; // IDINAGDAG
+
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
@@ -21,14 +21,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  try {
-    FirebaseFunctions functions = FirebaseFunctions.instance;
-
-    print('Cloud Functions initialized successfully');
-  } catch (e) {
-    print('Error initializing Cloud Functions: $e');
-  }
 
   await Supabase.initialize(
     url: 'https://yumufbsbqiwnjnzkacnn.supabase.co',

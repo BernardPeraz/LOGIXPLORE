@@ -41,19 +41,28 @@ class AchievementDialog extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.orange.withOpacity(0.7),
+                        color: Colors.orange.shade300,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
                         children: [
-                          Text(
-                            'Recent Score\n$currentScore / $totalQuestions',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: titleSize,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          currentScore == 0
+                              ? Text(
+                                  'No record yet',
+                                  style: TextStyle(
+                                    fontSize: titleSize,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                )
+                              : Text(
+                                  'Recent Score\n$currentScore / $totalQuestions',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: titleSize,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                           SizedBox(height: 4),
                         ],
                       ),
@@ -61,23 +70,33 @@ class AchievementDialog extends StatelessWidget {
                   ),
 
                   SizedBox(width: screenWidth * 0.02),
+
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.7),
+                        color: Colors.green.shade400,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
                         children: [
-                          Text(
-                            'Best Score!\n$bestScore',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: titleSize,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          bestScore == 0
+                              ? Text(
+                                  'No record yet',
+                                  style: TextStyle(
+                                    fontSize: titleSize,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                )
+                              : Text(
+                                  'Best Score!\n$bestScore',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: titleSize,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -93,7 +112,7 @@ class AchievementDialog extends StatelessWidget {
                 child: Text(
                   'Achievements Earned',
                   style: TextStyle(
-                    fontSize: titleSize + 1,
+                    fontSize: titleSize + 2,
                     color: Colors.black,
                   ),
                 ),
@@ -102,38 +121,51 @@ class AchievementDialog extends StatelessWidget {
               SizedBox(height: screenWidth * 0.02),
 
               /// BADGES
-              Wrap(
-                spacing: 20,
-                runSpacing: 18,
-                alignment: WrapAlignment.center,
-                children: earnedBadges.map((badge) {
-                  return Container(
-                    padding: const EdgeInsets.all(14),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
+              earnedBadges.isEmpty
+                  ? Text(
+                      'No record yet',
+                      style: TextStyle(
+                        fontSize: titleSize,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  : Column(
                       children: [
-                        Image.asset(
-                          badge['image']!,
-                          width: badgeSize,
-                          height: badgeSize,
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          badge['title']!,
-                          style: TextStyle(
-                            fontSize: titleSize * 0.9,
-                            color: Colors.black,
-                          ),
+                        Wrap(
+                          spacing: 20,
+                          runSpacing: 18,
+                          alignment: WrapAlignment.center,
+                          children: earnedBadges.map((badge) {
+                            return Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: Colors.blue.shade400,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                children: [
+                                  Image.asset(
+                                    badge['image']!,
+                                    width: badgeSize,
+                                    height: badgeSize,
+                                  ),
+                                  SizedBox(height: 2),
+                                  Text(
+                                    badge['title']!,
+                                    style: TextStyle(
+                                      fontSize: titleSize * 0.9,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ],
                     ),
-                  );
-                }).toList(),
-              ),
-              SizedBox(height: screenWidth * 0.06),
+              SizedBox(height: screenWidth * 0.03),
 
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),

@@ -24,7 +24,7 @@ class ForgetPasswordMailScreen extends StatelessWidget {
             final bool isDesktop = constraints.maxWidth > 700;
 
             final double formWidth = isDesktop ? 400 : 400;
-            final double textFieldFont = isDesktop ? 18 : 10;
+
             final double buttonFont = isDesktop ? 18 : 10;
 
             return Stack(

@@ -432,9 +432,6 @@ class _DashboardState extends State<Dashboard> {
         : screenWidth > 600
         ? (screenWidth / 2) - 30
         : screenWidth - 80;
-
-    bool moveDarkMode = screenWidth <= 748;
-    bool moveSimulator = screenWidth <= 735;
     return Scaffold(
       appBar: AppBar(
         leading: Image.asset('assets/logo/logicon.png', height: 9, width: 5),

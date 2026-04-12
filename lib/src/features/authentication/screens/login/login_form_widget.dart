@@ -87,14 +87,15 @@ class _LoginFormState extends State<LoginForm> {
           .doc(uid)
           .get();
 
-      if (adminDoc.exists) {
+      if (adminDoc.exists && adminDoc.data()?['role'] == 'Admin') {
         // This is an admin account → block login
+
         setState(() {
           _isLoading = false;
           _emailError = "Admin accounts cannot sign in here.";
         });
 
-        Future.delayed(const Duration(seconds: 3), () {
+        Future.delayed(const Duration(seconds: 2), () {
           if (mounted) {
             setState(() {
               _emailError = null;

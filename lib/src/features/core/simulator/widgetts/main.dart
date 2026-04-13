@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/nodewidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/painters/wirepainter.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/editor/editormobile.dart';
@@ -468,7 +469,13 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Logic Gate Simulator'),
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Logic Gate Simulator',
+          style: TextStyle(fontSize: 20),
+          strutStyle: StrutStyle(fontWeight: FontWeight.w700),
+        ),
+
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -492,6 +499,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                     flex: 3,
                     child: SingleChildScrollView(
                       child: Container(
+                        color: Colors.white,
                         child: SwitchTable(
                           Aswitch: s1.truthvalue,
                           Bswitch: s2.truthvalue,
@@ -533,25 +541,51 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                   ? "Let’s use the switches to get ${widget.ExpecOut} as Expected Output "
                                   : 'Output length is more than expected output length, please restart',
 
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.left,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
+                                color: Colors.black,
                               ),
                             ),
                           ),
                         ),
                         listEquals(not1.truthvalue, widget.ExpecOut)
-                            ? ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => widget.nextPage,
+                            ? Align(
+                                alignment: Alignment.centerRight,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoadingToDashboard(),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: const Color.fromARGB(255, 0, 0, 0),
                                     ),
-                                  );
-                                },
-                                child: Text("Proceed to Next Level"),
+
+                                    backgroundColor: const Color.fromARGB(
+                                      255,
+                                      255,
+                                      149,
+                                      0,
+                                    ),
+
+                                    foregroundColor: Colors.white,
+                                    minimumSize: const Size(250, 50),
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                        color: Colors.grey,
+                                      ),
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                  ),
+                                  child: Text("Good Job!"),
+                                ),
                               )
                             : Container(),
                       ],
@@ -562,6 +596,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
             ),
             Expanded(
               flex: 3,
+
               child: Stack(
                 children: [
                   GestureDetector(
@@ -577,6 +612,9 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           _globalToLocal(d.globalPosition),
                         );
                       }
+                      setState(() {
+                        toggleOutput1Ports();
+                      });
                     },
                     onPanUpdate: (d) {
                       setState(() {});
@@ -589,6 +627,9 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           _globalToLocal(d.globalPosition),
                         );
                       }
+                      setState(() {
+                        toggleOutput1Ports();
+                      });
                     },
                     onPanEnd: (d) {
                       setState(() {
@@ -620,6 +661,9 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           model.cancelConnection();
                         }
                       }
+                      setState(() {
+                        toggleOutput1Ports();
+                      });
                     },
                     onTapUp: (d) {
                       // check tap on a port to toggle switch if it's a switch output
@@ -632,6 +676,9 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                         model.toggleSwitch(node!.id);
                         model.toggleSwitch("1");
                       }
+                      setState(() {
+                        toggleOutput1Ports();
+                      });
                     },
                     child: Container(
                       key: canvasKey,
@@ -680,456 +727,464 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                   // --------------------------------------------------
                   Positioned(
                     right: 12,
+                    top: 120,
                     bottom: 12,
-                    child: Column(
-                      children: [
-                        FloatingActionButton.extended(
-                          heroTag: '✅',
-                          onPressed: () {
-                            setState(() {
-                              switchNum = 0;
-                              model.nodes.clear();
-                              model.addNode(not1);
-                            });
-                          },
-                          label: const Text('RESET'),
-                        ),
-                        FloatingActionButton.extended(
-                          heroTag: '✅',
-                          onPressed: () {
-                            if (not1.truthvalue == widget.ExpecOut) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text("Title here"),
-                                    content: Text(
-                                      "This is the message inside the dialog.",
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(
-                                            context,
-                                          ); // close dialog
-                                        },
-                                        child: Text("OK"),
-                                      ),
-                                    ],
+
+                    child: SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            FloatingActionButton.extended(
+                              heroTag: '✅',
+                              onPressed: () {
+                                setState(() {
+                                  switchNum = 0;
+                                  model.nodes.clear();
+                                  model.addNode(not1);
+                                });
+                              },
+                              label: const Text('RESET'),
+                            ),
+                            SizedBox(height: 10),
+                            FloatingActionButton.extended(
+                              heroTag: '✅',
+                              onPressed: () {
+                                if (not1.truthvalue == widget.ExpecOut) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text("Title here"),
+                                        content: Text(
+                                          "This is the message inside the dialog.",
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(
+                                                context,
+                                              ); // close dialog
+                                            },
+                                            child: Text("OK"),
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            }
-                            setState(() {
-                              model.toggleSwitch("s1");
-                              model.toggleSwitch("s2");
-                              model.toggleSwitch("s3");
-                              model.toggleSwitch("s4");
-                              model.toggleSwitch("s5");
-                              model.toggleSwitch("s1");
-                              model.toggleSwitch("s2");
-                              model.toggleSwitch("s3");
-                              model.toggleSwitch("s4");
-                              model.toggleSwitch("s5");
-                              model.toggleSwitch("s1");
-                              model.toggleSwitch("s2");
-                              model.toggleSwitch("s3");
-                              model.toggleSwitch("s4");
-                              model.toggleSwitch("s5");
-                              model.toggleSwitch("s1");
-                              model.toggleSwitch("s2");
-                              model.toggleSwitch("s3");
-                              model.toggleSwitch("s4");
-                              model.toggleSwitch("s5");
-                            });
-                          },
-                          label: const Text('Submit'),
-                        ),
-                        const SizedBox(height: 10),
-                        // ------------------- ADD SWITCH -------------------
-                        FloatingActionButton.extended(
-                          heroTag: 'addSwitch',
-                          onPressed: () {
-                            if (switchNum < 5) {
-                              switchNum = switchNum + 1;
-                              setState(() {
-                                if (switchNum == 1) {
-                                  model.addNode(s1);
-                                } else if (switchNum == 2) {
-                                  model.addNode(s2);
-                                } else if (switchNum == 3) {
-                                  model.addNode(s3);
-                                } else if (switchNum == 4) {
-                                  model.addNode(s4);
-                                } else if (switchNum == 5) {
-                                  model.addNode(s5);
                                 }
                                 setState(() {
-                                  s1.truthvalue = generateTruthValues(
-                                    switchNum,
-                                    "A",
-                                  );
+                                  model.toggleSwitch("s1");
+                                  model.toggleSwitch("s2");
+                                  model.toggleSwitch("s3");
+                                  model.toggleSwitch("s4");
+                                  model.toggleSwitch("s5");
+                                  model.toggleSwitch("s1");
+                                  model.toggleSwitch("s2");
+                                  model.toggleSwitch("s3");
+                                  model.toggleSwitch("s4");
+                                  model.toggleSwitch("s5");
+                                  model.toggleSwitch("s1");
+                                  model.toggleSwitch("s2");
+                                  model.toggleSwitch("s3");
+                                  model.toggleSwitch("s4");
+                                  model.toggleSwitch("s5");
+                                  model.toggleSwitch("s1");
+                                  model.toggleSwitch("s2");
+                                  model.toggleSwitch("s3");
+                                  model.toggleSwitch("s4");
+                                  model.toggleSwitch("s5");
                                 });
-                                setState(() {
-                                  s2.truthvalue = generateTruthValues(
-                                    switchNum,
-                                    "B",
+                              },
+                              label: const Text('Submit'),
+                            ),
+                            const SizedBox(height: 10),
+                            // ------------------- ADD SWITCH -------------------
+                            FloatingActionButton.extended(
+                              heroTag: 'addSwitch',
+                              onPressed: () {
+                                if (switchNum < 3) {
+                                  switchNum = switchNum + 1;
+                                  setState(() {
+                                    if (switchNum == 1) {
+                                      model.addNode(s1);
+                                    } else if (switchNum == 2) {
+                                      model.addNode(s2);
+                                    } else if (switchNum == 3) {
+                                      model.addNode(s3);
+                                    } else if (switchNum == 4) {
+                                      model.addNode(s4);
+                                    } else if (switchNum == 5) {
+                                      model.addNode(s5);
+                                    }
+                                    setState(() {
+                                      s1.truthvalue = generateTruthValues(
+                                        switchNum,
+                                        "A",
+                                      );
+                                    });
+                                    setState(() {
+                                      s2.truthvalue = generateTruthValues(
+                                        switchNum,
+                                        "B",
+                                      );
+                                    });
+                                    setState(() {
+                                      s3.truthvalue = generateTruthValues(
+                                        switchNum,
+                                        "C",
+                                      );
+                                    });
+                                  });
+                                  setState(() {
+                                    s4.truthvalue = generateTruthValues(
+                                      switchNum,
+                                      "D",
+                                    );
+                                  });
+                                  setState(() {
+                                    s5.truthvalue = generateTruthValues(
+                                      switchNum,
+                                      "E",
+                                    );
+                                  });
+                                } else {
+                                  () {
+                                    //what to do after reaching maximum input counts
+                                  };
+                                }
+                              },
+                              label: const Text('Add Switch'),
+                            ),
+                            const SizedBox(height: 8),
+                            // ------------------- AND -------------------
+                            if (gateAllowed('AND'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addAnd',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'AND',
+                                    label: 'Annd',
+                                    position: const Offset(120, 120),
+                                    ports: {
+                                      'a': Port(
+                                        id: 'a',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 10),
+                                      ),
+                                      'b': Port(
+                                        id: 'b',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 40),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(90, 25),
+                                      ),
+                                    },
                                   );
-                                });
-                                setState(() {
-                                  s3.truthvalue = generateTruthValues(
-                                    switchNum,
-                                    "C",
+                                  model.addNode(n);
+                                  setState(() {});
+                                },
+                                label: Tooltip(
+                                  message: "AND GATE",
+                                  child: Image.asset(
+                                    'assets/images/Annd.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            if (gateAllowed('AND')) const SizedBox(height: 8),
+
+                            // ------------------- OR -------------------
+                            if (gateAllowed('OR'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addOr',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'OR',
+                                    label: 'Ooor',
+                                    position: const Offset(120, 220),
+                                    ports: {
+                                      'a': Port(
+                                        id: 'a',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 10),
+                                      ),
+                                      'b': Port(
+                                        id: 'b',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 40),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(120, 25),
+                                      ),
+                                    },
                                   );
-                                });
-                              });
-                              setState(() {
-                                s4.truthvalue = generateTruthValues(
-                                  switchNum,
-                                  "D",
-                                );
-                              });
-                              setState(() {
-                                s5.truthvalue = generateTruthValues(
-                                  switchNum,
-                                  "E",
-                                );
-                              });
-                            } else {
-                              () {
-                                //what to do after reaching maximum input counts
-                              };
-                            }
-                          },
-                          label: const Text('Add Switch'),
+                                  model.addNode(n);
+                                },
+                                label: Tooltip(
+                                  message: 'OR GATE',
+                                  child: Image.asset(
+                                    'assets/images/Ooor.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            if (gateAllowed('OR')) const SizedBox(height: 8),
+
+                            // ------------------- NOT -------------------
+                            if (gateAllowed('NOT'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addNot',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'NOT',
+                                    label: 'Noot',
+                                    position: const Offset(120, 320),
+                                    ports: {
+                                      'in': Port(
+                                        id: 'in',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 20),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(120, 20),
+                                      ),
+                                    },
+                                  );
+                                  model.addNode(n);
+                                },
+                                label: Tooltip(
+                                  message: 'NOT GATE',
+                                  child: Image.asset(
+                                    'assets/images/Noot.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            if (gateAllowed('NOT')) const SizedBox(height: 8),
+
+                            // ------------------- NAND -------------------
+                            if (gateAllowed('NAND'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addNand',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'NAND',
+                                    label: 'Naand',
+                                    position: const Offset(120, 420),
+                                    ports: {
+                                      'a': Port(
+                                        id: 'a',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 10),
+                                      ),
+                                      'b': Port(
+                                        id: 'b',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 40),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(120, 25),
+                                      ),
+                                    },
+                                  );
+                                  model.addNode(n);
+                                },
+                                label: Tooltip(
+                                  message: 'NAND GATE',
+                                  child: Image.asset(
+                                    'assets/images/Naand.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            if (gateAllowed('NAND')) const SizedBox(height: 8),
+
+                            // ------------------- NOR -------------------
+                            if (gateAllowed('NOR'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addNor',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'NOR',
+                                    label: 'Noor',
+                                    position: const Offset(120, 520),
+                                    ports: {
+                                      'a': Port(
+                                        id: 'a',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 10),
+                                      ),
+                                      'b': Port(
+                                        id: 'b',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 40),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(120, 25),
+                                      ),
+                                    },
+                                  );
+                                  model.addNode(n);
+                                },
+                                label: Tooltip(
+                                  message: 'NOR GATE',
+                                  child: Image.asset(
+                                    'assets/images/Noor.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            if (gateAllowed('NOR')) const SizedBox(height: 8),
+
+                            // ------------------- XOR -------------------
+                            if (gateAllowed('XOR'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addXor',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'XOR',
+                                    label: 'Xoor',
+                                    position: const Offset(350, 190),
+                                    ports: {
+                                      'a': Port(
+                                        id: 'a',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 10),
+                                      ),
+                                      'b': Port(
+                                        id: 'b',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 40),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(120, 25),
+                                      ),
+                                    },
+                                  );
+                                  model.addNode(n);
+                                },
+                                label: Tooltip(
+                                  message: 'XOR GATE',
+                                  child: Image.asset(
+                                    'assets/images/Xoor.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            if (gateAllowed('XOR')) const SizedBox(height: 8),
+
+                            // ------------------- XNOR -------------------
+                            if (gateAllowed('XNOR'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addXnor',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'XNOR',
+                                    label: 'Xnoor',
+                                    position: const Offset(350, 320),
+                                    ports: {
+                                      'a': Port(
+                                        id: 'a',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 10),
+                                      ),
+                                      'b': Port(
+                                        id: 'b',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 40),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(120, 25),
+                                      ),
+                                    },
+                                  );
+                                  model.addNode(n);
+                                },
+                                label: Tooltip(
+                                  message: 'XNOR GATE',
+                                  child: Image.asset(
+                                    'assets/images/Xnoor.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                            if (gateAllowed('XNOR')) const SizedBox(height: 8),
+
+                            // ------------------- BUFFER -------------------
+                            if (gateAllowed('BUFFER'))
+                              FloatingActionButton.extended(
+                                heroTag: 'addBuffer',
+                                onPressed: () {
+                                  final id =
+                                      'g${DateTime.now().microsecondsSinceEpoch}';
+                                  final n = Node(
+                                    id: id,
+                                    kind: 'BUFFER',
+                                    label: 'Bufffer',
+                                    position: const Offset(350, 440),
+                                    ports: {
+                                      'in': Port(
+                                        id: 'in',
+                                        type: PortType.input,
+                                        localOffset: const Offset(0, 20),
+                                      ),
+                                      'out': Port(
+                                        id: 'out',
+                                        type: PortType.output,
+                                        localOffset: const Offset(120, 20),
+                                      ),
+                                    },
+                                  );
+                                  model.addNode(n);
+                                },
+                                label: Tooltip(
+                                  message: 'BUFFER GATE',
+                                  child: Image.asset(
+                                    'assets/images/Bufffer.png',
+                                    height: 40,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        // ------------------- AND -------------------
-                        if (gateAllowed('AND'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addAnd',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'AND',
-                                label: 'Annd',
-                                position: const Offset(120, 120),
-                                ports: {
-                                  'a': Port(
-                                    id: 'a',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 10),
-                                  ),
-                                  'b': Port(
-                                    id: 'b',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 40),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(90, 25),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                              setState(() {});
-                            },
-                            label: Tooltip(
-                              message: "AND GATE",
-                              child: Image.asset(
-                                'assets/images/Annd.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                        if (gateAllowed('AND')) const SizedBox(height: 8),
-
-                        // ------------------- OR -------------------
-                        if (gateAllowed('OR'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addOr',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'OR',
-                                label: 'Ooor',
-                                position: const Offset(120, 220),
-                                ports: {
-                                  'a': Port(
-                                    id: 'a',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 10),
-                                  ),
-                                  'b': Port(
-                                    id: 'b',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 40),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(120, 25),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                            },
-                            label: Tooltip(
-                              message: 'OR GATE',
-                              child: Image.asset(
-                                'assets/images/Ooor.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                        if (gateAllowed('OR')) const SizedBox(height: 8),
-
-                        // ------------------- NOT -------------------
-                        if (gateAllowed('NOT'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addNot',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'NOT',
-                                label: 'Noot',
-                                position: const Offset(120, 320),
-                                ports: {
-                                  'in': Port(
-                                    id: 'in',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 20),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(120, 20),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                            },
-                            label: Tooltip(
-                              message: 'NOT GATE',
-                              child: Image.asset(
-                                'assets/images/Noot.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                        if (gateAllowed('NOT')) const SizedBox(height: 8),
-
-                        // ------------------- NAND -------------------
-                        if (gateAllowed('NAND'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addNand',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'NAND',
-                                label: 'Naand',
-                                position: const Offset(120, 420),
-                                ports: {
-                                  'a': Port(
-                                    id: 'a',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 10),
-                                  ),
-                                  'b': Port(
-                                    id: 'b',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 40),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(120, 25),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                            },
-                            label: Tooltip(
-                              message: 'NAND GATE',
-                              child: Image.asset(
-                                'assets/images/Naand.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                        if (gateAllowed('NAND')) const SizedBox(height: 8),
-
-                        // ------------------- NOR -------------------
-                        if (gateAllowed('NOR'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addNor',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'NOR',
-                                label: 'Noor',
-                                position: const Offset(120, 520),
-                                ports: {
-                                  'a': Port(
-                                    id: 'a',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 10),
-                                  ),
-                                  'b': Port(
-                                    id: 'b',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 40),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(120, 25),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                            },
-                            label: Tooltip(
-                              message: 'NOR GATE',
-                              child: Image.asset(
-                                'assets/images/Noor.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                        if (gateAllowed('NOR')) const SizedBox(height: 8),
-
-                        // ------------------- XOR -------------------
-                        if (gateAllowed('XOR'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addXor',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'XOR',
-                                label: 'Xoor',
-                                position: const Offset(120, 620),
-                                ports: {
-                                  'a': Port(
-                                    id: 'a',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 10),
-                                  ),
-                                  'b': Port(
-                                    id: 'b',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 40),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(120, 25),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                            },
-                            label: Tooltip(
-                              message: 'XOR GATE',
-                              child: Image.asset(
-                                'assets/images/Xoor.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                        if (gateAllowed('XOR')) const SizedBox(height: 8),
-
-                        // ------------------- XNOR -------------------
-                        if (gateAllowed('XNOR'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addXnor',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'XNOR',
-                                label: 'Xnoor',
-                                position: const Offset(120, 620),
-                                ports: {
-                                  'a': Port(
-                                    id: 'a',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 10),
-                                  ),
-                                  'b': Port(
-                                    id: 'b',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 40),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(120, 25),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                            },
-                            label: Tooltip(
-                              message: 'XNOR GATE',
-                              child: Image.asset(
-                                'assets/images/Xnoor.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                        if (gateAllowed('XNOR')) const SizedBox(height: 8),
-
-                        // ------------------- BUFFER -------------------
-                        if (gateAllowed('BUFFER'))
-                          FloatingActionButton.extended(
-                            heroTag: 'addBuffer',
-                            onPressed: () {
-                              final id =
-                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                              final n = Node(
-                                id: id,
-                                kind: 'BUFFER',
-                                label: 'Bufffer',
-                                position: const Offset(120, 620),
-                                ports: {
-                                  'in': Port(
-                                    id: 'in',
-                                    type: PortType.input,
-                                    localOffset: const Offset(0, 20),
-                                  ),
-                                  'out': Port(
-                                    id: 'out',
-                                    type: PortType.output,
-                                    localOffset: const Offset(120, 20),
-                                  ),
-                                },
-                              );
-                              model.addNode(n);
-                            },
-                            label: Tooltip(
-                              message: 'BUFFER GATE',
-                              child: Image.asset(
-                                'assets/images/Bufffer.png',
-                                height: 40,
-                              ),
-                            ),
-                          ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -1137,6 +1192,47 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void toggleOutput1Ports() {
+    for (int i = 0; i < 12; i++) {
+      // repeat same number of cycles you had
+      model.toggleSwitch("s1");
+      model.toggleSwitch("s2");
+      model.toggleSwitch("s3");
+      model.toggleSwitch("s4");
+      model.toggleSwitch("s5");
+    }
+  }
+}
+
+class LoadingToDashboard extends StatefulWidget {
+  const LoadingToDashboard({super.key});
+
+  @override
+  State<LoadingToDashboard> createState() => _LoadingToDashboardState();
+}
+
+class _LoadingToDashboardState extends State<LoadingToDashboard> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(), // 🔥 ito na yun
       ),
     );
   }

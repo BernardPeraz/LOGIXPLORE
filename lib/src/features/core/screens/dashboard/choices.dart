@@ -111,21 +111,41 @@ class Assessment extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
+                          List<int> output = [];
+                          List<String> gates = [];
+
+                          if (title == "AND GATE") {
+                            output = [0, 0, 0, 1, 0, 0, 0, 1];
+                            gates = ["AND"];
+                          } else if (title == "OR GATE") {
+                            output = [0, 1, 1, 1, 1, 1, 1, 1];
+                            gates = ["OR"];
+                          } else if (title == "NOT GATE") {
+                            output = [1, 0, 1, 0, 1, 0, 1, 0];
+                            gates = ["NOT"];
+                          } else if (title == "NAND GATE") {
+                            output = [1, 1, 1, 1, 1, 1, 1, 0];
+                            gates = ["NAND"];
+                          } else if (title == "NOR GATE") {
+                            output = [1, 0, 0, 0, 0, 0, 0, 0];
+                            gates = ["NOR"];
+                          } else if (title == "XOR GATE") {
+                            output = [0, 1, 1, 0, 1, 0, 0, 1];
+                            gates = ["XOR"];
+                          } else if (title == "XNOR GATE") {
+                            output = [1, 0, 0, 1, 0, 1, 1, 0];
+                            gates = ["XNOR"];
+                          } else if (title == "BUFFER GATE") {
+                            output = [0, 0, 0, 0, 1, 1, 1, 1];
+                            gates = ["BUFFER"];
+                          }
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LogicEditorPage(
-                                ExpecOut: [0, 0, 0, 1, 0, 0, 0, 1],
-                                allowedGates: [
-                                  "AND",
-                                  "OR",
-                                  "NAND",
-                                  "NOR",
-                                  "NOT",
-                                  "XOR",
-                                  "XNOR",
-                                  "BUFFER",
-                                ],
+                                ExpecOut: output,
+                                allowedGates: gates,
                                 nextPage: Dashboard(),
                               ),
                             ),

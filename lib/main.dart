@@ -3,11 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/responsiveness/About/aboutus.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/firebase_options.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/utils/theme/theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 class AppLoadingController extends GetxController {
   final isLoading = false.obs;
@@ -18,6 +22,7 @@ class AppLoadingController extends GetxController {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  setUrlStrategy(PathUrlStrategy());
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -81,6 +86,13 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       transitionDuration: const Duration(milliseconds: 600),
+
+      getPages: [
+        GetPage(name: '/', page: () => SplashScreen()),
+        GetPage(name: '/landing page', page: () => const Landingpagee()),
+        GetPage(name: '/login', page: () => const LoginScreen()),
+        GetPage(name: '/dashboard', page: () => const Dashboard()),
+      ],
       home: FirebaseAuth.instance.currentUser != null
           ? const Dashboard()
           : SplashScreen(),

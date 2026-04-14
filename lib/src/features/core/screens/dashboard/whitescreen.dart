@@ -14,12 +14,13 @@ class _WhiteScreenState extends State<WhiteScreen> {
   @override
   void initState() {
     super.initState();
+
     Future.delayed(const Duration(seconds: 2), () {
       //LogicEditorPage());
       //LogicSimp()
       Get.off(
         () => LogicEditorPage(
-          ExpecOut: [0, 0, 0, 1, 0, 0, 0, 1],
+          ExpecOut: [1, 0, 1, 1, 1, 0, 0, 0],
           allowedGates: [
             "AND",
             "OR",
@@ -30,7 +31,21 @@ class _WhiteScreenState extends State<WhiteScreen> {
             "XOR",
             "XNOR",
           ],
-          nextPage: Dashboard(),
+          mode: SimulatorMode.level,
+          nextPage: LogicEditorPage(
+            ExpecOut: [1, 0, 0, 0, 1, 0, 1, 1],
+            allowedGates: [
+              "AND",
+              "OR",
+              "BUFFER",
+              "NOT",
+              "NAND",
+              "NOR",
+              "XOR",
+              "XNOR",
+            ],
+            nextPage: Dashboard(),
+          ),
         ),
       );
     });

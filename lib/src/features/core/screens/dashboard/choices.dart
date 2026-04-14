@@ -146,6 +146,8 @@ class Assessment extends StatelessWidget {
                               builder: (context) => LogicEditorPage(
                                 ExpecOut: output,
                                 allowedGates: gates,
+
+                                mode: SimulatorMode.practice,
                                 nextPage: Dashboard(),
                               ),
                             ),

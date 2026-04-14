@@ -9,6 +9,19 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widge
 class EditorModel extends ChangeNotifier {
   Map<String, Node> nodes = {};
   Map<String, Wire> wires = {};
+  void clearAll(Node outputNode) {
+    final savedOutput = outputNode;
+
+    nodes.clear();
+    wires.clear();
+
+    nodes[savedOutput.id] = savedOutput;
+
+    connectingFrom = null;
+    currentDragPosition = null;
+
+    notifyListeners();
+  }
 
   // temporary connection while dragging
   PortRef? connectingFrom;

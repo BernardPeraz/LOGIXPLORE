@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/nodewidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/painters/wirepainter.dart';
@@ -57,6 +59,7 @@ class LogicEditorPage extends StatefulWidget {
   final List<int> ExpecOut;
   final List<String> allowedGates;
   final Widget nextPage;
+  final SimulatorMode mode;
 
   const LogicEditorPage({
     super.key,
@@ -72,15 +75,60 @@ class LogicEditorPage extends StatefulWidget {
     //  'XNOR',
     // 'BUFFER',
     required this.nextPage,
+    this.mode = SimulatorMode.practice,
   });
 
   @override
   State<LogicEditorPage> createState() => _LogicEditorPageState();
 }
 
+enum SimulatorMode {
+  practice, // single gate
+  level, // progression
+}
+
 class _LogicEditorPageState extends State<LogicEditorPage> {
+  EditorModel model = EditorModel();
+
+  void _resetNodesSafely() {
+    // clear old nodes
+    model.nodes.clear();
+
+    // re-add output node safely
+    _seedExample();
+  }
+
+  void resetNodes() {
+    switchNum = 0;
+    model = EditorModel();
+
+    model.nodes.clear();
+
+    _seedExample();
+
+    setState(() {});
+  }
+
+  void resetTruthValues() {
+    s1.truthvalue = generateTruthValues(0, "A");
+    s2.truthvalue = generateTruthValues(0, "B");
+    s3.truthvalue = generateTruthValues(0, "C");
+    s4.truthvalue = generateTruthValues(0, "D");
+    s5.truthvalue = generateTruthValues(0, "E");
+
+    not1.truthvalue = [];
+  }
+
+  void resetPortValues() {
+    for (var node in model.nodes.values) {
+      for (var port in node.ports.values) {
+        port.value = false;
+      }
+    }
+  }
+
   int switchNum = 0;
-  final EditorModel model = EditorModel();
+
   // For simplicity we use a GlobalKey to convert coordinates
   final GlobalKey canvasKey = GlobalKey();
   List<int> generateTruthValues(int x, String switchNum) {
@@ -555,13 +603,22 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 alignment: Alignment.centerRight,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoadingToDashboard(),
-                                      ),
+                                    print("USER OUTPUT: ${not1.truthvalue}");
+                                    print("EXPECTED: ${widget.ExpecOut}");
+                                    print(
+                                      "EQUAL: ${listEquals(not1.truthvalue, widget.ExpecOut)}",
                                     );
+
+                                    resetTruthValues();
+                                    model.clearAll(not1);
+
+                                    if (widget.mode == SimulatorMode.level) {
+                                      // 👉 NEXT LEVEL
+                                      Get.off(() => widget.nextPage);
+                                    } else {
+                                      // 👉 BACK TO DASHBOARD
+                                      Get.off(() => Dashboard());
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     side: BorderSide(
@@ -584,7 +641,11 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                       borderRadius: BorderRadius.circular(25),
                                     ),
                                   ),
-                                  child: Text("Good Job!"),
+                                  child: Text(
+                                    widget.mode == SimulatorMode.level
+                                        ? "Proceed to Next Level"
+                                        : "Good job!",
+                                  ),
                                 ),
                               )
                             : Container(),
@@ -738,11 +799,13 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                             FloatingActionButton.extended(
                               heroTag: '✅',
                               onPressed: () {
-                                setState(() {
-                                  switchNum = 0;
-                                  model.nodes.clear();
-                                  model.addNode(not1);
-                                });
+                                model.clearAll(not1); // nodes + wires
+                                resetPortValues(); // 🔥 lights OFF
+                                resetTruthValues(); // 🔥 table reset
+
+                                switchNum = 0;
+
+                                setState(() {});
                               },
                               label: const Text('RESET'),
                             ),

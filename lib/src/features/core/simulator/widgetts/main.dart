@@ -606,12 +606,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 alignment: Alignment.centerRight,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    print("USER OUTPUT: ${not1.truthvalue}");
-                                    print("EXPECTED: ${widget.ExpecOut}");
-                                    print(
-                                      "EQUAL: ${listEquals(not1.truthvalue, widget.ExpecOut)}",
-                                    );
-
                                     if (widget.mode == SimulatorMode.level) {
                                       // 👉 NEXT LEVEL
                                       Get.off(() => widget.nextPage);

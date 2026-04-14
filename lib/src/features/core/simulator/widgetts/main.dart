@@ -88,6 +88,7 @@ enum SimulatorMode {
 }
 
 class _LogicEditorPageState extends State<LogicEditorPage> {
+  bool isSolved = false;
   EditorModel model = EditorModel();
 
   void _resetNodesSafely() {
@@ -517,142 +518,166 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.black,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         backgroundColor: Colors.white,
-        title: const Text(
+        title: Text(
           'Logic Gate Simulator',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20, color: Colors.black),
           strutStyle: StrutStyle(fontWeight: FontWeight.w700),
         ),
-
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: () {
-              // placeholder for save
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Saving not implemented')),
-              );
-            },
-          ),
-        ],
       ),
       body: Center(
         child: Row(
           children: [
             Expanded(
               flex: 2,
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: SingleChildScrollView(
-                      child: Container(
-                        color: Colors.white,
-                        child: SwitchTable(
-                          Aswitch: s1.truthvalue,
-                          Bswitch: s2.truthvalue,
-                          Cswitch: s3.truthvalue,
-                          Dswitch: s4.truthvalue,
-                          Eswitch: s5.truthvalue,
-                          Output: not1.truthvalue,
-                          Expected: widget.ExpecOut,
-                          nums: switchNum,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: SingleChildScrollView(
+                        child: Container(
+                          color: Colors.white,
+                          child: SwitchTable(
+                            Aswitch: s1.truthvalue,
+                            Bswitch: s2.truthvalue,
+                            Cswitch: s3.truthvalue,
+                            Dswitch: s4.truthvalue,
+                            Eswitch: s5.truthvalue,
+                            Output: not1.truthvalue,
+                            Expected: widget.ExpecOut,
+                            nums: switchNum,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 2,
+                    Container(
+                      color: Colors.white,
+                      child: Expanded(
+                        flex: 2,
 
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset('assets/images/robotn.png', height: 250),
-                        Positioned(
-                          top: 28,
-
-                          child: Container(
-                            width: 310,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.black, width: 2),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Image.asset(
+                              listEquals(not1.truthvalue, widget.ExpecOut)
+                                  ? 'assets/images/Robot_celebrates_logic_puzzle_success.png' //
+                                  : 'assets/images/robotn.png',
+                              height: 250,
                             ),
-                            child: Text(
-                              (s1.truthvalue.length == widget.ExpecOut.length)
-                                  ? listEquals(not1.truthvalue, widget.ExpecOut)
-                                        ? 'Good job! The output is correct means you chose gates correctly.'
-                                        : 'Good! the ouput length is correct, now use correct gates to do the expected output'
-                                  : (2 ^ (switchNum + 1) <
-                                        widget.ExpecOut.length)
-                                  ? "Let’s use the switches to get ${widget.ExpecOut} as Expected Output "
-                                  : 'Output length is more than expected output length, please restart',
-
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                        listEquals(not1.truthvalue, widget.ExpecOut)
-                            ? Align(
-                                alignment: Alignment.centerRight,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    print("USER OUTPUT: ${not1.truthvalue}");
-                                    print("EXPECTED: ${widget.ExpecOut}");
-                                    print(
-                                      "EQUAL: ${listEquals(not1.truthvalue, widget.ExpecOut)}",
-                                    );
-
-                                    resetTruthValues();
-                                    model.clearAll(not1);
-
-                                    if (widget.mode == SimulatorMode.level) {
-                                      // 👉 NEXT LEVEL
-                                      Get.off(() => widget.nextPage);
-                                    } else {
-                                      // 👉 BACK TO DASHBOARD
-                                      Get.off(() => Dashboard());
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    side: BorderSide(
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                    ),
-
-                                    backgroundColor: const Color.fromARGB(
-                                      255,
-                                      255,
-                                      149,
-                                      0,
-                                    ),
-
-                                    foregroundColor: Colors.white,
-                                    minimumSize: const Size(250, 50),
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(
-                                        color: Colors.grey,
-                                      ),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    widget.mode == SimulatorMode.level
-                                        ? "Proceed to Next Level"
-                                        : "Good job!",
+                            Positioned(
+                              top: 10,
+                              child: Container(
+                                width: 310,
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 2,
                                   ),
                                 ),
-                              )
-                            : Container(),
-                      ],
+                                child: Text(
+                                  (s1.truthvalue.length ==
+                                          widget.ExpecOut.length)
+                                      ? (listEquals(
+                                              not1.truthvalue,
+                                              widget.ExpecOut,
+                                            )
+                                            ? 'Good job! The output is correct means you chose gates correctly.'
+                                            : 'Good! the output length is correct, now use correct gates to do the expected output')
+                                      : (2 ^ (switchNum + 1) <
+                                            widget.ExpecOut.length)
+                                      ? "Let’s use the switches to get ${widget.ExpecOut} as Expected Output "
+                                      : 'Output length is more than expected output length, please restart',
+
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            listEquals(not1.truthvalue, widget.ExpecOut)
+                                ? Align(
+                                    alignment: Alignment.centerRight,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        print(
+                                          "USER OUTPUT: ${not1.truthvalue}",
+                                        );
+                                        print("EXPECTED: ${widget.ExpecOut}");
+                                        print(
+                                          "EQUAL: ${listEquals(not1.truthvalue, widget.ExpecOut)}",
+                                        );
+
+                                        if (widget.mode ==
+                                            SimulatorMode.level) {
+                                          // 👉 NEXT LEVEL
+                                          Get.off(() => widget.nextPage);
+                                        } else {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => Dashboard(),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        side: BorderSide(
+                                          color: const Color.fromARGB(
+                                            255,
+                                            0,
+                                            0,
+                                            0,
+                                          ),
+                                        ),
+
+                                        backgroundColor: const Color.fromARGB(
+                                          255,
+                                          255,
+                                          149,
+                                          0,
+                                        ),
+
+                                        foregroundColor: Colors.white,
+                                        minimumSize: const Size(165, 50),
+
+                                        shape: RoundedRectangleBorder(
+                                          side: const BorderSide(
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            25,
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        widget.mode == SimulatorMode.level
+                                            ? "Proceed to Next Level"
+                                            : "Good job!",
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(

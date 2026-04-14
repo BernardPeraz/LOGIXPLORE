@@ -81,6 +81,11 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  TextFormField(
+                    controller: currentPasswordController,
+                    obscureText: true,
+                    decoration: InputDecoration(labelText: "Current Password"),
+                  ),
 
                   SizedBox(height: 70),
 
@@ -265,7 +270,8 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                           }
 
                           //  GET OLD PASSWORD FROM FIRESTORE
-                          final oldPassword = query.docs.first["Password"];
+                          final oldPassword = currentPasswordController.text
+                              .trim();
 
                           // REAUTHENTICATE USER USING OLD PASSWORD
                           final cred = EmailAuthProvider.credential(
@@ -309,7 +315,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                           );
 
                           await Future.delayed(Duration(milliseconds: 800));
-
+                          if (!mounted) return;
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

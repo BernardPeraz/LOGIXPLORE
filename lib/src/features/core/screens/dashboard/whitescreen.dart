@@ -19,7 +19,7 @@ class _WhiteScreenState extends State<WhiteScreen> {
       //LogicSimp()
       Get.off(
         () => LogicEditorPage(
-          ExpecOut: [0, 0, 0, 0, 0, 0, 0, 1],
+          ExpecOut: [0, 0, 0, 1, 0, 0, 0, 1],
           allowedGates: [
             "AND",
             "OR",

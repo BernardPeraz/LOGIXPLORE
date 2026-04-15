@@ -110,7 +110,7 @@ class Assessment extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           List<int> output = [];
                           List<String> gates = [];
 
@@ -140,13 +140,31 @@ class Assessment extends StatelessWidget {
                             gates = ["BUFFER"];
                           }
 
+                          // 🔄 SHOW LOADING
+                          showDialog(
+                            barrierColor: Colors.white12,
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          );
+
+                          // ⏳ Optional delay (para makita loading)
+                          await Future.delayed(Duration(seconds: 1));
+
+                          // ❌ Close loading dialog
+                          Navigator.pop(context);
+
+                          // 🚀 Navigate
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LogicEditorPage(
                                 ExpecOut: output,
                                 allowedGates: gates,
-
                                 mode: SimulatorMode.practice,
                                 nextPage: Dashboard(),
                               ),

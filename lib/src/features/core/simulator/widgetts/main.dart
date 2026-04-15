@@ -520,19 +520,80 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Text(
           'Logic Gate Simulator',
           style: TextStyle(fontSize: 20, color: Colors.black),
           strutStyle: StrutStyle(fontWeight: FontWeight.w700),
         ),
+        actions: [
+          Tooltip(
+            message: 'Close',
+            child: IconButton(
+              icon: Icon(Icons.close_rounded),
+              iconSize: 25,
+              onPressed: () async {
+                bool? confirm = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: Border.fromBorderSide(BorderSide.none),
+                      title: Text(
+                        "Confirm",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      content: Text(
+                        "Are you sure you want to close?",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w200,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, true); // confirm
+                          },
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, false); // cancel
+                          },
+                          child: Text(
+                            "No",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+                if (confirm == true) {
+                  Navigator.pop(context); // dito lang mag close
+                }
+              },
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Row(

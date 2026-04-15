@@ -129,15 +129,79 @@ class _QuizScreenState extends State<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          color: Colors.black,
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false,
         title: Text(
           "${widget.gate} Quiz (${currentIndex + 1}/10)",
           style: const TextStyle(color: Colors.black),
         ),
         backgroundColor: const Color.fromARGB(255, 53, 207, 250),
+        actions: [
+          Tooltip(
+            message: 'Close',
+            child: IconButton(
+              icon: Icon(Icons.close_rounded),
+              iconSize: 25,
+              onPressed: () async {
+                bool? confirm = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      shape: Border.fromBorderSide(BorderSide.none),
+                      title: Text(
+                        "Confirm",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      content: Text(
+                        "Are you sure you want to close?",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w200,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, true); // confirm
+                          },
+                          child: Text(
+                            "Yes",
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context, false); // cancel
+                          },
+                          child: Text(
+                            "No",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+
+                if (confirm == true) {
+                  Navigator.pop(context); // dito lang mag close
+                }
+              },
+            ),
+          ),
+        ],
       ),
       body: Container(
         width: double.infinity,

@@ -183,6 +183,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
                             context: context,
                             quizGateName: 'XNOR GATE',
                             lessonDocName: 'XNOR',
+                            simuGateName: 'XNOR',
                           );
                         },
                         style: TextButton.styleFrom(

@@ -184,6 +184,7 @@ class _NotlessonsState extends State<Notlessons> {
                             context: context,
                             quizGateName: 'NOT GATE',
                             lessonDocName: 'NOT',
+                            simuGateName: 'NOT',
                           );
                         },
                         style: TextButton.styleFrom(

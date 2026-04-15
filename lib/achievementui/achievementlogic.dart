@@ -7,6 +7,7 @@ Future<void> showAchievementDialogForGate({
   required BuildContext context,
   required String quizGateName,
   required String lessonDocName,
+  required String simuGateName,
 }) async {
   try {
     final user = FirebaseAuth.instance.currentUser;
@@ -40,10 +41,19 @@ Future<void> showAchievementDialogForGate({
           .collection('lessons_progress')
           .doc(lessonDocName)
           .get(),
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('simulator_progress')
+          .doc(simuGateName)
+          .get(),
     ]);
+
     final QuerySnapshot latestSnapshot = results[0] as QuerySnapshot;
     final QuerySnapshot bestSnapshot = results[1] as QuerySnapshot;
     final DocumentSnapshot lessonSnapshot = results[2] as DocumentSnapshot;
+    final DocumentSnapshot simSnapshot = results[3] as DocumentSnapshot;
 
     int currentScore = 0;
     int totalQuestions = 0;
@@ -87,6 +97,12 @@ Future<void> showAchievementDialogForGate({
           'title': 'Module Completed!',
         });
       }
+    }
+    if (simSnapshot.exists) {
+      badges.add({
+        'image': 'assets/images/logicgatecompletion.png',
+        'title': 'Logic Gate Solver!',
+      });
     }
     if (!context.mounted) return;
     Navigator.pop(context);

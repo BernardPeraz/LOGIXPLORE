@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:studydesign2zzdatabaseplaylist/achievementui/achievement_manager.dart';
+import 'package:studydesign2zzdatabaseplaylist/achievementui/achievementlogic.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/nodewidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/painters/wirepainter.dart';
@@ -811,23 +813,25 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                             SizedBox(height: 10),
                             FloatingActionButton.extended(
                               heroTag: '✅',
-                              onPressed: () {
-                                if (not1.truthvalue == widget.ExpecOut) {
+                              onPressed: () async {
+                                if (listEquals(
+                                  not1.truthvalue,
+                                  widget.ExpecOut,
+                                )) {
+                                  String gateName = widget.allowedGates.first;
+                                  await markGateAsSolved(gateName);
+
+                                  // (optional) existing dialog mo
                                   showDialog(
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text("Title here"),
-                                        content: Text(
-                                          "This is the message inside the dialog.",
-                                        ),
+                                        title: Text("Success"),
+                                        content: Text("Correct output!"),
                                         actions: [
                                           TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(
-                                                context,
-                                              ); // close dialog
-                                            },
+                                            onPressed: () =>
+                                                Navigator.pop(context),
                                             child: Text("OK"),
                                           ),
                                         ],

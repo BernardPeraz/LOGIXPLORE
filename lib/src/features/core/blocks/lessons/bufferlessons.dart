@@ -195,6 +195,7 @@ class _BufferlessonsState extends State<Bufferlessons> {
                             context: context,
                             quizGateName: 'BUFFER GATE',
                             lessonDocName: 'BUFFER',
+                            simuGateName: 'BUFFER',
                           );
                         },
                         style: TextButton.styleFrom(

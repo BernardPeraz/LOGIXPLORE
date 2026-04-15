@@ -191,7 +191,6 @@ class _LandingmobileState extends State<Landingmobile> {
   @override
   Widget build(BuildContext context) {
     List<String> allButtons = ['Home', 'About', 'Sign in', 'Register'];
-    List<String> reversed = allButtons.reversed.toList();
 
     return LayoutBuilder(
       builder: (context, constraints) {

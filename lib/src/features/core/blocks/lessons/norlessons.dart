@@ -166,6 +166,7 @@ class _NorlessonsState extends State<Norlessons> {
                             context: context,
                             quizGateName: 'NOR GATE',
                             lessonDocName: 'NOR',
+                            simuGateName: 'NOR',
                           );
                         },
                         style: TextButton.styleFrom(

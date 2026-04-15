@@ -190,6 +190,7 @@ class _AndlessonsState extends State<Andlessons> {
                             context: context,
                             quizGateName: 'AND GATE',
                             lessonDocName: 'AND',
+                            simuGateName: 'AND',
                           );
                         },
                         style: TextButton.styleFrom(

@@ -32,11 +32,9 @@ class _ChangepassworduiState extends State<Changepasswordui> {
   Widget build(BuildContext context) {
     // RESPONSIVE VARIABLES
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     // For mobile, text is smaller; for desktop, text is larger
     double titleSize = screenWidth < 600 ? 18 : 22;
-    double textFieldFont = screenWidth < 600 ? 14 : 18;
     double containerWidth = screenWidth < 600 ? screenWidth * 0.85 : 400;
 
     return Scaffold(

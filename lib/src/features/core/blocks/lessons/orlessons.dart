@@ -183,6 +183,7 @@ class _OrlessonsState extends State<Orlessons> {
                             context: context,
                             quizGateName: 'OR GATE',
                             lessonDocName: 'OR',
+                            simuGateName: 'OR',
                           );
                         },
                         style: TextButton.styleFrom(

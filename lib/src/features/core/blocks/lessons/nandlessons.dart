@@ -193,6 +193,7 @@ class _NandlessonsState extends State<Nandlessons> {
                             context: context,
                             quizGateName: 'NAND GATE',
                             lessonDocName: 'NAND',
+                            simuGateName: 'NAND',
                           );
                         },
                         style: TextButton.styleFrom(

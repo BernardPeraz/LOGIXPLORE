@@ -13,8 +13,6 @@ class WebsiteLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screen = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,

@@ -185,6 +185,7 @@ class _XorlessonsState extends State<Xorlessons> {
                             context: context,
                             quizGateName: 'XOR GATE',
                             lessonDocName: 'XOR',
+                            simuGateName: 'XOR',
                           );
                         },
                         style: TextButton.styleFrom(

@@ -151,6 +151,7 @@ class _DashboardState extends State<Dashboard> {
                                 Theme.of(context).brightness == Brightness.dark;
 
                             return AlertDialog(
+                              shape: Border.fromBorderSide(BorderSide.none),
                               backgroundColor: isDark
                                   ? Colors.grey[900]
                                   : Colors.white,
@@ -158,14 +159,15 @@ class _DashboardState extends State<Dashboard> {
                                 "Confirm Logout",
                                 style: TextStyle(
                                   color: isDark ? Colors.white : Colors.black,
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                               content: Text(
                                 "Are you sure you want to logout from your account?",
                                 style: TextStyle(
-                                  color: isDark
-                                      ? Colors.white70
-                                      : Colors.black87,
+                                  color: isDark ? Colors.white70 : Colors.black,
+                                  fontWeight: FontWeight.w200,
                                 ),
                               ),
                               actions: [
@@ -181,7 +183,7 @@ class _DashboardState extends State<Dashboard> {
 
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
-                                            5,
+                                            3,
                                           ),
                                         ),
                                         backgroundColor: Colors.red,
@@ -200,7 +202,7 @@ class _DashboardState extends State<Dashboard> {
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(
-                                            5,
+                                            3,
                                           ),
                                         ),
                                         textStyle: TextStyle(

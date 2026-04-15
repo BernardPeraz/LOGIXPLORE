@@ -16,8 +16,15 @@ class Changepasswordui extends StatefulWidget {
 class _ChangepassworduiState extends State<Changepasswordui> {
   final ValueNotifier<bool> repeatPasswordVisible = ValueNotifier(false);
   bool passwordVisible = false;
+  bool _passwordVisible = false;
 
   Map<String, String?> fieldErrors = {};
+  void togglePasswordVisibility() {
+    setState(() {
+      _passwordVisible = !_passwordVisible;
+    });
+  }
+
   void toggleNewPasswordVisibility() {
     setState(() {
       passwordVisible = !passwordVisible;
@@ -79,14 +86,35 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  TextFormField(
-                    controller: currentPasswordController,
-                    obscureText: true,
-                    decoration: InputDecoration(labelText: "Current Password"),
+                  SizedBox(height: 40),
+                  ValueListenableBuilder(
+                    valueListenable: ValueNotifier<bool>(_passwordVisible),
+                    builder: (context, value, child) {
+                      return TextFormField(
+                        controller: currentPasswordController,
+                        obscureText: !_passwordVisible,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.fingerprint),
+                          labelText: "Current Password",
+                          hintText: "Current Password",
+                          filled: true,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: togglePasswordVisibility,
+                          ),
+                          enabledBorder: TInputBorders.enabled,
+                          focusedBorder: TInputBorders.focused,
+                          errorBorder: TInputBorders.error,
+                          focusedErrorBorder: TInputBorders.focusedError,
+                        ),
+                      );
+                    },
                   ),
-
-                  SizedBox(height: 70),
-
+                  SizedBox(height: 20),
                   // NEW PASSWORD FIELD
                   TextFormField(
                     controller: newPasswordController,

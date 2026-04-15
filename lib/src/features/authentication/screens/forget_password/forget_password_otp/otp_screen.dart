@@ -69,9 +69,9 @@ class _OTPScreenState extends State<OTPScreen> {
 
             // NEXT BUTTON
             SizedBox(
-              width: double.infinity,
+              width: 350,
+
               child: ElevatedButton(
-                child: Text("Next"),
                 onPressed: () {
                   // 1. Check if complete (6 digits)
                   if (enteredCode.length != 6) {
@@ -88,6 +88,19 @@ class _OTPScreenState extends State<OTPScreen> {
                   // 3. MATCH → GO TO CHANGE PASSWORD
                   Get.to(() => Changepasswordui(email: widget.email));
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 255, 149, 0),
+                  foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  "Next",
+                  style: TextStyle(fontWeight: FontWeight.w300),
+                ),
               ),
             ),
           ],

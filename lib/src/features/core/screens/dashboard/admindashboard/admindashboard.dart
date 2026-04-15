@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/adminlogin.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/resultscores.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/simulatorprogress.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/studentprogress.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
@@ -30,7 +31,7 @@ class _AdmindashboardState extends State<Admindashboard> {
     Dashboard(),
     StudentProgressPage(),
     ResultScores(),
-    Center(child: Text("Simulator", style: TextStyle(fontSize: 22))),
+    Simulatorprogress(),
   ];
 
   @override

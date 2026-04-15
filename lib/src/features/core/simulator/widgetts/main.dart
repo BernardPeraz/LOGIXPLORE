@@ -538,6 +538,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
+                      backgroundColor: Colors.white,
                       shape: Border.fromBorderSide(BorderSide.none),
                       title: Text(
                         "Confirm",

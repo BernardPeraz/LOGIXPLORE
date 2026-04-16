@@ -145,34 +145,35 @@ class _MultiPageDialogState extends State<MultiPageDialog> {
                           : () {
                               setState(() => pageIndex--);
                             },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const Text(
-                          "Back",
+                      child: const Padding(
+                        padding: EdgeInsets.all(15),
+                        child: Text(
+                          "Previous",
                           style: TextStyle(fontSize: 18, color: Colors.black),
                         ),
                       ),
                     ),
 
-                    // CLOSE
+                    // NEXT or CLOSE (dynamic)
                     TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text(
-                        "Close",
-                        style: TextStyle(fontSize: 18, color: Colors.black),
-                      ),
-                    ),
-
-                    // NEXT
-                    TextButton(
-                      onPressed: pageIndex == pages.length - 1
-                          ? null
-                          : () {
-                              setState(() => pageIndex++);
-                            },
-                      child: const Text(
-                        "Next",
-                        style: TextStyle(fontSize: 18, color: Colors.black),
+                      onPressed: () {
+                        if (pageIndex == pages.length - 1) {
+                          Navigator.pop(context); // CLOSE kapag last page
+                        } else {
+                          setState(
+                            () => pageIndex++,
+                          ); // NEXT kapag hindi pa last
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Text(
+                          pageIndex == pages.length - 1 ? "Close" : "Next",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
                   ],

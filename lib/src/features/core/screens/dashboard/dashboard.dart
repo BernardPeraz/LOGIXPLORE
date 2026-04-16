@@ -23,6 +23,7 @@ class Dashboard extends StatefulWidget {
 bool _isLoading = false;
 
 class _DashboardState extends State<Dashboard> {
+  bool _hasShownDialog = false;
   void whitescreen() {
     setState(() {
       _isLoading = true;
@@ -442,9 +443,27 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
 
-    // Auto show dialog AFTER the first frame is drawn
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showWelcomeDialog(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) return;
+
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      final hasSeen = doc.data()?['hasSeenWelcomeDialog'] ?? false;
+
+      if (!hasSeen) {
+        _showWelcomeDialog(context);
+
+        // mark as seen
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({'hasSeenWelcomeDialog': true});
+      }
     });
   }
 

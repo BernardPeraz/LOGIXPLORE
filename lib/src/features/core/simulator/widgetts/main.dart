@@ -600,7 +600,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
         builder: (context, constraints) {
           bool isMobile = constraints.maxWidth < 800;
           return Container(
-            color: Colors.white,
+            color: const Color.fromARGB(255, 206, 204, 204),
             child: Center(
               child: isMobile
                   ? Column(
@@ -740,7 +740,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
 
                                                       shape: RoundedRectangleBorder(
                                                         side: const BorderSide(
-                                                          color: Colors.grey,
+                                                          color: Color.fromARGB(
+                                                            255,
+                                                            206,
+                                                            204,
+                                                            204,
+                                                          ),
                                                         ),
                                                         borderRadius:
                                                             BorderRadius.circular(
@@ -2197,7 +2202,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
       child: Column(
         children: [
           Container(
-            color: Colors.white,
+            color: const Color.fromARGB(255, 206, 204, 204),
             child: SwitchTable(
               Aswitch: s1.truthvalue,
               Bswitch: s2.truthvalue,
@@ -2211,7 +2216,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           ),
           Container(
             height: 387,
-            color: Colors.white,
+            color: const Color.fromARGB(255, 206, 204, 204),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -2227,7 +2232,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                     width: 340,
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color.fromARGB(255, 206, 204, 204),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.black, width: 2),
                     ),

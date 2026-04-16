@@ -531,7 +531,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           Tooltip(
             message: 'Close',
             child: IconButton(
-              icon: Icon(Icons.close_rounded),
+              icon: Icon(Icons.close_rounded, color: Colors.black),
               iconSize: 25,
               onPressed: () async {
                 bool? confirm = await showDialog(
@@ -668,46 +668,54 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                         listEquals(not1.truthvalue, widget.ExpecOut)
                             ? Align(
                                 alignment: Alignment.centerRight,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (widget.mode == SimulatorMode.level) {
-                                      // 👉 NEXT LEVEL
-                                      Get.off(() => widget.nextPage);
-                                    } else {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => Dashboard(),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(13),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (widget.mode == SimulatorMode.level) {
+                                        // NEXT LEVEL
+                                        Get.off(() => widget.nextPage);
+                                      } else {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => Dashboard(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      side: BorderSide(
+                                        color: const Color.fromARGB(
+                                          255,
+                                          0,
+                                          0,
+                                          0,
                                         ),
-                                      );
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    side: BorderSide(
-                                      color: const Color.fromARGB(255, 0, 0, 0),
-                                    ),
-
-                                    backgroundColor: const Color.fromARGB(
-                                      255,
-                                      255,
-                                      149,
-                                      0,
-                                    ),
-
-                                    foregroundColor: Colors.white,
-                                    minimumSize: const Size(165, 50),
-
-                                    shape: RoundedRectangleBorder(
-                                      side: const BorderSide(
-                                        color: Colors.grey,
                                       ),
-                                      borderRadius: BorderRadius.circular(25),
+
+                                      backgroundColor: const Color.fromARGB(
+                                        255,
+                                        255,
+                                        149,
+                                        0,
+                                      ),
+
+                                      foregroundColor: Colors.white,
+                                      minimumSize: const Size(165, 50),
+
+                                      shape: RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                          color: Colors.grey,
+                                        ),
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    widget.mode == SimulatorMode.level
-                                        ? "Proceed to Next Level"
-                                        : "Good job!",
+                                    child: Text(
+                                      widget.mode == SimulatorMode.level
+                                          ? "Proceed to Next Level"
+                                          : "Good job!",
+                                    ),
                                   ),
                                 ),
                               )
@@ -875,26 +883,99 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                             SizedBox(height: 10),
                             FloatingActionButton.extended(
                               heroTag: '✅',
-                              onPressed: () async {
+                              onPressed: () {
                                 if (listEquals(
                                   not1.truthvalue,
                                   widget.ExpecOut,
                                 )) {
                                   String gateName = widget.allowedGates.first;
-                                  await markGateAsSolved(gateName);
+                                  markGateAsSolved(gateName);
 
                                   // (optional) existing dialog mo
                                   showDialog(
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text("Success"),
-                                        content: Text("Correct output!"),
+                                        backgroundColor: Colors.white,
+
+                                        title: Text(
+                                          "GREAT JOB!",
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 2,
+                                            fontSize: 17,
+                                            color: Colors.green,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: Text(
+                                          "You got the correct output",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 14.7,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
                                         actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context),
-                                            child: Text("OK"),
+                                          Center(
+                                            child: TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text(
+                                                "OK",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadiusGeometry.circular(25),
+                                        ),
+                                        backgroundColor: Colors.white,
+                                        title: Text(
+                                          "TRY AGAIN",
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: 2,
+                                            fontSize: 17,
+                                            color: Colors.red,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: Text(
+                                          "You did not meet the expected output",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w200,
+                                            fontSize: 14.7,
+                                          ),
+                                        ),
+                                        actions: [
+                                          Center(
+                                            child: TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: Text(
+                                                "OK",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       );

@@ -73,11 +73,10 @@ Future<void> showAchievementDialogForGate({
     if (bestSnapshot.docs.isNotEmpty) {
       bestScore = bestSnapshot.docs.first.get('score') ?? 0;
     }
-
-    if (bestScore == totalQuestions && totalQuestions > 0) {
+    if (simSnapshot.exists) {
       badges.add({
-        'image': 'assets/images/background_images/perfectscore.png',
-        'title': 'Perfect Score',
+        'image': 'assets/images/logicgatecompletion.png',
+        'title': 'Logic Gate Solver!',
       });
     }
 
@@ -98,12 +97,13 @@ Future<void> showAchievementDialogForGate({
         });
       }
     }
-    if (simSnapshot.exists) {
+    if (bestScore == totalQuestions && totalQuestions > 0) {
       badges.add({
-        'image': 'assets/images/logicgatecompletion.png',
-        'title': 'Logic Gate Solver!',
+        'image': 'assets/images/background_images/perfectscore.png',
+        'title': 'Perfect Score',
       });
     }
+
     if (!context.mounted) return;
     Navigator.pop(context);
     showDialog(

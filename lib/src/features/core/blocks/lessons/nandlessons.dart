@@ -33,6 +33,7 @@ class _NandlessonsState extends State<Nandlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'NAND')
+        .orderBy('title')
         .get();
 
     setState(() {

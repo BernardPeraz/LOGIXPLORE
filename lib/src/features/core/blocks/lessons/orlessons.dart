@@ -31,6 +31,7 @@ class _OrlessonsState extends State<Orlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'OR')
+        .orderBy('title')
         .get();
 
     setState(() {

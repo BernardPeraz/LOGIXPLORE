@@ -32,6 +32,7 @@ class _NotlessonsState extends State<Notlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'NOT')
+        .orderBy('title')
         .get();
 
     setState(() {

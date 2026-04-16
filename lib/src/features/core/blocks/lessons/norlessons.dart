@@ -32,6 +32,7 @@ class _NorlessonsState extends State<Norlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'NOR')
+        .orderBy('title')
         .get();
 
     setState(() {

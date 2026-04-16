@@ -32,6 +32,7 @@ class _AndlessonsState extends State<Andlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'AND')
+        .orderBy('title')
         .get();
 
     setState(() {

@@ -32,6 +32,7 @@ class _BufferlessonsState extends State<Bufferlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'BUFFER')
+        .orderBy('title')
         .get();
 
     setState(() {

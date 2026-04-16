@@ -31,6 +31,7 @@ class _XorlessonsState extends State<Xorlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'XOR')
+        .orderBy('title')
         .get();
 
     setState(() {

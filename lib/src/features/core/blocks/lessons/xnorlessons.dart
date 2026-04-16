@@ -32,6 +32,7 @@ class _XnorlessonsState extends State<Xnorlessons> {
     final snapshot = await FirebaseFirestore.instance
         .collection('lessons')
         .where('gateType', isEqualTo: 'XNOR')
+        .orderBy('title')
         .get();
 
     setState(() {

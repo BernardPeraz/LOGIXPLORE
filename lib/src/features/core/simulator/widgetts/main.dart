@@ -601,1009 +601,972 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           bool isMobile = constraints.maxWidth < 800;
           return Container(
             color: Colors.white,
-            child: Center(
-              child: isMobile
-                  ? Column(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Container(
-                                  color: Colors.white,
-                                  child: SwitchTable(
-                                    Aswitch: s1.truthvalue,
-                                    Bswitch: s2.truthvalue,
-                                    Cswitch: s3.truthvalue,
-                                    Dswitch: s4.truthvalue,
-                                    Eswitch: s5.truthvalue,
-                                    Output: not1.truthvalue,
-                                    Expected: widget.ExpecOut,
-                                    nums: switchNum,
-                                  ),
+            child: isMobile
+                ? Column(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Container(
+                                color: Colors.white,
+                                child: SwitchTable(
+                                  Aswitch: s1.truthvalue,
+                                  Bswitch: s2.truthvalue,
+                                  Cswitch: s3.truthvalue,
+                                  Dswitch: s4.truthvalue,
+                                  Eswitch: s5.truthvalue,
+                                  Output: not1.truthvalue,
+                                  Expected: widget.ExpecOut,
+                                  nums: switchNum,
                                 ),
-                                SizedBox(
-                                  height: 180,
+                              ),
+                              SizedBox(
+                                height: 180,
 
-                                  child: Container(
-                                    color: Colors.white,
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Image.asset(
-                                          listEquals(
-                                                not1.truthvalue,
-                                                widget.ExpecOut,
-                                              )
-                                              ? 'assets/images/Robot_celebrates_logic_puzzle_success.png' //
-                                              : 'assets/images/robotn.png',
-                                          height: 140,
-                                        ),
-                                        Positioned(
-                                          top: 10,
-                                          child: Container(
-                                            width: 330,
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              border: Border.all(
-                                                color: Colors.black,
-                                                width: 3,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              (s1.truthvalue.length ==
-                                                      widget.ExpecOut.length)
-                                                  ? (listEquals(
-                                                          not1.truthvalue,
-                                                          widget.ExpecOut,
-                                                        )
-                                                        ? 'Good job! The output is correct means you chose gates correctly.'
-                                                        : 'Good! the output length is correct, now use correct gates to do the expected output')
-                                                  : (pow(2, switchNum + 1) <
-                                                        widget.ExpecOut.length)
-                                                  ? "Let’s use the switches to get ${widget.ExpecOut} as Expected Output "
-                                                  : 'Output length is more than expected output length, please restart',
-
-                                              textAlign: TextAlign.left,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Image.asset(
                                         listEquals(
                                               not1.truthvalue,
                                               widget.ExpecOut,
                                             )
-                                            ? Align(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                    13,
-                                                  ),
+                                            ? 'assets/images/Robot_celebrates_logic_puzzle_success.png' //
+                                            : 'assets/images/robotn.png',
+                                        height: 140,
+                                      ),
+                                      Positioned(
+                                        top: 10,
+                                        child: Container(
+                                          width: 330,
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            border: Border.all(
+                                              color: Colors.black,
+                                              width: 3,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            (s1.truthvalue.length ==
+                                                    widget.ExpecOut.length)
+                                                ? (listEquals(
+                                                        not1.truthvalue,
+                                                        widget.ExpecOut,
+                                                      )
+                                                      ? 'Good job! The output is correct means you chose gates correctly.'
+                                                      : 'Good! the output length is correct, now use correct gates to do the expected output')
+                                                : (pow(2, switchNum + 1) <
+                                                      widget.ExpecOut.length)
+                                                ? "Let’s use the switches to get ${widget.ExpecOut} as Expected Output "
+                                                : 'Output length is more than expected output length, please restart',
 
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      if (widget.mode ==
-                                                          SimulatorMode.level) {
-                                                        // NEXT LEVEL
-                                                        Get.off(
-                                                          () => widget.nextPage,
-                                                        );
-                                                      } else {
-                                                        Navigator.pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                Dashboard(),
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                      side: BorderSide(
-                                                        color:
-                                                            const Color.fromARGB(
-                                                              255,
-                                                              0,
-                                                              0,
-                                                              0,
-                                                            ),
-                                                      ),
+                                            textAlign: TextAlign.left,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
 
-                                                      backgroundColor:
+                                      listEquals(
+                                            not1.truthvalue,
+                                            widget.ExpecOut,
+                                          )
+                                          ? Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  13,
+                                                ),
+
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    if (widget.mode ==
+                                                        SimulatorMode.level) {
+                                                      // NEXT LEVEL
+                                                      Get.off(
+                                                        () => widget.nextPage,
+                                                      );
+                                                    } else {
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              Dashboard(),
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                  style: ElevatedButton.styleFrom(
+                                                    side: BorderSide(
+                                                      color:
                                                           const Color.fromARGB(
                                                             255,
-                                                            255,
-                                                            149,
+                                                            0,
+                                                            0,
                                                             0,
                                                           ),
-
-                                                      foregroundColor:
-                                                          Colors.white,
-                                                      minimumSize: Size(
-                                                        isMobile
-                                                            ? 130
-                                                            : 165, //  width
-                                                        isMobile
-                                                            ? 40
-                                                            : 50, //  height
-                                                      ),
-
-                                                      shape: RoundedRectangleBorder(
-                                                        side: const BorderSide(
-                                                          color: Colors.grey,
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              25,
-                                                            ),
-                                                      ),
                                                     ),
-                                                    child: Text(
-                                                      widget.mode ==
-                                                              SimulatorMode
-                                                                  .level
-                                                          ? "Proceed to Next Level"
-                                                          : "Good job!",
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            : Container(),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 12,
 
-                          child: Stack(
-                            children: [
-                              GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onPanDown: (d) {
-                                  setState(() {});
-                                  //mouse click
-                                  // if starting drag on a port -> start connection
-                                  final pr = _hitTestPort(d.globalPosition);
-                                  if (pr != null &&
-                                      pr.type == PortType.output) {
-                                    // iof click to output port
-                                    model.startConnection(
-                                      pr,
-                                      _globalToLocal(d.globalPosition),
-                                    );
-                                  }
-                                  setState(() {
-                                    toggleOutput1Ports();
-                                  });
-                                },
-                                onPanUpdate: (d) {
-                                  setState(() {});
-                                  model.toggleSwitch("1");
-                                  //mouse hold
-                                  if (model.connectingFrom != null) {
-                                    //not connected yet
-                                    model.updateConnectionDrag(
-                                      //update the end point location
-                                      _globalToLocal(d.globalPosition),
-                                    );
-                                  }
-                                  setState(() {
-                                    toggleOutput1Ports();
-                                  });
-                                },
-                                onPanEnd: (d) {
-                                  setState(() {
-                                    model.toggleSwitch("1");
-                                  });
-                                  model.toggleSwitch("1");
-                                  //mouse lift
-                                  if (model.connectingFrom != null) {
-                                    // try to finish connection on release location                 //not connected yet
-                                    final pr = _hitTestPort(
-                                      d.velocity.pixelsPerSecond == Offset.zero
-                                          ? Offset.zero
-                                          : Offset.zero,
-                                    );
-                                    // fallback: use last known drag pos
-                                    final last = model.currentDragPosition;
-                                    PortRef? target;
-                                    if (last != null) {
-                                      final globalLast =
-                                          (canvasKey.currentContext
-                                                      ?.findRenderObject()
-                                                  as RenderBox?)
-                                              ?.localToGlobal(last) ??
-                                          Offset.zero;
-                                      target = _hitTestPort(globalLast);
-                                    }
-                                    if (target != null &&
-                                        target.type == PortType.input) {
-                                      model.finishConnection(target);
-                                    } else {
-                                      model.cancelConnection();
-                                    }
-                                  }
-                                  setState(() {
-                                    toggleOutput1Ports();
-                                  });
-                                },
-                                onTapUp: (d) {
-                                  // check tap on a port to toggle switch if it's a switch output
-                                  final pr = _hitTestPort(d.globalPosition);
-                                  if (pr != null) {
-                                    final node = model.nodes[pr.nodeId];
-                                    if (node?.kind == 'SWITCH') {
-                                      model.toggleSwitch(node!.id);
-                                    }
-                                    model.toggleSwitch(node!.id);
-                                    model.toggleSwitch("1");
-                                  }
-                                  setState(() {
-                                    toggleOutput1Ports();
-                                  });
-                                },
-                                child: Container(
-                                  key: canvasKey,
-                                  color: Colors.white,
-                                  child: CustomPaint(
-                                    painter: WirePainter(model: model),
-                                    size: Size.infinite,
-                                    child: Stack(
-                                      children: [
-                                        // render nodes
-                                        for (final node in model.nodes.values)
-                                          Positioned(
-                                            left: node.position.dx,
-                                            top: node.position.dy,
-                                            child: GestureDetector(
-                                              behavior:
-                                                  HitTestBehavior.translucent,
-                                              onPanUpdate: (d) {
-                                                setState(() {
-                                                  node.position += d.delta;
-                                                  model.propagateFromPort(
-                                                    PortRef(
-                                                      's1',
-                                                      'out',
-                                                      PortType.output,
-                                                    ),
-                                                  );
-                                                });
-                                                model.notifyListeners();
-                                              },
-                                              child: NodeWidget(
-                                                node: node,
-                                                model: model,
-                                              ),
-                                            ),
-                                          ),
-                                        // optionally draw connecting temporary line
-                                        if (model.connectingFrom != null &&
-                                            model.currentDragPosition != null)
-                                          Positioned.fill(
-                                            child: IgnorePointer(
-                                              child: CustomPaint(
-                                                painter: TempLinePainter(
-                                                  model: model,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              // --------------------------------------------------
-                              // ------------------- TOOLBAR ----------------------
-                              // --------------------------------------------------
-                              Positioned(
-                                right: 0,
-                                left: 0,
-                                bottom: 0,
-                                child: SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      children: [
-                                        if (isMobile) ...[
-                                          SizedBox(width: 10),
-                                          FloatingActionButton.extended(
-                                            heroTag: 'dashboardBtn',
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      const LoadingToDashboard(),
-                                                ),
-                                              );
-                                            },
-                                            label: Text('Dashboard'),
-                                            icon: Icon(Icons.dashboard),
-                                          ),
-                                        ],
-                                        SizedBox(width: 10),
-                                        FloatingActionButton.extended(
-                                          onPressed: () {
-                                            model.clearAll(
-                                              not1,
-                                            ); // nodes + wires
-                                            resetPortValues(); // 🔥 lights OFF
-                                            resetTruthValues(); // 🔥 table reset
-
-                                            switchNum = 0;
-
-                                            setState(() {});
-                                          },
-                                          label: const Text('RESET'),
-                                        ),
-                                        SizedBox(width: 10),
-                                        FloatingActionButton.extended(
-                                          onPressed: () {
-                                            if (listEquals(
-                                              not1.truthvalue,
-                                              widget.ExpecOut,
-                                            )) {
-                                              String gateName =
-                                                  widget.allowedGates.first;
-                                              markGateAsSolved(gateName);
-
-                                              // (optional) existing dialog mo
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
                                                     backgroundColor:
-                                                        Colors.white,
-
-                                                    title: Text(
-                                                      "GREAT JOB!",
-                                                      style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        letterSpacing: 2,
-                                                        fontSize: 17,
-                                                        color: Colors.green,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    content: Text(
-                                                      "You got the correct expected output",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w200,
-                                                        fontSize: 15,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    actions: [
-                                                      Center(
-                                                        child: TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                context,
-                                                              ),
-                                                          child: Text(
-                                                            "OK",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
+                                                        const Color.fromARGB(
+                                                          255,
+                                                          255,
+                                                          149,
+                                                          0,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            } else {
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
+
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    minimumSize: Size(
+                                                      isMobile
+                                                          ? 130
+                                                          : 165, //  width
+                                                      isMobile
+                                                          ? 40
+                                                          : 50, //  height
+                                                    ),
+
                                                     shape: RoundedRectangleBorder(
+                                                      side: const BorderSide(
+                                                        color: Colors.grey,
+                                                      ),
                                                       borderRadius:
-                                                          BorderRadiusGeometry.circular(
+                                                          BorderRadius.circular(
                                                             25,
                                                           ),
                                                     ),
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    title: Text(
-                                                      "TRY AGAIN",
-                                                      style: TextStyle(
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        letterSpacing: 2,
-                                                        fontSize: 17,
-                                                        color: Colors.red,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    content: Text(
-                                                      "You did not meet the expected output",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.w200,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                    actions: [
-                                                      Center(
-                                                        child: TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                context,
-                                                              ),
-                                                          child: Text(
-                                                            "OK",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
-                                            setState(() {
-                                              model.toggleSwitch("s1");
-                                              model.toggleSwitch("s2");
-                                              model.toggleSwitch("s3");
-                                              model.toggleSwitch("s4");
-                                              model.toggleSwitch("s5");
-                                              model.toggleSwitch("s1");
-                                              model.toggleSwitch("s2");
-                                              model.toggleSwitch("s3");
-                                              model.toggleSwitch("s4");
-                                              model.toggleSwitch("s5");
-                                              model.toggleSwitch("s1");
-                                              model.toggleSwitch("s2");
-                                              model.toggleSwitch("s3");
-                                              model.toggleSwitch("s4");
-                                              model.toggleSwitch("s5");
-                                              model.toggleSwitch("s1");
-                                              model.toggleSwitch("s2");
-                                              model.toggleSwitch("s3");
-                                              model.toggleSwitch("s4");
-                                              model.toggleSwitch("s5");
-                                            });
-                                          },
-                                          label: const Text('Submit'),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        // ------------------- ADD SWITCH -------------------
-                                        FloatingActionButton.extended(
-                                          heroTag: 'addSwitch',
-                                          onPressed: () {
-                                            if (switchNum < 3) {
-                                              switchNum = switchNum + 1;
-                                              setState(() {
-                                                if (switchNum == 1) {
-                                                  model.addNode(s1);
-                                                } else if (switchNum == 2) {
-                                                  model.addNode(s2);
-                                                } else if (switchNum == 3) {
-                                                  model.addNode(s3);
-                                                } else if (switchNum == 4) {
-                                                  model.addNode(s4);
-                                                } else if (switchNum == 5) {
-                                                  model.addNode(s5);
-                                                }
-                                                setState(() {
-                                                  s1.truthvalue =
-                                                      generateTruthValues(
-                                                        switchNum,
-                                                        "A",
-                                                      );
-                                                });
-                                                setState(() {
-                                                  s2.truthvalue =
-                                                      generateTruthValues(
-                                                        switchNum,
-                                                        "B",
-                                                      );
-                                                });
-                                                setState(() {
-                                                  s3.truthvalue =
-                                                      generateTruthValues(
-                                                        switchNum,
-                                                        "C",
-                                                      );
-                                                });
-                                              });
-                                              setState(() {
-                                                s4.truthvalue =
-                                                    generateTruthValues(
-                                                      switchNum,
-                                                      "D",
-                                                    );
-                                              });
-                                              setState(() {
-                                                s5.truthvalue =
-                                                    generateTruthValues(
-                                                      switchNum,
-                                                      "E",
-                                                    );
-                                              });
-                                            } else {
-                                              () {
-                                                //what to do after reaching maximum input counts
-                                              };
-                                            }
-                                          },
-                                          label: const Text('Add Switch'),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        // ------------------- AND -------------------
-                                        if (gateAllowed('AND'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addAnd',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'AND',
-                                                label: 'Annd',
-                                                position: const Offset(
-                                                  120,
-                                                  120,
+                                                  ),
+                                                  child: Text(
+                                                    widget.mode ==
+                                                            SimulatorMode.level
+                                                        ? "Proceed to Next Level"
+                                                        : "Good job!",
+                                                  ),
                                                 ),
-                                                ports: {
-                                                  'a': Port(
-                                                    id: 'a',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      10,
-                                                    ),
-                                                  ),
-                                                  'b': Port(
-                                                    id: 'b',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      40,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      90,
-                                                      25,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                              setState(() {});
-                                            },
-                                            label: Tooltip(
-                                              message: "AND GATE",
-                                              child: Image.asset(
-                                                'assets/images/Annd.png',
-                                                height: 40,
                                               ),
-                                            ),
-                                          ),
-                                        if (gateAllowed('AND'))
-                                          const SizedBox(width: 8),
-
-                                        // ------------------- OR -------------------
-                                        if (gateAllowed('OR'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addOr',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'OR',
-                                                label: 'Ooor',
-                                                position: const Offset(
-                                                  120,
-                                                  220,
-                                                ),
-                                                ports: {
-                                                  'a': Port(
-                                                    id: 'a',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      10,
-                                                    ),
-                                                  ),
-                                                  'b': Port(
-                                                    id: 'b',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      40,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      120,
-                                                      25,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                            },
-                                            label: Tooltip(
-                                              message: 'OR GATE',
-                                              child: Image.asset(
-                                                'assets/images/Ooor.png',
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        if (gateAllowed('OR'))
-                                          const SizedBox(width: 8),
-
-                                        // ------------------- NOT -------------------
-                                        if (gateAllowed('NOT'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addNot',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'NOT',
-                                                label: 'Noot',
-                                                position: const Offset(
-                                                  120,
-                                                  320,
-                                                ),
-                                                ports: {
-                                                  'in': Port(
-                                                    id: 'in',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      20,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      120,
-                                                      20,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                            },
-                                            label: Tooltip(
-                                              message: 'NOT GATE',
-                                              child: Image.asset(
-                                                'assets/images/Noot.png',
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        if (gateAllowed('NOT'))
-                                          const SizedBox(width: 8),
-
-                                        // ------------------- NAND -------------------
-                                        if (gateAllowed('NAND'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addNand',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'NAND',
-                                                label: 'Naand',
-                                                position: const Offset(
-                                                  120,
-                                                  420,
-                                                ),
-                                                ports: {
-                                                  'a': Port(
-                                                    id: 'a',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      10,
-                                                    ),
-                                                  ),
-                                                  'b': Port(
-                                                    id: 'b',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      40,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      120,
-                                                      25,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                            },
-                                            label: Tooltip(
-                                              message: 'NAND GATE',
-                                              child: Image.asset(
-                                                'assets/images/Naand.png',
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        if (gateAllowed('NAND'))
-                                          const SizedBox(width: 8),
-
-                                        // ------------------- NOR -------------------
-                                        if (gateAllowed('NOR'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addNor',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'NOR',
-                                                label: 'Noor',
-                                                position: const Offset(
-                                                  120,
-                                                  520,
-                                                ),
-                                                ports: {
-                                                  'a': Port(
-                                                    id: 'a',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      10,
-                                                    ),
-                                                  ),
-                                                  'b': Port(
-                                                    id: 'b',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      40,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      120,
-                                                      25,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                            },
-                                            label: Tooltip(
-                                              message: 'NOR GATE',
-                                              child: Image.asset(
-                                                'assets/images/Noor.png',
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        if (gateAllowed('NOR'))
-                                          const SizedBox(width: 8),
-
-                                        // ------------------- XOR -------------------
-                                        if (gateAllowed('XOR'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addXor',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'XOR',
-                                                label: 'Xoor',
-                                                position: const Offset(
-                                                  350,
-                                                  190,
-                                                ),
-                                                ports: {
-                                                  'a': Port(
-                                                    id: 'a',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      10,
-                                                    ),
-                                                  ),
-                                                  'b': Port(
-                                                    id: 'b',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      40,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      120,
-                                                      25,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                            },
-                                            label: Tooltip(
-                                              message: 'XOR GATE',
-                                              child: Image.asset(
-                                                'assets/images/Xoor.png',
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        if (gateAllowed('XOR'))
-                                          const SizedBox(width: 8),
-
-                                        // ------------------- XNOR -------------------
-                                        if (gateAllowed('XNOR'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addXnor',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'XNOR',
-                                                label: 'Xnoor',
-                                                position: const Offset(
-                                                  350,
-                                                  320,
-                                                ),
-                                                ports: {
-                                                  'a': Port(
-                                                    id: 'a',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      10,
-                                                    ),
-                                                  ),
-                                                  'b': Port(
-                                                    id: 'b',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      40,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      120,
-                                                      25,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                            },
-                                            label: Tooltip(
-                                              message: 'XNOR GATE',
-                                              child: Image.asset(
-                                                'assets/images/Xnoor.png',
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                        if (gateAllowed('XNOR'))
-                                          const SizedBox(width: 8),
-
-                                        // ------------------- BUFFER -------------------
-                                        if (gateAllowed('BUFFER'))
-                                          FloatingActionButton.extended(
-                                            heroTag: 'addBuffer',
-                                            onPressed: () {
-                                              final id =
-                                                  'g${DateTime.now().microsecondsSinceEpoch}';
-                                              final n = Node(
-                                                id: id,
-                                                kind: 'BUFFER',
-                                                label: 'Bufffer',
-                                                position: const Offset(
-                                                  350,
-                                                  440,
-                                                ),
-                                                ports: {
-                                                  'in': Port(
-                                                    id: 'in',
-                                                    type: PortType.input,
-                                                    localOffset: const Offset(
-                                                      0,
-                                                      20,
-                                                    ),
-                                                  ),
-                                                  'out': Port(
-                                                    id: 'out',
-                                                    type: PortType.output,
-                                                    localOffset: const Offset(
-                                                      120,
-                                                      20,
-                                                    ),
-                                                  ),
-                                                },
-                                              );
-                                              model.addNode(n);
-                                            },
-                                            label: Tooltip(
-                                              message: 'BUFFER GATE',
-                                              child: Image.asset(
-                                                'assets/images/Bufffer.png',
-                                                height: 40,
-                                              ),
-                                            ),
-                                          ),
-                                      ],
-                                    ),
+                                            )
+                                          : Container(),
+                                    ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        Expanded(flex: 2, child: _buildLeftSide()),
-                        Expanded(flex: 3, child: _buildCanvas()),
-                      ],
-                    ),
-            ),
+                      ),
+                      Expanded(
+                        flex: 12,
+
+                        child: Stack(
+                          children: [
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onPanDown: (d) {
+                                setState(() {});
+                                //mouse click
+                                // if starting drag on a port -> start connection
+                                final pr = _hitTestPort(d.globalPosition);
+                                if (pr != null && pr.type == PortType.output) {
+                                  // iof click to output port
+                                  model.startConnection(
+                                    pr,
+                                    _globalToLocal(d.globalPosition),
+                                  );
+                                }
+                                setState(() {
+                                  toggleOutput1Ports();
+                                });
+                              },
+                              onPanUpdate: (d) {
+                                setState(() {});
+                                model.toggleSwitch("1");
+                                //mouse hold
+                                if (model.connectingFrom != null) {
+                                  //not connected yet
+                                  model.updateConnectionDrag(
+                                    //update the end point location
+                                    _globalToLocal(d.globalPosition),
+                                  );
+                                }
+                                setState(() {
+                                  toggleOutput1Ports();
+                                });
+                              },
+                              onPanEnd: (d) {
+                                setState(() {
+                                  model.toggleSwitch("1");
+                                });
+                                model.toggleSwitch("1");
+                                //mouse lift
+                                if (model.connectingFrom != null) {
+                                  // try to finish connection on release location                 //not connected yet
+                                  final pr = _hitTestPort(
+                                    d.velocity.pixelsPerSecond == Offset.zero
+                                        ? Offset.zero
+                                        : Offset.zero,
+                                  );
+                                  // fallback: use last known drag pos
+                                  final last = model.currentDragPosition;
+                                  PortRef? target;
+                                  if (last != null) {
+                                    final globalLast =
+                                        (canvasKey.currentContext
+                                                    ?.findRenderObject()
+                                                as RenderBox?)
+                                            ?.localToGlobal(last) ??
+                                        Offset.zero;
+                                    target = _hitTestPort(globalLast);
+                                  }
+                                  if (target != null &&
+                                      target.type == PortType.input) {
+                                    model.finishConnection(target);
+                                  } else {
+                                    model.cancelConnection();
+                                  }
+                                }
+                                setState(() {
+                                  toggleOutput1Ports();
+                                });
+                              },
+                              onTapUp: (d) {
+                                // check tap on a port to toggle switch if it's a switch output
+                                final pr = _hitTestPort(d.globalPosition);
+                                if (pr != null) {
+                                  final node = model.nodes[pr.nodeId];
+                                  if (node?.kind == 'SWITCH') {
+                                    model.toggleSwitch(node!.id);
+                                  }
+                                  model.toggleSwitch(node!.id);
+                                  model.toggleSwitch("1");
+                                }
+                                setState(() {
+                                  toggleOutput1Ports();
+                                });
+                              },
+                              child: Container(
+                                key: canvasKey,
+                                color: Colors.white,
+                                child: CustomPaint(
+                                  painter: WirePainter(model: model),
+                                  size: Size.infinite,
+                                  child: Stack(
+                                    children: [
+                                      // render nodes
+                                      for (final node in model.nodes.values)
+                                        Positioned(
+                                          left: node.position.dx,
+                                          top: node.position.dy,
+                                          child: GestureDetector(
+                                            behavior:
+                                                HitTestBehavior.translucent,
+                                            onPanUpdate: (d) {
+                                              setState(() {
+                                                node.position += d.delta;
+                                                model.propagateFromPort(
+                                                  PortRef(
+                                                    's1',
+                                                    'out',
+                                                    PortType.output,
+                                                  ),
+                                                );
+                                              });
+                                              model.notifyListeners();
+                                            },
+                                            child: NodeWidget(
+                                              node: node,
+                                              model: model,
+                                            ),
+                                          ),
+                                        ),
+                                      // optionally draw connecting temporary line
+                                      if (model.connectingFrom != null &&
+                                          model.currentDragPosition != null)
+                                        Positioned.fill(
+                                          child: IgnorePointer(
+                                            child: CustomPaint(
+                                              painter: TempLinePainter(
+                                                model: model,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // --------------------------------------------------
+                            // ------------------- TOOLBAR ----------------------
+                            // --------------------------------------------------
+                            Positioned(
+                              right: 0,
+                              left: 0,
+                              bottom: 0,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      if (isMobile) ...[
+                                        SizedBox(width: 10),
+                                        FloatingActionButton.extended(
+                                          heroTag: 'dashboardBtn',
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    const LoadingToDashboard(),
+                                              ),
+                                            );
+                                          },
+                                          label: Text('Dashboard'),
+                                          icon: Icon(Icons.dashboard),
+                                        ),
+                                      ],
+                                      SizedBox(width: 10),
+                                      FloatingActionButton.extended(
+                                        onPressed: () {
+                                          model.clearAll(not1); // nodes + wires
+                                          resetPortValues(); // 🔥 lights OFF
+                                          resetTruthValues(); // 🔥 table reset
+
+                                          switchNum = 0;
+
+                                          setState(() {});
+                                        },
+                                        label: const Text('RESET'),
+                                      ),
+                                      SizedBox(width: 10),
+                                      FloatingActionButton.extended(
+                                        onPressed: () {
+                                          if (listEquals(
+                                            not1.truthvalue,
+                                            widget.ExpecOut,
+                                          )) {
+                                            String gateName =
+                                                widget.allowedGates.first;
+                                            markGateAsSolved(gateName);
+
+                                            // (optional) existing dialog mo
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  backgroundColor: Colors.white,
+
+                                                  title: Text(
+                                                    "GREAT JOB!",
+                                                    style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      letterSpacing: 2,
+                                                      fontSize: 17,
+                                                      color: Colors.green,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  content: Text(
+                                                    "You got the correct expected output",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w200,
+                                                      fontSize: 15,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  actions: [
+                                                    Center(
+                                                      child: TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                              context,
+                                                            ),
+                                                        child: Text(
+                                                          "OK",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadiusGeometry.circular(
+                                                          25,
+                                                        ),
+                                                  ),
+                                                  backgroundColor: Colors.white,
+                                                  title: Text(
+                                                    "TRY AGAIN",
+                                                    style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      letterSpacing: 2,
+                                                      fontSize: 17,
+                                                      color: Colors.red,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  content: Text(
+                                                    "You did not meet the expected output",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w200,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    Center(
+                                                      child: TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                              context,
+                                                            ),
+                                                        child: Text(
+                                                          "OK",
+                                                          style: TextStyle(
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
+                                          setState(() {
+                                            model.toggleSwitch("s1");
+                                            model.toggleSwitch("s2");
+                                            model.toggleSwitch("s3");
+                                            model.toggleSwitch("s4");
+                                            model.toggleSwitch("s5");
+                                            model.toggleSwitch("s1");
+                                            model.toggleSwitch("s2");
+                                            model.toggleSwitch("s3");
+                                            model.toggleSwitch("s4");
+                                            model.toggleSwitch("s5");
+                                            model.toggleSwitch("s1");
+                                            model.toggleSwitch("s2");
+                                            model.toggleSwitch("s3");
+                                            model.toggleSwitch("s4");
+                                            model.toggleSwitch("s5");
+                                            model.toggleSwitch("s1");
+                                            model.toggleSwitch("s2");
+                                            model.toggleSwitch("s3");
+                                            model.toggleSwitch("s4");
+                                            model.toggleSwitch("s5");
+                                          });
+                                        },
+                                        label: const Text('Submit'),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      // ------------------- ADD SWITCH -------------------
+                                      FloatingActionButton.extended(
+                                        heroTag: 'addSwitch',
+                                        onPressed: () {
+                                          if (switchNum < 3) {
+                                            switchNum = switchNum + 1;
+                                            setState(() {
+                                              if (switchNum == 1) {
+                                                model.addNode(s1);
+                                              } else if (switchNum == 2) {
+                                                model.addNode(s2);
+                                              } else if (switchNum == 3) {
+                                                model.addNode(s3);
+                                              } else if (switchNum == 4) {
+                                                model.addNode(s4);
+                                              } else if (switchNum == 5) {
+                                                model.addNode(s5);
+                                              }
+                                              setState(() {
+                                                s1.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "A",
+                                                    );
+                                              });
+                                              setState(() {
+                                                s2.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "B",
+                                                    );
+                                              });
+                                              setState(() {
+                                                s3.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "C",
+                                                    );
+                                              });
+                                            });
+                                            setState(() {
+                                              s4.truthvalue =
+                                                  generateTruthValues(
+                                                    switchNum,
+                                                    "D",
+                                                  );
+                                            });
+                                            setState(() {
+                                              s5.truthvalue =
+                                                  generateTruthValues(
+                                                    switchNum,
+                                                    "E",
+                                                  );
+                                            });
+                                          } else {
+                                            () {
+                                              //what to do after reaching maximum input counts
+                                            };
+                                          }
+                                        },
+                                        label: const Text('Add Switch'),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      // ------------------- AND -------------------
+                                      if (gateAllowed('AND'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addAnd',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'AND',
+                                              label: 'Annd',
+                                              position: const Offset(120, 120),
+                                              ports: {
+                                                'a': Port(
+                                                  id: 'a',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    10,
+                                                  ),
+                                                ),
+                                                'b': Port(
+                                                  id: 'b',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    40,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    90,
+                                                    25,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                            setState(() {});
+                                          },
+                                          label: Tooltip(
+                                            message: "AND GATE",
+                                            child: Image.asset(
+                                              'assets/images/Annd.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      if (gateAllowed('AND'))
+                                        const SizedBox(width: 8),
+
+                                      // ------------------- OR -------------------
+                                      if (gateAllowed('OR'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addOr',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'OR',
+                                              label: 'Ooor',
+                                              position: const Offset(120, 220),
+                                              ports: {
+                                                'a': Port(
+                                                  id: 'a',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    10,
+                                                  ),
+                                                ),
+                                                'b': Port(
+                                                  id: 'b',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    40,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    120,
+                                                    25,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                          },
+                                          label: Tooltip(
+                                            message: 'OR GATE',
+                                            child: Image.asset(
+                                              'assets/images/Ooor.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      if (gateAllowed('OR'))
+                                        const SizedBox(width: 8),
+
+                                      // ------------------- NOT -------------------
+                                      if (gateAllowed('NOT'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addNot',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'NOT',
+                                              label: 'Noot',
+                                              position: const Offset(120, 320),
+                                              ports: {
+                                                'in': Port(
+                                                  id: 'in',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    20,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    120,
+                                                    20,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                          },
+                                          label: Tooltip(
+                                            message: 'NOT GATE',
+                                            child: Image.asset(
+                                              'assets/images/Noot.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      if (gateAllowed('NOT'))
+                                        const SizedBox(width: 8),
+
+                                      // ------------------- NAND -------------------
+                                      if (gateAllowed('NAND'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addNand',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'NAND',
+                                              label: 'Naand',
+                                              position: const Offset(120, 420),
+                                              ports: {
+                                                'a': Port(
+                                                  id: 'a',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    10,
+                                                  ),
+                                                ),
+                                                'b': Port(
+                                                  id: 'b',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    40,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    120,
+                                                    25,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                          },
+                                          label: Tooltip(
+                                            message: 'NAND GATE',
+                                            child: Image.asset(
+                                              'assets/images/Naand.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      if (gateAllowed('NAND'))
+                                        const SizedBox(width: 8),
+
+                                      // ------------------- NOR -------------------
+                                      if (gateAllowed('NOR'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addNor',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'NOR',
+                                              label: 'Noor',
+                                              position: const Offset(120, 520),
+                                              ports: {
+                                                'a': Port(
+                                                  id: 'a',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    10,
+                                                  ),
+                                                ),
+                                                'b': Port(
+                                                  id: 'b',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    40,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    120,
+                                                    25,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                          },
+                                          label: Tooltip(
+                                            message: 'NOR GATE',
+                                            child: Image.asset(
+                                              'assets/images/Noor.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      if (gateAllowed('NOR'))
+                                        const SizedBox(width: 8),
+
+                                      // ------------------- XOR -------------------
+                                      if (gateAllowed('XOR'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addXor',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'XOR',
+                                              label: 'Xoor',
+                                              position: const Offset(350, 190),
+                                              ports: {
+                                                'a': Port(
+                                                  id: 'a',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    10,
+                                                  ),
+                                                ),
+                                                'b': Port(
+                                                  id: 'b',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    40,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    120,
+                                                    25,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                          },
+                                          label: Tooltip(
+                                            message: 'XOR GATE',
+                                            child: Image.asset(
+                                              'assets/images/Xoor.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      if (gateAllowed('XOR'))
+                                        const SizedBox(width: 8),
+
+                                      // ------------------- XNOR -------------------
+                                      if (gateAllowed('XNOR'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addXnor',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'XNOR',
+                                              label: 'Xnoor',
+                                              position: const Offset(350, 320),
+                                              ports: {
+                                                'a': Port(
+                                                  id: 'a',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    10,
+                                                  ),
+                                                ),
+                                                'b': Port(
+                                                  id: 'b',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    40,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    120,
+                                                    25,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                          },
+                                          label: Tooltip(
+                                            message: 'XNOR GATE',
+                                            child: Image.asset(
+                                              'assets/images/Xnoor.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      if (gateAllowed('XNOR'))
+                                        const SizedBox(width: 8),
+
+                                      // ------------------- BUFFER -------------------
+                                      if (gateAllowed('BUFFER'))
+                                        FloatingActionButton.extended(
+                                          heroTag: 'addBuffer',
+                                          onPressed: () {
+                                            final id =
+                                                'g${DateTime.now().microsecondsSinceEpoch}';
+                                            final n = Node(
+                                              id: id,
+                                              kind: 'BUFFER',
+                                              label: 'Bufffer',
+                                              position: const Offset(350, 440),
+                                              ports: {
+                                                'in': Port(
+                                                  id: 'in',
+                                                  type: PortType.input,
+                                                  localOffset: const Offset(
+                                                    0,
+                                                    20,
+                                                  ),
+                                                ),
+                                                'out': Port(
+                                                  id: 'out',
+                                                  type: PortType.output,
+                                                  localOffset: const Offset(
+                                                    120,
+                                                    20,
+                                                  ),
+                                                ),
+                                              },
+                                            );
+                                            model.addNode(n);
+                                          },
+                                          label: Tooltip(
+                                            message: 'BUFFER GATE',
+                                            child: Image.asset(
+                                              'assets/images/Bufffer.png',
+                                              height: 40,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(flex: 2, child: _buildLeftSide()),
+                      Expanded(flex: 3, child: _buildCanvas()),
+                    ],
+                  ),
           );
         },
       ),

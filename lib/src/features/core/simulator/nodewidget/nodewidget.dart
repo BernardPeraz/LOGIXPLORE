@@ -11,17 +11,17 @@ class NodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double portRadius = 6; // adjust depende sa size ng PortCircle
+    const double portRadius = 5; // adjust depende sa size ng PortCircle
 
     return Material(
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.white),
+
           boxShadow: portRadius > 0
               ? [
                   BoxShadow(
-                    color: Colors.white,
+                    color: Colors.white, // FIX
                     blurRadius: 4,
                     offset: const Offset(2, 2),
                   ),
@@ -34,7 +34,7 @@ class NodeWidget extends StatelessWidget {
             Center(
               child: Image.asset(
                 'assets/images/${node.label}.png',
-                height: 65,
+                height: 55,
                 width: 115,
                 errorBuilder: (context, error, stackTrace) {
                   print("IMAGE ERROR: $error");

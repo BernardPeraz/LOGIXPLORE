@@ -981,12 +981,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                     textAlign: TextAlign.center,
                                                   ),
                                                   content: Text(
-                                                    "You got the correct output",
+                                                    "You got the correct expected output",
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.w200,
-                                                      fontSize: 14.7,
+                                                      fontSize: 15,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),
@@ -1040,7 +1040,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.w200,
-                                                      fontSize: 14.7,
+                                                      fontSize: 15,
                                                     ),
                                                   ),
                                                   actions: [
@@ -1715,11 +1715,11 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               textAlign: TextAlign.center,
                             ),
                             content: Text(
-                              "You got the correct output",
+                              "You got the correct expected output",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w200,
-                                fontSize: 14.7,
+                                fontSize: 15,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -1762,7 +1762,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w200,
-                                fontSize: 14.7,
+                                fontSize: 15,
                               ),
                             ),
                             actions: [
@@ -2176,7 +2176,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           ),
         ),
         SizedBox(
-          height: 299,
+          height: 275,
 
           child: Container(
             color: Colors.white,
@@ -2187,10 +2187,10 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                   listEquals(not1.truthvalue, widget.ExpecOut)
                       ? 'assets/images/Robot_celebrates_logic_puzzle_success.png' //
                       : 'assets/images/robotn.png',
-                  height: 180,
+                  height: 235,
                 ),
                 Positioned(
-                  top: 50,
+                  top: 29,
                   child: Container(
                     width: 360,
                     padding: const EdgeInsets.all(8),

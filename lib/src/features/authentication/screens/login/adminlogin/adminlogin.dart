@@ -31,7 +31,7 @@ class _AdminloginState extends State<Adminlogin> {
     }
 
     if (!mounted) return;
-    setState(() => _isLoading = false);
+    setState(() => _isLoading = true);
 
     try {
       // FIXED: Correct comparison — MUST use .text, not controller object
@@ -56,7 +56,7 @@ class _AdminloginState extends State<Adminlogin> {
         return;
       }
 
-      // ✅ ADD THIS: FirebaseAuth sign-in
+      // ADD THIS: FirebaseAuth sign-in
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -75,9 +75,14 @@ class _AdminloginState extends State<Adminlogin> {
   // ERROR SNACKBAR
   void _showError(String message) {
     if (!mounted) return;
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(color: Colors.white)),
+        behavior: SnackBarBehavior.floating, //  IMPORTANT
+        margin: const EdgeInsets.all(20), //  para makita
+        content: Text(message),
         backgroundColor: Colors.red,
       ),
     );
@@ -86,62 +91,85 @@ class _AdminloginState extends State<Adminlogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SafeArea(
         child: Container(
-          width: 300,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                spreadRadius: 2,
-                blurRadius: 8,
+          color: Colors.blueGrey,
+          child: Center(
+            child: Container(
+              width: 300,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    spreadRadius: 2,
+                    blurRadius: 8,
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "Admin Login",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Admin Login",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      labelText: "Admin",
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                      fillColor: Colors.black,
+                    ),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  TextField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: "Password",
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _adminLogin,
+
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 45),
+
+                      backgroundColor: const Color.fromARGB(255, 255, 149, 0),
+                      foregroundColor: const Color.fromARGB(255, 0, 0, 0),
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: BorderSide(color: Colors.transparent),
+                      ),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text("Login"),
+                  ),
+                ],
               ),
-
-              const SizedBox(height: 20),
-
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: "Admin",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-
-              const SizedBox(height: 15),
-
-              TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              ElevatedButton(
-                onPressed: _isLoading ? null : _adminLogin,
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 45),
-                ),
-                child: _isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("Login"),
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -149,9 +177,10 @@ class _AdminloginState extends State<Adminlogin> {
       backgroundColor: const Color(0xFFF5F5F5),
 
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
         leading: IconButton(
-          onPressed: () => Get.offAll(LoginScreen()),
-          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.off(LoginScreen()),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
         ),
       ),
     );

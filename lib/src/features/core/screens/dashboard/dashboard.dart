@@ -79,155 +79,178 @@ class _DashboardState extends State<Dashboard> {
               borderRadius: BorderRadius.circular(8),
               color: isDark ? Colors.grey[900] : Colors.white,
               child: Container(
+                constraints: BoxConstraints(maxHeight: 300),
                 padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (screenWidth < 600 && user != null)
-                      _buildProfilePopupItem(user, isDark),
-                    if (screenWidth <= 748)
-                      _buildPopupMenuItem(
-                        icon: Icons.dark_mode,
-                        text: "Dark Mode",
-                        isDark: isDark,
-                        onTap: () {
-                          _hidePopupMenu();
-                          bool isCurrentlyDark =
-                              Theme.of(context).brightness == Brightness.dark;
-                          Get.changeThemeMode(
-                            isCurrentlyDark ? ThemeMode.light : ThemeMode.dark,
-                          );
-                        },
-                      ),
+                child: Scrollbar(
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        if (screenWidth < 600 && user != null)
+                          _buildProfilePopupItem(user, isDark),
+                        if (screenWidth <= 748)
+                          _buildPopupMenuItem(
+                            icon: Icons.dark_mode,
+                            text: "Dark Mode",
+                            isDark: isDark,
+                            onTap: () {
+                              _hidePopupMenu();
+                              bool isCurrentlyDark =
+                                  Theme.of(context).brightness ==
+                                  Brightness.dark;
+                              Get.changeThemeMode(
+                                isCurrentlyDark
+                                    ? ThemeMode.light
+                                    : ThemeMode.dark,
+                              );
+                            },
+                          ),
 
-                    // SIMULATOR moves to menu when width <= 735
-                    if (screenWidth <= 735)
-                      _buildPopupMenuItem(
-                        icon: Icons.computer,
-                        text: "Simulator",
-                        isDark: isDark,
-                        onTap: () {
-                          _hidePopupMenu();
-                          whitescreen();
-                          Future.delayed(const Duration(milliseconds: 300), () {
-                            Get.to(() => WhiteScreen());
-                          });
-                        },
-                      ),
-                    _buildPopupMenuItem(
-                      icon: Icons.star,
-                      text: "Mastery Level",
-                      isDark: isDark,
-                      onTap: () async {
-                        _hidePopupMenu();
-                        whitescreen();
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Get.to(() => const Masterwidget());
-                        });
-                      },
-                    ),
-                    _buildPopupMenuItem(
-                      icon: Icons.settings,
-                      text: "Password Settings",
-                      isDark: isDark,
-                      onTap: () {
-                        _hidePopupMenu();
-                        whitescreen();
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          Get.to(() => const Passwordsettings());
-                        });
-                      },
-                    ),
-                    _buildPopupMenuItem(
-                      icon: Icons.logout,
-                      text: "Logout",
-                      isDark: isDark,
-                      onTap: () async {
-                        _hidePopupMenu();
-                        bool? shouldLogout = await showDialog<bool>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            final isDark =
-                                Theme.of(context).brightness == Brightness.dark;
-
-                            return AlertDialog(
-                              shape: Border.fromBorderSide(BorderSide.none),
-                              backgroundColor: isDark
-                                  ? Colors.grey[900]
-                                  : Colors.white,
-                              title: Text(
-                                "Confirm Logout",
-                                style: TextStyle(
-                                  color: isDark ? Colors.white : Colors.black,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              content: Text(
-                                "Are you sure you want to logout from your account?",
-                                style: TextStyle(
-                                  color: isDark ? Colors.white70 : Colors.black,
-                                  fontWeight: FontWeight.w200,
-                                ),
-                              ),
-                              actions: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // Logout button sa left
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        side: BorderSide(
-                                          color: Colors.transparent,
-                                        ),
-
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            3,
-                                          ),
-                                        ),
-                                        backgroundColor: Colors.red,
-                                        foregroundColor: Colors.white,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(
-                                          context,
-                                        ).pop(true); // Confirm
-                                      },
-                                      child: Text("Logout"),
-                                    ),
-                                    Spacer(flex: 1),
-                                    // Cancel button sa right
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            3,
-                                          ),
-                                        ),
-                                        textStyle: TextStyle(
-                                          color: isDark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        Get.back(); // Confirm
-                                      },
-                                      child: Text("Cancel"),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                        // SIMULATOR moves to menu when width <= 735
+                        if (screenWidth <= 735)
+                          _buildPopupMenuItem(
+                            icon: Icons.computer,
+                            text: "Simulator",
+                            isDark: isDark,
+                            onTap: () {
+                              _hidePopupMenu();
+                              whitescreen();
+                              Future.delayed(
+                                const Duration(milliseconds: 300),
+                                () {
+                                  Get.to(() => WhiteScreen());
+                                },
+                              );
+                            },
+                          ),
+                        _buildPopupMenuItem(
+                          icon: Icons.star,
+                          text: "Mastery Level",
+                          isDark: isDark,
+                          onTap: () async {
+                            _hidePopupMenu();
+                            whitescreen();
+                            Future.delayed(
+                              const Duration(milliseconds: 500),
+                              () {
+                                Get.to(() => const Masterwidget());
+                              },
                             );
                           },
-                        );
-                        if (shouldLogout == true) {
-                          await _signOutUser();
-                        }
-                      },
+                        ),
+                        _buildPopupMenuItem(
+                          icon: Icons.settings,
+                          text: "Password Settings",
+                          isDark: isDark,
+                          onTap: () {
+                            _hidePopupMenu();
+                            whitescreen();
+                            Future.delayed(
+                              const Duration(milliseconds: 500),
+                              () {
+                                Get.to(() => const Passwordsettings());
+                              },
+                            );
+                          },
+                        ),
+                        _buildPopupMenuItem(
+                          icon: Icons.logout,
+                          text: "Logout",
+                          isDark: isDark,
+                          onTap: () async {
+                            _hidePopupMenu();
+                            bool? shouldLogout = await showDialog<bool>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                final isDark =
+                                    Theme.of(context).brightness ==
+                                    Brightness.dark;
+
+                                return AlertDialog(
+                                  shape: Border.fromBorderSide(BorderSide.none),
+                                  backgroundColor: isDark
+                                      ? Colors.grey[900]
+                                      : Colors.white,
+                                  title: Text(
+                                    "Confirm Logout",
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  content: Text(
+                                    "Are you sure you want to logout from your account?",
+                                    style: TextStyle(
+                                      color: isDark
+                                          ? Colors.white70
+                                          : Colors.black,
+                                      fontWeight: FontWeight.w200,
+                                    ),
+                                  ),
+                                  actions: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // Logout button sa left
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            side: BorderSide(
+                                              color: Colors.transparent,
+                                            ),
+
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(3),
+                                            ),
+                                            backgroundColor: Colors.red,
+                                            foregroundColor: Colors.white,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(
+                                              context,
+                                            ).pop(true); // Confirm
+                                          },
+                                          child: Text("Logout"),
+                                        ),
+                                        Spacer(flex: 1),
+                                        // Cancel button sa right
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(3),
+                                            ),
+                                            textStyle: TextStyle(
+                                              color: isDark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            Get.back(); // Confirm
+                                          },
+                                          child: Text("Cancel"),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            if (shouldLogout == true) {
+                              await _signOutUser();
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),

@@ -35,6 +35,7 @@ class _SwitchTableState extends State<SwitchTable> {
     if (widget.nums == 0) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+
         children: [ExpectedColumn()],
       );
     }
@@ -198,7 +199,9 @@ class _SwitchTableState extends State<SwitchTable> {
           children: [
             TableRow(children: [cell("Expected Output")]),
             ...widget.Expected.map((value) {
-              return TableRow(children: [cell(value.toString())]);
+              return TableRow(
+                children: [Center(child: cell(value.toString()))],
+              );
             }),
           ],
         ),
@@ -230,15 +233,26 @@ class _SwitchTableState extends State<SwitchTable> {
       decoration: BoxDecoration(
         color: match ? Colors.green[200] : Colors.red[200],
       ),
-      children: [Padding(padding: const EdgeInsets.all(8), child: Text(text))],
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(2),
+          child: Center(child: Text(text)),
+        ),
+      ],
     );
   }
 
   Widget cell(String text) => Padding(
-    padding: const EdgeInsets.all(8),
-    child: Text(
-      text,
-      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+    padding: const EdgeInsets.all(2),
+    child: Center(
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        textAlign: TextAlign.center,
+      ),
     ),
   );
 }

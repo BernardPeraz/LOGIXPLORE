@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
@@ -6,6 +7,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/scree
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/signup_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/signup_screen_website.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/repository/authentication_repository/auth_service.dart';
 
 class LoginFooterWidget extends StatefulWidget {
   const LoginFooterWidget({super.key});
@@ -14,6 +16,7 @@ class LoginFooterWidget extends StatefulWidget {
   State<LoginFooterWidget> createState() => _LoginFooterWidgetState();
 }
 
+bool linkRequested = true;
 bool _isLoading = false;
 
 class _LoginFooterWidgetState extends State<LoginFooterWidget> {
@@ -89,11 +92,39 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
             message: 'Sign in your Google account',
             child: IconButton(
               onPressed: () async {
-                bool isLoggedIn = await login(context);
-                if (isLoggedIn) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Dashboard()),
+                try {
+                  final user = await AuthService().signInWithGoogle();
+
+                  if (user != null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Dashboard(),
+                      ),
+                    );
+                  }
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'account-exists-with-different-credential') {
+                    // 🔥 SET FLAG (IMPORTANT)
+                    linkRequested = true;
+
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text("Account Exists"),
+                        content: const Text(
+                          "This email is already registered. Please login using email/password.",
+                        ),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text("Error"),
+                      content: Text(e.toString()),
+                    ),
                   );
                 }
               },

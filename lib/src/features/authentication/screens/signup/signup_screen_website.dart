@@ -207,11 +207,19 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
 Future<bool> login(BuildContext context) async {
   try {
     if (kIsWeb) {
-      GoogleAuthProvider googleProvider = GoogleAuthProvider();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      if (googleUser == null) return false;
 
-      // success
+      final googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
       return FirebaseAuth.instance.currentUser != null;
     } else {
       // 1Trigger Google Sign-In

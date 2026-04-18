@@ -79,9 +79,9 @@ class _DesktopProfileState extends State<DesktopProfile> {
                         shape: BoxShape.circle,
                         color: const Color.fromARGB(
                           255,
-                          255,
-                          255,
-                          255,
+                          242,
+                          240,
+                          240,
                         ), // transparent background
                         border: Border.all(
                           color: const Color.fromARGB(0, 211, 15, 15),
@@ -101,7 +101,7 @@ class _DesktopProfileState extends State<DesktopProfile> {
                                     ConnectionState.waiting) {
                                   return const Center(
                                     child: CircularProgressIndicator(
-                                      color: Colors.white,
+                                      color: Colors.lightBlueAccent,
                                     ),
                                   );
                                 }

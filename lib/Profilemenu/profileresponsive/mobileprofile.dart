@@ -62,55 +62,51 @@ class MobileProfile extends StatelessWidget {
                         border: Border.all(color: Colors.transparent),
                       ),
                       child: ClipOval(
-                        child:
-                            StreamBuilder<
+                        child: StreamBuilder<User?>(
+                          stream: FirebaseAuth.instance.userChanges(),
+                          builder: (context, authSnapshot) {
+                            final user = authSnapshot.data;
+
+                            return StreamBuilder<
                               DocumentSnapshot<Map<String, dynamic>>
                             >(
                               stream: FirebaseFirestore.instance
                                   .collection('users')
-                                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                                  .doc(user?.uid)
                                   .snapshots(),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
+                                if (authSnapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   return const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
+                                    child: CircularProgressIndicator(),
                                   );
                                 }
 
                                 String? imageUrl;
+
+                                // 🔥 Firestore image priority
                                 if (snapshot.hasData && snapshot.data!.exists) {
                                   imageUrl = snapshot.data!
                                       .data()?['profileImage'];
                                 }
 
+                                // 🔥 Google fallback
+                                imageUrl ??= user?.photoURL;
+
                                 if (imageUrl != null && imageUrl.isNotEmpty) {
-                                  // Show the user's profile picture
                                   return Image.network(
                                     imageUrl,
-                                    width: 100,
-                                    height: 100,
                                     fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Image.asset(
-                                              'assets/logo/avatar.png',
-                                              fit: BoxFit.cover,
-                                            ),
-                                  );
-                                } else {
-                                  // Default avatar if no image found
-                                  return Image.asset(
-                                    'assets/logo/avatar.png',
-                                    width: 40,
-                                    height: 40,
-                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) =>
+                                        Image.asset('assets/logo/avatar.png'),
                                   );
                                 }
+
+                                return Image.asset('assets/logo/avatar.png');
                               },
-                            ),
+                            );
+                          },
+                        ),
                       ),
                     ),
 
@@ -203,7 +199,10 @@ class MobileProfile extends StatelessWidget {
 
                         // EMAIL TEXT FIELD
                         TextField(
-                          controller: emaiilController,
+                          controller: TextEditingController(
+                            text:
+                                FirebaseAuth.instance.currentUser?.email ?? "",
+                          ),
                           readOnly: true,
                           decoration: InputDecoration(
                             prefixIcon: const Icon(Icons.email_outlined),
@@ -284,12 +283,19 @@ class MobileProfile extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              updateUserProfile(
-                                context: context,
-                                firstName: firstNameeController.text.trim(),
-                                lastName: lastNameeController.text.trim(),
-                                username: usernameeController.text.trim(),
-                              );
+                              final user = FirebaseAuth.instance.currentUser;
+                              if (user == null) return;
+
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(user.uid)
+                                  .set({
+                                    "First Name": firstNameeController.text
+                                        .trim(),
+                                    "Last Name": lastNameeController.text
+                                        .trim(),
+                                    "Username": usernameeController.text.trim(),
+                                  }, SetOptions(merge: true));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color.fromARGB(

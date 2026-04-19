@@ -2,15 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  // GOOGLE SIGN IN
+  // 🔵 GOOGLE SIGN-IN
   Future<UserCredential?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
       if (googleUser == null) return null;
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final googleAuth = await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -20,19 +19,27 @@ class AuthService {
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
-        throw Exception(
-          'Account already exists. Please login using email & password first, then connect Google.',
-        );
+        // 🔥 sabihin sa UI: kailangan email login muna
+        throw FirebaseAuthException(code: 'need-email-login', message: e.email);
       }
       rethrow;
-    } catch (e) {
-      print("Google Sign-In Error: $e");
-      return null;
     }
   }
 
-  // ✅ LINK GOOGLE (SEPARATE FUNCTION)
+  // 🟢 EMAIL LOGIN
+  Future<UserCredential?> signInWithEmail(String email, String password) async {
+    return await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
+
+  // 🔗 LINK GOOGLE (ETO ANG CORE NG GOAL MO 🔥)
   Future<void> linkGoogleAccount() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) return;
+
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     if (googleUser == null) return;
@@ -44,10 +51,10 @@ class AuthService {
       idToken: googleAuth.idToken,
     );
 
-    await FirebaseAuth.instance.currentUser!.linkWithCredential(credential);
+    await user.linkWithCredential(credential);
   }
 
-  // ✅ SIGN OUT
+  // 🔴 SIGN OUT
   Future<void> signOut() async {
     await GoogleSignIn().signOut();
     await FirebaseAuth.instance.signOut();

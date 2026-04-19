@@ -106,7 +106,11 @@ class _LoginFormState extends State<LoginForm> {
 
         return; // ← STOP LOGIN, DO NOT CONTINUE
       }
-
+      /*
+      final providers = _auth.currentUser!.providerData;
+      if (!providers.any((p) => p.providerId == 'google.com')) {
+        await AuthService().linkGoogleAccount();
+      }*/
       // If success go to dashboard
       setState(() {
         _isLoading = false;

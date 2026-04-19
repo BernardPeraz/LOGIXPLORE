@@ -88,59 +88,48 @@ class _DesktopProfileState extends State<DesktopProfile> {
                         ),
                       ),
                       child: ClipOval(
-                        child:
-                            StreamBuilder<
-                              DocumentSnapshot<Map<String, dynamic>>
-                            >(
-                              stream: FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(FirebaseAuth.instance.currentUser?.uid)
-                                  .snapshots(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.lightBlueAccent,
-                                    ),
-                                  );
-                                }
+                       child: StreamBuilder<User?>(
+  stream: FirebaseAuth.instance.userChanges(),
+  builder: (context, authSnapshot) {
+    final user = authSnapshot.data;
 
-                                String? imageUrl;
-                                if (snapshot.hasData && snapshot.data!.exists) {
-                                  imageUrl = snapshot.data!
-                                      .data()?['profileImage'];
-                                }
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
 
-                                if (imageUrl != null && imageUrl.isNotEmpty) {
-                                  //  Show the user's profile picture
-                                  return Image.network(
-                                    imageUrl,
-                                    width: 103,
-                                    height: 105,
-                                    fit: BoxFit.cover,
+        if (authSnapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Image.asset(
-                                              'assets/logo/avatar.png',
+        String? imageUrl;
 
-                                              fit: BoxFit.cover,
-                                            ),
-                                  );
-                                } else {
-                                  //  Default avatar if no image found
-                                  return Image.asset(
-                                    'assets/logo/avatar.png',
+        // 🔥 Firestore image priority
+        if (snapshot.hasData && snapshot.data!.exists) {
+          imageUrl = snapshot.data!.data()?['profileImage'];
+        }
 
-                                    width: 103,
-                                    height: 105,
-                                    fit: BoxFit.cover,
-                                  );
-                                }
-                              },
-                            ),
-                      ),
+        // 🔥 Google fallback
+        imageUrl ??= user?.photoURL;
+
+        if (imageUrl != null && imageUrl.isNotEmpty) {
+          return Image.network(
+            imageUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) =>
+                Image.asset('assets/logo/avatar.png'),
+          );
+        }
+
+        return Image.asset('assets/logo/avatar.png');
+      },
+    );
+  },
+),
+                         
+                    ),
                     ),
 
                     const SizedBox(height: 20),
@@ -259,7 +248,9 @@ class _DesktopProfileState extends State<DesktopProfile> {
                     const SizedBox(height: 16),
 
                     TextFormField(
-                      controller: emaiilController,
+                      controller: TextEditingController(
+                        text: FirebaseAuth.instance.currentUser?.email ?? "",
+                      ),
                       readOnly: true,
                       maxLength: 30,
                       decoration: InputDecoration(

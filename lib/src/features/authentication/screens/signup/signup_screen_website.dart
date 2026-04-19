@@ -219,6 +219,19 @@ Future<bool> login(BuildContext context) async {
       );
 
       await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          "email": user.email ?? "",
+          "First Name": user.displayName?.split(" ").first ?? "",
+          "Last Name":
+              user.displayName != null &&
+                  user.displayName!.split(" ").length > 1
+              ? user.displayName!.split(" ").sublist(1).join(" ")
+              : "",
+        }, SetOptions(merge: true));
+      }
 
       return FirebaseAuth.instance.currentUser != null;
     } else {
@@ -243,7 +256,7 @@ Future<bool> login(BuildContext context) async {
       // 3️Check Firestore manually if account already exists (simple if–else)
       final existingUser = await FirebaseFirestore.instance
           .collection('users')
-          .where('Email', isEqualTo: email)
+          .where('email', isEqualTo: email)
           .get();
 
       if (existingUser.docs.isNotEmpty) {

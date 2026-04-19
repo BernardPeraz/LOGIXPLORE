@@ -11,6 +11,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/contr
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 
 class MobileSignupScreen extends StatelessWidget {
   const MobileSignupScreen({super.key});
@@ -56,7 +57,7 @@ class MobileSignupScreen extends StatelessWidget {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const Landingpagee(),
+                                    builder: (context) => const Dashboard(),
                                   ),
                                 );
                               }
@@ -188,6 +189,22 @@ class MobileSignupScreen extends StatelessWidget {
         );
 
         await FirebaseAuth.instance.signInWithCredential(credential);
+        final user = FirebaseAuth.instance.currentUser;
+
+        if (user != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .set({
+                "email": user.email ?? "",
+                "First Name": user.displayName?.split(" ").first ?? "",
+                "Last Name":
+                    user.displayName != null &&
+                        user.displayName!.split(" ").length > 1
+                    ? user.displayName!.split(" ").sublist(1).join(" ")
+                    : "",
+              }, SetOptions(merge: true));
+        }
 
         return FirebaseAuth.instance.currentUser != null;
       } else {
@@ -212,7 +229,7 @@ class MobileSignupScreen extends StatelessWidget {
         // 3️Check Firestore manually if account already exists (simple if–else)
         final existingUser = await FirebaseFirestore.instance
             .collection('users')
-            .where('Email', isEqualTo: email)
+            .where('email', isEqualTo: email)
             .get();
 
         if (existingUser.docs.isNotEmpty) {

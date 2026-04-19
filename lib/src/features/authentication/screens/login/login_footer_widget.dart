@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/adminlogin.dart';
@@ -92,39 +93,43 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
             child: IconButton(
               onPressed: () async {
                 try {
-                  final user = await AuthService().signInWithGoogle();
+                  final result = await AuthService().signInWithGoogle();
+                  await FirebaseAuth.instance.currentUser?.reload();
 
-                  if (user != null) {
+                  setState(() {});
+
+                  if (result != null) {
+                    // login success
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const Dashboard(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const Dashboard()),
+                    );
+                  } else {
+                    // linking or already linked
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Google account linked")),
                     );
                   }
                 } on FirebaseAuthException catch (e) {
-                  if (e.code == 'account-exists-with-different-credential') {
-                    // 🔥 SET FLAG (IMPORTANT)
-                    linkRequested = true;
-
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        title: const Text("Account Exists"),
-                        content: const Text(
-                          "This email is already registered. Please login using email/password.",
+                  if (e.code == 'need-email-login') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Login muna gamit Email, then tap Google again.",
                         ),
                       ),
                     );
+                  } else if (e.code == 'email-mismatch') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Wrong Google account selected."),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(e.message ?? "Error")),
+                    );
                   }
-                } catch (e) {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: const Text("Error"),
-                      content: Text(e.toString()),
-                    ),
-                  );
                 }
               },
               icon: const Image(image: AssetImage(tGoogleLogoimage), width: 20),

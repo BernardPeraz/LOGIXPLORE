@@ -12,6 +12,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart'
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/Multipagedialog.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blocknavigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/whitescreen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/repository/authentication_repository/auth_service.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -290,30 +291,29 @@ class _DashboardState extends State<Dashboard> {
                     }
 
                     String? imageUrl;
+
                     if (snapshot.hasData && snapshot.data!.exists) {
                       imageUrl = snapshot.data!.data()?['profileImage'];
                     }
 
+                    // 🔥 ADD THIS (CRITICAL)
+                    imageUrl ??= FirebaseAuth.instance.currentUser?.photoURL;
+
                     if (imageUrl != null && imageUrl.isNotEmpty) {
-                      //  Show the user's profile picture
                       return Image.network(
                         imageUrl,
                         width: 38,
                         height: 40,
                         fit: BoxFit.cover,
-
                         errorBuilder: (context, error, stackTrace) =>
                             Image.asset(
                               'assets/logo/avatar.png',
-
                               fit: BoxFit.cover,
                             ),
                       );
                     } else {
-                      //  Default avatar if no image found
                       return Image.asset(
                         'assets/logo/avatar.png',
-
                         width: 40,
                         height: 40,
                         fit: BoxFit.cover,
@@ -415,8 +415,8 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  void _showWelcomeDialog(BuildContext context) {
-    showDialog(
+  Future<void> _showWelcomeDialog(BuildContext context) async {
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -431,6 +431,63 @@ class _DashboardState extends State<Dashboard> {
 
         return MultiPageDialog(width: dialogWidth, height: dialogHeight);
       },
+    );
+  }
+
+  Future<void> _showsecondDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        double dialogWidth = screenWidth * 0.9;
+        double dialogHeight = screenHeight * 0.75;
+
+        dialogWidth = dialogWidth > 590 ? 590 : dialogWidth;
+        dialogHeight = dialogHeight > 390 ? 390 : dialogHeight;
+
+        return MultiPageDialog(width: dialogWidth, height: dialogHeight);
+      },
+    );
+  }
+
+  Future<void> showGoogleLinkPrompt(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Connect Google Account"),
+        content: const Text("Link your Google account for easier login."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Decline"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+
+              try {
+                final user = FirebaseAuth.instance.currentUser;
+
+                if (user == null) return;
+
+                final providers = user.providerData;
+
+                if (!providers.any((p) => p.providerId == 'google.com')) {
+                  await AuthService().linkGoogleAccount();
+                }
+              } on FirebaseAuthException catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(e.message ?? "Linking failed")),
+                );
+              }
+            },
+            child: const Text("Connect"),
+          ),
+        ],
+      ),
     );
   }
 
@@ -456,13 +513,30 @@ class _DashboardState extends State<Dashboard> {
       final hasSeen = doc.data()?['hasSeenWelcomeDialog'] ?? false;
 
       if (!hasSeen) {
-        _showWelcomeDialog(context);
+        // 🔥 1st dialog
+        await _showWelcomeDialog(context);
 
         // mark as seen
         await FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
             .update({'hasSeenWelcomeDialog': true});
+
+        // 🔥 2nd dialog (Google link)
+        await user.reload();
+
+        final updatedUser = FirebaseAuth.instance.currentUser!;
+
+        final hasGoogle = updatedUser.providerData.any(
+          (p) => p.providerId == 'google.com',
+        );
+
+        if (!hasGoogle) {
+          await Future.delayed(const Duration(milliseconds: 400));
+
+          if (!mounted) return;
+          await showGoogleLinkPrompt(context);
+        }
       }
     });
   }

@@ -12,10 +12,16 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/scree
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/widgets/signup_form_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/repository/authentication_repository/auth_service.dart';
 
-class MobileSignupScreen extends StatelessWidget {
+class MobileSignupScreen extends StatefulWidget {
   const MobileSignupScreen({super.key});
 
+  @override
+  State<MobileSignupScreen> createState() => _MobileSignupScreenState();
+}
+
+class _MobileSignupScreenState extends State<MobileSignupScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,14 +58,54 @@ class MobileSignupScreen extends StatelessWidget {
                           width: 40,
                           child: IconButton(
                             onPressed: () async {
-                              bool isLoggedIn = await login(context);
-                              if (isLoggedIn) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const Dashboard(),
-                                  ),
-                                );
+                              try {
+                                final result = await AuthService()
+                                    .signInWithGoogle();
+                                await FirebaseAuth.instance.currentUser
+                                    ?.reload();
+
+                                setState(() {});
+
+                                if (result != null) {
+                                  // login success
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const Dashboard(),
+                                    ),
+                                  );
+                                } else {
+                                  // linking or already linked
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Google account linked"),
+                                    ),
+                                  );
+                                }
+                              } on FirebaseAuthException catch (e) {
+                                if (e.code == 'need-email-login') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Login muna gamit Email, then tap Google again.",
+                                      ),
+                                    ),
+                                  );
+                                } else if (e.code == 'email-mismatch') {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Wrong Google account selected.",
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.message ?? "Error"),
+                                    ),
+                                  );
+                                }
                               }
                             },
                             icon: const Image(

@@ -11,7 +11,7 @@ class DesktopLayout {
     required double progress,
     required VoidCallback onStartLesson,
   }) {
-    final ScrollController _controller = ScrollController();
+    final ScrollController controller = ScrollController();
     return Row(
       children: [
         Expanded(
@@ -34,11 +34,11 @@ class DesktopLayout {
 
                 Expanded(
                   child: Scrollbar(
-                    controller: _controller,
+                    controller: controller,
                     thumbVisibility: true,
                     trackVisibility: true,
                     child: SingleChildScrollView(
-                      controller: _controller,
+                      controller: controller,
                       child: Text(
                         lesson['content']!,
                         style: TextStyle(

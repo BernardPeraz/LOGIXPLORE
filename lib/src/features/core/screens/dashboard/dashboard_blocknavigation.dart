@@ -238,7 +238,6 @@ class _BuildBlockState extends State<BuildBlock> {
         _loadProgressFromFirestore();
       });
     }
-    ;
   }
 
   @override

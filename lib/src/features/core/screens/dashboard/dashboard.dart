@@ -24,7 +24,7 @@ class Dashboard extends StatefulWidget {
 bool _isLoading = false;
 
 class _DashboardState extends State<Dashboard> {
-  bool _hasShownDialog = false;
+  final bool _hasShownDialog = false;
   void whitescreen() {
     setState(() {
       _isLoading = true;

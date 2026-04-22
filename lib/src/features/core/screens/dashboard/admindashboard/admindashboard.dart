@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/adminlogin.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/adminoverallui.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/resultscores.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/simulatorprogress.dart';
@@ -46,9 +47,8 @@ class _AdmindashboardState extends State<Admindashboard> {
               // LEFT FIXED SIDEBAR
               isSidebarVisible
                   ? Container(
-                      width: 200,
+                      width: 170,
 
-                      color: const Color.fromARGB(255, 100, 1, 249),
                       child: Scrollbar(
                         thumbVisibility: true,
                         child: SingleChildScrollView(
@@ -60,104 +60,118 @@ class _AdmindashboardState extends State<Admindashboard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(height: 110),
-                                const Divider(
-                                  color: Colors.black,
-                                  thickness: 2,
-                                ),
+
                                 ListTile(
+                                  selected: selectedIndex == 0,
+                                  selectedTileColor: Colors.blue,
+
                                   leading: Icon(
-                                    Icons.bar_chart,
-                                    color: Colors.orange,
+                                    Icons.dashboard_rounded,
+                                    color: Colors.deepPurple,
                                   ),
-                                  title: const Text(
+                                  title: Text(
                                     "Admin Dashboard",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color:
+                                          Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                   onTap: () {
                                     setState(() => selectedIndex = 0);
                                   },
                                 ),
-                                const Divider(
-                                  color: Colors.black,
-                                  thickness: 2,
-                                ),
 
                                 ListTile(
+                                  selected: selectedIndex == 1,
+                                  selectedTileColor: Colors.blue,
                                   leading: Icon(
-                                    Icons.bar_chart,
-                                    color: Colors.orange,
+                                    Icons.library_books_rounded,
+                                    color: Colors.cyanAccent,
                                   ),
-                                  title: const Text(
+                                  title: Text(
                                     "Modules",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color:
+                                          Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                   onTap: () {
                                     setState(() => selectedIndex = 1);
                                   },
                                 ),
-                                const Divider(
-                                  color: Colors.black,
-                                  thickness: 2,
-                                ),
 
                                 ListTile(
+                                  selected: selectedIndex == 2,
+                                  selectedTileColor: Colors.blue,
                                   leading: Icon(
                                     Icons.bar_chart,
                                     color: Colors.orange,
                                   ),
-                                  title: const Text(
+                                  title: Text(
                                     "Student Progress",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color:
+                                          Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                   onTap: () {
                                     setState(() => selectedIndex = 2);
                                   },
                                 ),
-                                const Divider(
-                                  color: Colors.black,
-                                  thickness: 2,
-                                ),
+
                                 ListTile(
-                                  leading: Icon(Icons.quiz, color: Colors.blue),
-                                  title: const Text(
+                                  selected: selectedIndex == 3,
+                                  selectedTileColor: Colors.blue,
+                                  leading: Icon(Icons.quiz, color: Colors.red),
+                                  title: Text(
                                     "Quiz Results",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color:
+                                          Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                   onTap: () {
                                     setState(() => selectedIndex = 3);
                                   },
                                 ),
-                                const Divider(
-                                  color: Colors.black,
-                                  thickness: 2,
-                                ),
+
                                 ListTile(
+                                  selected: selectedIndex == 4,
+                                  selectedTileColor: Colors.blue,
                                   leading: Icon(
                                     Icons.bubble_chart,
                                     color: Colors.green,
                                   ),
-                                  title: const Text(
+                                  title: Text(
                                     "Simulator",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color:
+                                          Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                   onTap: () {
@@ -165,21 +179,27 @@ class _AdmindashboardState extends State<Admindashboard> {
                                   },
                                 ),
 
-                                const Divider(
-                                  color: Colors.black,
-                                  thickness: 2,
-                                ),
                                 ListTile(
-                                  leading: const Icon(
+                                  selected: selectedIndex == 5,
+                                  selectedTileColor: Colors.blue,
+                                  leading: Icon(
                                     Icons.logout,
-                                    color: Colors.black,
+                                    color:
+                                        Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
-                                  title: const Text(
+                                  title: Text(
                                     "Logout",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.black,
+                                      color:
+                                          Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
                                     ),
                                   ),
                                   onTap: () async {
@@ -270,6 +290,8 @@ class _AdmindashboardState extends State<Admindashboard> {
                                     );
                                     if (shouldLogout == true) {
                                       await _signOutUser();
+                                      if (!mounted) return;
+                                      Get.offAll(() => SplashScreen());
                                     }
                                   },
                                 ),

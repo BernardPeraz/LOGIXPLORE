@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/adminlogin.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/signup/signup_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/repository/authentication_repository/auth_service.dart';
@@ -147,6 +148,7 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
         SizedBox(height: tFormHeight - 20),
         TextButton(
           onPressed: () async {
+            isAdminLogin = false;
             showDialog(
               context: context,
               barrierDismissible: false,

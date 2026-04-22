@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/admindashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/firebase_options.dart';
@@ -41,10 +43,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _monitorUserStatus();
+    // _monitorUserStatus();
   }
 
-  void _monitorUserStatus() {
+  /*void _monitorUserStatus() {
     final auth = FirebaseAuth.instance;
 
     auth.authStateChanges().listen((user) {
@@ -71,7 +73,7 @@ class _MyAppState extends State<MyApp> {
           });
     }
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -81,9 +83,26 @@ class _MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       transitionDuration: const Duration(milliseconds: 600),
-      home: FirebaseAuth.instance.currentUser != null
-          ? const Dashboard()
-          : SplashScreen(),
+
+      home: StreamBuilder<firebase_auth.User?>(
+        stream: firebase_auth.FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          if (snapshot.hasData) {
+            final user = snapshot.data!;
+            final isAdmin = user.email == "admin00@gmail.com";
+
+            return isAdmin ? const Admindashboard() : const Dashboard();
+          }
+
+          return SplashScreen();
+        },
+      ),
       builder: (context, child) {
         return Stack(
           children: [

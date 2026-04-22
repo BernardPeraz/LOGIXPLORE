@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class ResultScores extends StatelessWidget {
   const ResultScores({super.key});
 
-  // List of gates in correct order
   static const gateList = [
     "AND GATE",
     "OR GATE",
@@ -19,12 +18,14 @@ class ResultScores extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 122, 183, 236), // Light Blue Background
+      color: Colors.blue,
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator(color: Colors.blue));
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.blue),
+            );
           }
 
           final users = snapshot.data!.docs;
@@ -35,44 +36,66 @@ class ResultScores extends StatelessWidget {
               children: [
                 Text(
                   "Students Quiz Scores Overview",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-                // TABLE HEADER (Full Name + 8 Gate Columns)
-                //
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        "Full Name",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-
-                    // GATE COLUMNS
-                    ...gateList.map(
-                      (gate) => Expanded(
+                /// 🔥 HEADER (SCROLLABLE)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 180,
                         child: Text(
-                          gate,
-                          textAlign: TextAlign.center,
+                          "Full Name",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+
+                      ...gateList.map(
+                        (gate) => SizedBox(
+                          width: 120,
+                          child: Text(
+                            gate,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color:
+                                  Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
-                const Divider(color: Colors.black, thickness: 2),
-                SizedBox(height: 10),
-                // LIST OF USERS
+                Divider(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                ),
+                const SizedBox(height: 10),
+
+                /// 🔥 LIST
                 Expanded(
                   child: ListView.builder(
                     itemCount: users.length,
@@ -83,11 +106,9 @@ class ResultScores extends StatelessWidget {
                       final fullName =
                           "${data['First Name'] ?? ''} ${data['Last Name'] ?? ''}"
                               .trim();
-                      if (fullName.isEmpty) {
-                        return SizedBox.shrink();
-                      }
-                      if (data['hidden'] == true) {
-                        return SizedBox.shrink(); // 🔥 Hide this user
+
+                      if (fullName.isEmpty || data['hidden'] == true) {
+                        return const SizedBox.shrink();
                       }
 
                       return FutureBuilder<QuerySnapshot>(
@@ -102,13 +123,15 @@ class ResultScores extends StatelessWidget {
                           }
 
                           final progressDocs = progressSnapshot.data!.docs;
+
                           Map<String, double> gateProgress = {
                             for (var gate in gateList) gate: 0.0,
                           };
-                          // Convert gate to progress
+
                           Map<String, String> gateScoreText = {
                             for (var gate in gateList) gate: "0/0",
                           };
+
                           Map<String, Timestamp?> latestTime = {
                             for (var gate in gateList) gate: null,
                           };
@@ -122,10 +145,7 @@ class ResultScores extends StatelessWidget {
                                 .trim()
                                 .toUpperCase();
 
-                            if (!gateProgress.containsKey(gate)) {
-                              print("Unknown gate: $gateRaw");
-                              continue;
-                            }
+                            if (!gateProgress.containsKey(gate)) continue;
 
                             int score = (data['score'] ?? 0);
                             int total = (data['total'] ?? 1);
@@ -143,40 +163,50 @@ class ResultScores extends StatelessWidget {
                             }
                           }
 
+                          /// 🔥 EACH ROW SCROLLABLE
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Row(
-                              children: [
-                                // FULL NAME
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    fullName.isEmpty
-                                        ? "Unknown User"
-                                        : fullName,
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ),
-                                // 8 INDIVIDUAL GATE PROGRESS BARS
-                                ...gateList.map((gate) {
-                                  return Expanded(
-                                    child: Center(
-                                      child: Text(
-                                        gateScoreText[gate] ?? "0/0",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 180,
+                                    child: Text(
+                                      fullName,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w900,
+                                        color:
+                                            Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                     ),
-                                  );
-                                }),
-                              ],
+                                  ),
+
+                                  ...gateList.map((gate) {
+                                    return SizedBox(
+                                      width: 120,
+                                      child: Center(
+                                        child: Text(
+                                          gateScoreText[gate] ?? "0/0",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -192,27 +222,22 @@ class ResultScores extends StatelessWidget {
     );
   }
 
-  // Loading placeholder row (while fetching progress)
   Widget _loadingRow(String fullName) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(fullName, style: TextStyle(fontSize: 15)),
-          ),
-          ...gateList.map(
-            (_) => Expanded(
-              child: LinearProgressIndicator(
-                value: 0,
-                backgroundColor: Colors.grey[300],
-                color: Colors.green,
-                minHeight: 6,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(width: 180, child: Text(fullName)),
+            ...gateList.map(
+              (_) => const SizedBox(
+                width: 120,
+                child: LinearProgressIndicator(minHeight: 6),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

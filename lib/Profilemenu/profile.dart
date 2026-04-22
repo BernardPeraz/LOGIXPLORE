@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profileresponsive/updateprofile/profilecontroller.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
 
 class ProfileMenuBox extends StatelessWidget {
   const ProfileMenuBox({super.key});
@@ -27,7 +28,9 @@ class ProfileMenuBox extends StatelessWidget {
       stream: UserProfileController.userProfileStream(),
       builder: (context, snapshot) {
         String displayName = 'Loading...';
-        String role = 'Student';
+        bool isAdmin =
+            FirebaseAuth.instance.currentUser?.email == "admin00@gmail.com";
+        String role = isAdmin ? "Admin" : "Student";
         String? imageUrl;
 
         if (snapshot.hasData && snapshot.data!.exists) {

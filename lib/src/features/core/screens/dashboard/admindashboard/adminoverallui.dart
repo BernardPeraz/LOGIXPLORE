@@ -8,11 +8,11 @@ class Adminoverallui extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         automaticallyImplyLeading: width < 800,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: const Text(
           'Admin Dashboard',
@@ -20,7 +20,6 @@ class Adminoverallui extends StatelessWidget {
         ),
       ),
 
-      /// 🔥 SAFE SCROLL (VERTICAL ONLY)
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
         child: width < 800 ? _mobileLayout() : _desktopLayout(),
@@ -28,7 +27,7 @@ class Adminoverallui extends StatelessWidget {
     );
   }
 
-  /// 📱 MOBILE (STACKED)
+  /// 📱 MOBILE
   Widget _mobileLayout() {
     return Column(
       children: [
@@ -43,18 +42,22 @@ class Adminoverallui extends StatelessWidget {
         _progressPanel(),
 
         const SizedBox(height: 15),
-
+        Container(
+          height: 150,
+          width: double.infinity,
+          decoration: _cardStyle(),
+        ),
+        const SizedBox(height: 15),
         _rightPanel(),
       ],
     );
   }
 
-  /// 💻 DESKTOP (NO OVERFLOW - FLEX BASED)
+  /// 💻 DESKTOP
   Widget _desktopLayout() {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /// 🔵 LEFT CONTENT
         Expanded(
           flex: 65,
           child: Padding(
@@ -75,17 +78,19 @@ class Adminoverallui extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                _progressPanel(),
-                const SizedBox(height: 20),
-                _progressPanel(),
 
+                _progressPanel(),
                 const SizedBox(height: 20),
+
+                Container(
+                  height: 150,
+                  width: double.infinity,
+                  decoration: _cardStyle(),
+                ),
               ],
             ),
           ),
         ),
-
-        /// 🟡 RIGHT PANEL
         Expanded(
           flex: 35,
           child: Padding(
@@ -127,7 +132,7 @@ class Adminoverallui extends StatelessWidget {
     );
   }
 
-  /// 🔹 PROGRESS PANEL
+  /// 🔥 UPDATED PROGRESS PANEL
   Widget _progressPanel() {
     return Container(
       width: double.infinity,
@@ -140,10 +145,19 @@ class Adminoverallui extends StatelessWidget {
             "Progress Overview",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 10),
-          _progressBar("Simulation 1", 0.7),
-          _progressBar("Simulation 2", 0.5),
-          _progressBar("Simulation 3", 0.9),
+          const SizedBox(height: 15),
+
+          /// 🔥 CIRCULAR SUMMARY
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _circleProgress("Quiz", 0.78, Colors.blue),
+              _circleProgress("Simulator", 0.65, Colors.green),
+              _circleProgress("Overall", 0.72, Colors.purple),
+            ],
+          ),
+
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -171,9 +185,7 @@ class Adminoverallui extends StatelessWidget {
             ],
           ),
         ),
-
         const SizedBox(height: 15),
-
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(15),
@@ -184,8 +196,8 @@ class Adminoverallui extends StatelessWidget {
               Text(
                 "Alerts",
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
                   color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               SizedBox(height: 10),
@@ -198,18 +210,32 @@ class Adminoverallui extends StatelessWidget {
     );
   }
 
-  /// 🔹 PROGRESS BAR
-  Widget _progressBar(String label, double value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label),
-          const SizedBox(height: 4),
-          LinearProgressIndicator(value: value),
-        ],
-      ),
+  /// 🔹 CIRCULAR PROGRESS WIDGET
+  static Widget _circleProgress(String label, double value, Color color) {
+    return Column(
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            SizedBox(
+              width: 70,
+              height: 70,
+              child: CircularProgressIndicator(
+                value: value,
+                strokeWidth: 6,
+                color: color,
+                backgroundColor: Colors.grey.shade300,
+              ),
+            ),
+            Text(
+              "${(value * 100).toStringAsFixed(0)}%",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Text(label),
+      ],
     );
   }
 

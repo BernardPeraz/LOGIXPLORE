@@ -4,6 +4,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/forget_password/forget_password_mail/forget_password_mail.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -111,9 +112,11 @@ class _LoginFormState extends State<LoginForm> {
         await AuthService().linkGoogleAccount();
       }*/
       // If success go to dashboard
+      isAdminLogin = false;
       setState(() {
         _isLoading = false;
       });
+
       Get.off(() => const Dashboard());
     } on FirebaseAuthException catch (e) {
       setState(() {

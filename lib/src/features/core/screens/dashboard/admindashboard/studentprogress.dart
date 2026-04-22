@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class StudentProgressPage extends StatelessWidget {
   const StudentProgressPage({super.key});
 
-  // List of gates in correct order
   static const gateList = [
     "AND",
     "OR",
@@ -19,12 +18,14 @@ class StudentProgressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 122, 183, 236), // Light Blue Background
+      color: Colors.blue,
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('users').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator(color: Colors.blue));
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.blue),
+            );
           }
 
           final users = snapshot.data!.docs;
@@ -35,44 +36,62 @@ class StudentProgressPage extends StatelessWidget {
               children: [
                 Text(
                   "Student Progress Overview",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-                // TABLE HEADER (Full Name + 8 Gate Columns)
-                //
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        "Full Name",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-
-                    // GATE COLUMNS
-                    ...gateList.map(
-                      (gate) => Expanded(
+                /// 🔥 HEADER (HORIZONTAL SCROLL)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 180,
                         child: Text(
-                          gate,
-                          textAlign: TextAlign.center,
+                          "Full Name",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+
+                      ...gateList.map(
+                        (gate) => SizedBox(
+                          width: 100,
+                          child: Text(
+                            gate,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color:
+                                  Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
-                Divider(thickness: 2),
-                SizedBox(height: 10),
-                // LIST OF USERS
+                const Divider(thickness: 2),
+                const SizedBox(height: 10),
+
+                /// 🔥 LIST (VERTICAL SCROLL)
                 Expanded(
                   child: ListView.builder(
                     itemCount: users.length,
@@ -83,11 +102,9 @@ class StudentProgressPage extends StatelessWidget {
                       final fullName =
                           "${data['First Name'] ?? ''} ${data['Last Name'] ?? ''}"
                               .trim();
-                      if (fullName.isEmpty) {
-                        return SizedBox.shrink();
-                      }
-                      if (data['hidden'] == true) {
-                        return SizedBox.shrink(); // 🔥 Hide this user
+
+                      if (fullName.isEmpty || data['hidden'] == true) {
+                        return const SizedBox.shrink();
                       }
 
                       return StreamBuilder<QuerySnapshot>(
@@ -103,7 +120,6 @@ class StudentProgressPage extends StatelessWidget {
 
                           final progressDocs = progressSnapshot.data!.docs;
 
-                          // Convert gate to progress
                           Map<String, double> gateProgress = {
                             for (var gate in gateList) gate: 0.0,
                           };
@@ -111,7 +127,8 @@ class StudentProgressPage extends StatelessWidget {
                           for (var gateDoc in progressDocs) {
                             final name = gateDoc.id.toUpperCase();
                             final value =
-                                (gateDoc.data() as Map<String, dynamic>);
+                                gateDoc.data() as Map<String, dynamic>;
+
                             if (value.containsKey("progress")) {
                               final progressData = value["progress"];
 
@@ -119,68 +136,80 @@ class StudentProgressPage extends StatelessWidget {
                                 int completed = progressData
                                     .where((p) => p == 1.0)
                                     .length;
-                                double progress = progressData.isNotEmpty
+
+                                gateProgress[name] = progressData.isNotEmpty
                                     ? completed / progressData.length
                                     : 0.0;
-
-                                gateProgress[name] = progress;
                               } else if (progressData is num) {
-                                // fallback (in case old data exists)
                                 gateProgress[name] = progressData.toDouble();
                               }
                             }
                           }
 
+                          /// 🔥 EACH ROW SCROLLABLE
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: Row(
-                              children: [
-                                // FULL NAME
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    fullName.isEmpty
-                                        ? "Unknown User"
-                                        : fullName,
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w900,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 180,
+                                    child: Text(
+                                      fullName.isEmpty
+                                          ? "Unknown User"
+                                          : fullName,
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w900,
+                                        color:
+                                            Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                // 8 INDIVIDUAL GATE PROGRESS BARS
-                                ...gateList.map((gate) {
-                                  double progress = gateProgress[gate] ?? 0.0;
 
-                                  return Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: 45,
-                                          child: LinearProgressIndicator(
-                                            value: progress,
-                                            backgroundColor: Colors.grey[300],
-                                            color: Colors.green,
-                                            minHeight: 6,
+                                  ...gateList.map((gate) {
+                                    double progress = gateProgress[gate] ?? 0.0;
+
+                                    return SizedBox(
+                                      width: 100,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: 45,
+                                            child: LinearProgressIndicator(
+                                              value: progress,
+                                              backgroundColor: Colors.grey[300],
+                                              color: Colors.green,
+                                              minHeight: 6,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(width: 4),
-                                        Text(
-                                          "${(progress * 100).toStringAsFixed(0)}%",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w900,
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            "${(progress * 100).toStringAsFixed(0)}%",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w900,
+                                              color:
+                                                  Theme.of(
+                                                        context,
+                                                      ).brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
-                              ],
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -196,27 +225,22 @@ class StudentProgressPage extends StatelessWidget {
     );
   }
 
-  // Loading placeholder row (while fetching progress)
   Widget _loadingRow(String fullName) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(fullName, style: TextStyle(fontSize: 15)),
-          ),
-          ...gateList.map(
-            (_) => Expanded(
-              child: LinearProgressIndicator(
-                value: 0,
-                backgroundColor: Colors.grey[300],
-                color: Colors.green,
-                minHeight: 6,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            SizedBox(width: 180, child: Text(fullName)),
+            ...gateList.map(
+              (_) => const SizedBox(
+                width: 100,
+                child: LinearProgressIndicator(minHeight: 6),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -14,6 +14,7 @@ class Changepasswordui extends StatefulWidget {
 }
 
 class _ChangepassworduiState extends State<Changepasswordui> {
+  bool isLoading = false;
   final ValueNotifier<bool> repeatPasswordVisible = ValueNotifier(false);
   bool passwordVisible = false;
   bool _passwordVisible = false;
@@ -235,6 +236,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () async {
+                        setState(() => isLoading = true);
                         final newPass = newPasswordController.text.trim();
                         final repeatPass = repeaatPasswordController.text
                             .trim();
@@ -251,6 +253,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                               duration: Duration(seconds: 3),
                             ),
                           );
+                          setState(() => isLoading = false);
                           return;
                         }
 
@@ -262,6 +265,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                               duration: Duration(seconds: 3),
                             ),
                           );
+                          setState(() => isLoading = false);
                           return;
                         }
 
@@ -275,6 +279,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                               duration: Duration(seconds: 3),
                             ),
                           );
+                          setState(() => isLoading = false);
                           return;
                         }
 
@@ -292,6 +297,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                                 duration: Duration(seconds: 3),
                               ),
                             );
+                            setState(() => isLoading = false);
                             return;
                           }
 
@@ -341,6 +347,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                           );
 
                           await Future.delayed(Duration(milliseconds: 800));
+                          setState(() => isLoading = false);
                           if (!mounted) return;
                           Navigator.pushReplacement(
                             context,
@@ -349,6 +356,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                             ),
                           );
                         } catch (e) {
+                          setState(() => isLoading = false);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text("Failed to update: $e"),
@@ -367,13 +375,22 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: Text(
-                        "Change",
-                        style: TextStyle(
-                          fontSize: screenWidth < 600 ? 14 : 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.black,
+                              ),
+                            )
+                          : Text(
+                              "Change",
+                              style: TextStyle(
+                                fontSize: screenWidth < 600 ? 14 : 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
                 ],

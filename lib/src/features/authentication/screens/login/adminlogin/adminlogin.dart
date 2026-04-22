@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
 
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/admindashboard.dart';
@@ -57,10 +58,14 @@ class _AdminloginState extends State<Adminlogin> {
       }
 
       // ADD THIS: FirebaseAuth sign-in
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      final user = credential.user;
+
+      /// 🔥 THEN SET ROLE
+      isAdminLogin = user?.email == "admin00@gmail.com";
       if (!mounted) return;
       setState(() => _isLoading = false);
 

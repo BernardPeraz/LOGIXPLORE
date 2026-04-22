@@ -9,6 +9,7 @@ import 'package:studydesign2zzdatabaseplaylist/Profilemenu/passwordsettings/pass
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profile.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/Multipagedialog.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blocknavigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/whitescreen.dart';
@@ -21,10 +22,9 @@ class Dashboard extends StatefulWidget {
   State<Dashboard> createState() => _DashboardState();
 }
 
-bool _isLoading = false;
-
 class _DashboardState extends State<Dashboard> {
-  final bool _hasShownDialog = false;
+  bool _isLoading = false;
+ 
   void whitescreen() {
     setState(() {
       _isLoading = true;
@@ -247,6 +247,8 @@ class _DashboardState extends State<Dashboard> {
                             );
                             if (shouldLogout == true) {
                               await _signOutUser();
+                              if (!mounted) return;
+                              Get.offAll(() => SplashScreen());
                             }
                           },
                         ),

@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profileresponsive/updateprofile/profilecontroller.dart';
 import 'package:studydesign2zzdatabaseplaylist/Profilemenu/profilesettings.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
 
 class ProfileMenuBox extends StatelessWidget {
   const ProfileMenuBox({super.key});

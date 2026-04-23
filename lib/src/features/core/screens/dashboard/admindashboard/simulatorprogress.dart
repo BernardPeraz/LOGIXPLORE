@@ -68,7 +68,7 @@ class Simulatorprogress extends StatelessWidget {
 
                       ...gateList.map(
                         (gate) => SizedBox(
-                          width: 100,
+                          width: 120,
                           child: Text(
                             gate,
                             textAlign: TextAlign.center,
@@ -133,8 +133,8 @@ class Simulatorprogress extends StatelessWidget {
                           Map<String, String> gateScoreText = {
                             for (var gate in gateList)
                               gate: completedGates.contains(gate)
-                                  ? "10/10"
-                                  : "0/10",
+                                  ? "Passed"
+                                  : "Not Started",
                           };
 
                           /// 🔥 EACH ROW SCROLLABLE
@@ -161,20 +161,20 @@ class Simulatorprogress extends StatelessWidget {
                                   ),
 
                                   ...gateList.map((gate) {
+                                    bool isCompleted = completedGates.contains(
+                                      gate,
+                                    );
                                     return SizedBox(
-                                      width: 115,
+                                      width: 120,
                                       child: Center(
-                                        child: Text(
-                                          gateScoreText[gate] ?? "0/10",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                                Theme.of(context).brightness ==
-                                                    Brightness.dark
-                                                ? Colors.white
-                                                : Colors.black,
-                                          ),
+                                        child: Icon(
+                                          isCompleted
+                                              ? Icons.check_circle
+                                              : Icons.close,
+                                          color: isCompleted
+                                              ? Colors.green
+                                              : Colors.red,
+                                          size: 18,
                                         ),
                                       ),
                                     );

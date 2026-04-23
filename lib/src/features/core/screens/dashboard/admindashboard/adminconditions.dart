@@ -21,3 +21,10 @@ class AdminConditions {
     return false;
   }
 }
+
+Stream<int> getUserCount() {
+  return FirebaseFirestore.instance
+      .collection('users')
+      .snapshots()
+      .map((snapshot) => snapshot.docs.length);
+}

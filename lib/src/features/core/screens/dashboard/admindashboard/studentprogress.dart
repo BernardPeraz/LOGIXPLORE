@@ -68,7 +68,7 @@ class StudentProgressPage extends StatelessWidget {
 
                       ...gateList.map(
                         (gate) => SizedBox(
-                          width: 100,
+                          width: 113,
                           child: Text(
                             gate,
                             textAlign: TextAlign.center,
@@ -91,7 +91,7 @@ class StudentProgressPage extends StatelessWidget {
                 const Divider(thickness: 2),
                 const SizedBox(height: 10),
 
-                /// 🔥 LIST (VERTICAL SCROLL)
+                // LIST (VERTICAL SCROLL)
                 Expanded(
                   child: ListView.builder(
                     itemCount: users.length,
@@ -175,7 +175,7 @@ class StudentProgressPage extends StatelessWidget {
                                     double progress = gateProgress[gate] ?? 0.0;
 
                                     return SizedBox(
-                                      width: 100,
+                                      width: 120,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,

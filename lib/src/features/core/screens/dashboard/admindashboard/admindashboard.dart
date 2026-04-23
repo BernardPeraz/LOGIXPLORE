@@ -30,7 +30,7 @@ class _AdmindashboardState extends State<Admindashboard> {
   int selectedIndex = 0;
 
   final List<Widget> pages = [
-    Adminoverallui(),
+    // Adminoverallui(),
     Dashboard(),
     StudentProgressPage(),
     ResultScores(),
@@ -46,7 +46,7 @@ class _AdmindashboardState extends State<Admindashboard> {
             children: [
               // LEFT FIXED SIDEBAR
               isSidebarVisible
-                  ? Container(
+                  ? SizedBox(
                       width: 170,
 
                       child: Scrollbar(
@@ -61,7 +61,7 @@ class _AdmindashboardState extends State<Admindashboard> {
                               children: [
                                 const SizedBox(height: 110),
 
-                                ListTile(
+                                /* ListTile(
                                   selected: selectedIndex == 0,
                                   selectedTileColor: Colors.blue,
 
@@ -84,10 +84,9 @@ class _AdmindashboardState extends State<Admindashboard> {
                                   onTap: () {
                                     setState(() => selectedIndex = 0);
                                   },
-                                ),
-
+                                ),*/
                                 ListTile(
-                                  selected: selectedIndex == 1,
+                                  selected: selectedIndex == 0,
                                   selectedTileColor: Colors.blue,
                                   leading: Icon(
                                     Icons.library_books_rounded,
@@ -106,12 +105,12 @@ class _AdmindashboardState extends State<Admindashboard> {
                                     ),
                                   ),
                                   onTap: () {
-                                    setState(() => selectedIndex = 1);
+                                    setState(() => selectedIndex = 0);
                                   },
                                 ),
 
                                 ListTile(
-                                  selected: selectedIndex == 2,
+                                  selected: selectedIndex == 1,
                                   selectedTileColor: Colors.blue,
                                   leading: Icon(
                                     Icons.bar_chart,
@@ -130,12 +129,12 @@ class _AdmindashboardState extends State<Admindashboard> {
                                     ),
                                   ),
                                   onTap: () {
-                                    setState(() => selectedIndex = 2);
+                                    setState(() => selectedIndex = 1);
                                   },
                                 ),
 
                                 ListTile(
-                                  selected: selectedIndex == 3,
+                                  selected: selectedIndex == 2,
                                   selectedTileColor: Colors.blue,
                                   leading: Icon(Icons.quiz, color: Colors.red),
                                   title: Text(
@@ -151,12 +150,12 @@ class _AdmindashboardState extends State<Admindashboard> {
                                     ),
                                   ),
                                   onTap: () {
-                                    setState(() => selectedIndex = 3);
+                                    setState(() => selectedIndex = 2);
                                   },
                                 ),
 
                                 ListTile(
-                                  selected: selectedIndex == 4,
+                                  selected: selectedIndex == 3,
                                   selectedTileColor: Colors.blue,
                                   leading: Icon(
                                     Icons.bubble_chart,
@@ -175,12 +174,12 @@ class _AdmindashboardState extends State<Admindashboard> {
                                     ),
                                   ),
                                   onTap: () {
-                                    setState(() => selectedIndex = 4);
+                                    setState(() => selectedIndex = 3);
                                   },
                                 ),
 
                                 ListTile(
-                                  selected: selectedIndex == 5,
+                                  selected: selectedIndex == 4,
                                   selectedTileColor: Colors.blue,
                                   leading: Icon(
                                     Icons.logout,

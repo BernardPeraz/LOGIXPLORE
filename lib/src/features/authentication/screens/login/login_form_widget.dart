@@ -112,6 +112,9 @@ class _LoginFormState extends State<LoginForm> {
         await AuthService().linkGoogleAccount();
       }*/
       // If success go to dashboard
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'Created At': Timestamp.now(),
+      });
       isAdminLogin = false;
       setState(() {
         _isLoading = false;

@@ -32,6 +32,7 @@ class _WhiteScreenState extends State<WhiteScreen> {
             "XNOR",
           ],
           mode: SimulatorMode.level,
+          hideSubmitButton: true,
           nextPage: LogicEditorPage(
             ExpecOut: [1, 0, 0, 0, 1, 0, 1, 1],
             allowedGates: [
@@ -45,6 +46,7 @@ class _WhiteScreenState extends State<WhiteScreen> {
               "XNOR",
             ],
             nextPage: Dashboard(),
+            hideSubmitButton: true,
           ),
         ),
       );

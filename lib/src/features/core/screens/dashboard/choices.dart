@@ -140,7 +140,7 @@ class Assessment extends StatelessWidget {
                             gates = ["BUFFER"];
                           }
 
-                          // 🔄 SHOW LOADING
+                          //  SHOW LOADING
                           showDialog(
                             barrierColor: Colors.white12,
                             context: context,
@@ -152,13 +152,13 @@ class Assessment extends StatelessWidget {
                             },
                           );
 
-                          // ⏳ Optional delay (para makita loading)
+                          //  Optional delay (para makita loading)
                           await Future.delayed(Duration(seconds: 1));
 
-                          // ❌ Close loading dialog
+                          //  Close loading dialog
                           Navigator.pop(context);
 
-                          // 🚀 Navigate
+                          //  Navigate
                           Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/constants/image_strings.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/adminlogin.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
-import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/adminoverallui.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/resultscores.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/simulatorprogress.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/studentprogress.dart';

@@ -62,11 +62,13 @@ class LogicEditorPage extends StatefulWidget {
   final List<String> allowedGates;
   final Widget nextPage;
   final SimulatorMode mode;
+  final bool hideSubmitButton;
 
   const LogicEditorPage({
     super.key,
     required this.ExpecOut,
     required this.allowedGates,
+    this.hideSubmitButton = false,
 
     // 'AND',
     // 'OR',
@@ -966,28 +968,31 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                           ),
                                           SizedBox(width: 10),
                                           FloatingActionButton.extended(
-                                            onPressed: () {
-                                              if (listEquals(
+                                            onPressed: () async {
+                                              bool isCorrect = listEquals(
                                                 not1.truthvalue,
                                                 widget.ExpecOut,
-                                              )) {
-                                                String gateName =
-                                                    widget.allowedGates.first;
-                                                markGateAsSolved(gateName);
+                                              );
 
-                                                // (optional) existing dialog mo
+                                              String gateName =
+                                                  widget.allowedGates.first;
+
+                                              // ✅ ALWAYS SAVE
+                                              await markGateAsSolved(
+                                                gateName,
+                                                isCorrect,
+                                              );
+
+                                              if (isCorrect) {
                                                 showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     return AlertDialog(
                                                       backgroundColor:
                                                           Colors.white,
-
                                                       title: Text(
                                                         "GREAT JOB!",
                                                         style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           letterSpacing: 2,
@@ -1015,12 +1020,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                                 Navigator.pop(
                                                                   context,
                                                                 ),
-                                                            child: Text(
+                                                            child: const Text(
                                                               "OK",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -1035,7 +1036,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                     return AlertDialog(
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadiusGeometry.circular(
+                                                            BorderRadius.circular(
                                                               25,
                                                             ),
                                                       ),
@@ -1044,8 +1045,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                       title: Text(
                                                         "TRY AGAIN",
                                                         style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           letterSpacing: 2,
@@ -1071,12 +1070,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                                 Navigator.pop(
                                                                   context,
                                                                 ),
-                                                            child: Text(
+                                                            child: const Text(
                                                               "OK",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -1085,29 +1080,13 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                   },
                                                 );
                                               }
-                                              setState(() {
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                              });
+
+                                              // ⚠️ OPTIONAL: REMOVE THIS (nagcacause ng bug)
+                                              // setState(() {
+                                              //   model.toggleSwitch(...);
+                                              // });
                                             },
+
                                             label: const Text('Submit'),
                                           ),
                                           const SizedBox(width: 10),
@@ -1737,122 +1716,103 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                   label: const Text('RESET'),
                 ),
                 SizedBox(height: 10),
-                FloatingActionButton.extended(
-                  heroTag: '✅',
-                  onPressed: () {
-                    if (listEquals(not1.truthvalue, widget.ExpecOut)) {
+                if (!widget.hideSubmitButton)
+                  FloatingActionButton.extended(
+                    onPressed: () async {
+                      bool isCorrect = listEquals(
+                        not1.truthvalue,
+                        widget.ExpecOut,
+                      );
+
                       String gateName = widget.allowedGates.first;
-                      markGateAsSolved(gateName);
 
-                      // (optional) existing dialog mo
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor: Colors.white,
+                      // ✅ ALWAYS SAVE
+                      await markGateAsSolved(gateName, isCorrect);
 
-                            title: Text(
-                              "GREAT JOB!",
-                              style: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 2,
-                                fontSize: 17,
-                                color: Colors.green,
+                      if (isCorrect) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              title: Text(
+                                "GREAT JOB!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 2,
+                                  fontSize: 17,
+                                  color: Colors.green,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            content: Text(
-                              "You got the correct expected output",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w200,
-                                fontSize: 15,
+                              content: Text(
+                                "You got the correct expected output",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w200,
+                                  fontSize: 15,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            actions: [
-                              Center(
-                                child: TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: Text(
-                                    "OK",
-                                    style: TextStyle(color: Colors.black),
+                              actions: [
+                                Center(
+                                  child: TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text("OK"),
                                   ),
                                 ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
                               ),
-                            ],
-                          );
-                        },
-                      );
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadiusGeometry.circular(25),
-                            ),
-                            backgroundColor: Colors.white,
-                            title: Text(
-                              "TRY AGAIN",
-                              style: TextStyle(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 2,
-                                fontSize: 17,
-                                color: Colors.red,
+                              backgroundColor: Colors.white,
+                              title: Text(
+                                "TRY AGAIN",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 2,
+                                  fontSize: 17,
+                                  color: Colors.red,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            content: Text(
-                              "You did not meet the expected output",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w200,
-                                fontSize: 15,
-                              ),
-                            ),
-                            actions: [
-                              Center(
-                                child: TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: Text(
-                                    "OK",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                              content: Text(
+                                "You did not meet the expected output",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w200,
+                                  fontSize: 15,
                                 ),
                               ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                    setState(() {
-                      model.toggleSwitch("s1");
-                      model.toggleSwitch("s2");
-                      model.toggleSwitch("s3");
-                      model.toggleSwitch("s4");
-                      model.toggleSwitch("s5");
-                      model.toggleSwitch("s1");
-                      model.toggleSwitch("s2");
-                      model.toggleSwitch("s3");
-                      model.toggleSwitch("s4");
-                      model.toggleSwitch("s5");
-                      model.toggleSwitch("s1");
-                      model.toggleSwitch("s2");
-                      model.toggleSwitch("s3");
-                      model.toggleSwitch("s4");
-                      model.toggleSwitch("s5");
-                      model.toggleSwitch("s1");
-                      model.toggleSwitch("s2");
-                      model.toggleSwitch("s3");
-                      model.toggleSwitch("s4");
-                      model.toggleSwitch("s5");
-                    });
-                  },
-                  label: const Text('Submit'),
-                ),
+                              actions: [
+                                Center(
+                                  child: TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text("OK"),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+
+                      // ⚠️ OPTIONAL: REMOVE THIS (nagcacause ng bug)
+                      // setState(() {
+                      //   model.toggleSwitch(...);
+                      // });
+                    },
+
+                    label: const Text('Submit'),
+                  ),
                 const SizedBox(height: 10),
                 // ------------------- ADD SWITCH -------------------
                 FloatingActionButton.extended(

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
 
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
@@ -15,12 +16,47 @@ class Adminlogin extends StatefulWidget {
 }
 
 class _AdminloginState extends State<Adminlogin> {
+  String? _passwordError;
+  String? _emailError;
+
+  Future<void> _adminlogin() async {
+    final input = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    setState(() {
+      _emailError = null;
+      _passwordError = null;
+    });
+
+    if (input.isEmpty || password.isEmpty) {
+      setState(() {
+        if (input.isEmpty) {
+          _emailError = "Please enter your email or username.";
+        }
+        if (password.isEmpty) _passwordError = "Please enter your password.";
+      });
+
+      Future.delayed(const Duration(seconds: 3), () {
+        setState(() {
+          _emailError = null;
+          _passwordError = null;
+        });
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
   bool isAdminLoggedIn = false;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   bool _isLoading = false;
+
   // FIXED ADMIN LOGIN FUNCTION — NO DELETIONS, ONLY FIXES
   Future<void> _adminLogin() async {
     final String email = emailController.text.trim();
@@ -64,7 +100,7 @@ class _AdminloginState extends State<Adminlogin> {
       );
       final user = credential.user;
 
-      /// 🔥 THEN SET ROLE
+      ///  THEN SET ROLE
       isAdminLogin = user?.email == "admin00@gmail.com";
       if (!mounted) return;
       setState(() => _isLoading = false);
@@ -128,29 +164,57 @@ class _AdminloginState extends State<Adminlogin> {
 
                   const SizedBox(height: 20),
 
-                  TextField(
+                  TextFormField(
                     controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: "Admin",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                        Icons.admin_panel_settings_rounded,
                       ),
-                      fillColor: Colors.black,
+                      labelText: "Admin",
+                      filled: true,
+                      hintText: "Admin",
+                      enabledBorder: TInputBorders.enabled,
+                      focusedBorder: TInputBorders.focused,
+                      errorBorder: TInputBorders.error,
+                      focusedErrorBorder: TInputBorders.focusedError,
                     ),
                   ),
+                  if (_emailError != null) ...[
+                    const SizedBox(height: 5),
+                    Text(
+                      _emailError!,
+                      style: const TextStyle(color: Colors.red, fontSize: 13),
+                    ),
+                  ],
 
                   const SizedBox(height: 15),
 
-                  TextField(
-                    controller: passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Password",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                    ),
+                  ValueListenableBuilder(
+                    valueListenable: passwordVisible,
+                    builder: (context, value, child) {
+                      return TextFormField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.fingerprint),
+                          labelText: "Password",
+                          hintText: "Password",
+                          filled: true,
+                          enabledBorder: TInputBorders.enabled,
+                          focusedBorder: TInputBorders.focused,
+                          errorBorder: TInputBorders.error,
+                          focusedErrorBorder: TInputBorders.focusedError,
+                        ),
+                      );
+                    },
                   ),
+                  if (_passwordError != null) ...[
+                    const SizedBox(height: 5),
+                    Text(
+                      _passwordError!,
+                      style: const TextStyle(color: Colors.red, fontSize: 13),
+                    ),
+                  ],
 
                   const SizedBox(height: 20),
 

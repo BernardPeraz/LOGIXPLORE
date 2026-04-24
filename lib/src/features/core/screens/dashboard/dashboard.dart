@@ -116,6 +116,7 @@ class _DashboardState extends State<Dashboard> {
                             icon: Icons.computer,
                             text: "Simulator",
                             isDark: isDark,
+                            
                             onTap: () {
                               _hidePopupMenu();
                               whitescreen();

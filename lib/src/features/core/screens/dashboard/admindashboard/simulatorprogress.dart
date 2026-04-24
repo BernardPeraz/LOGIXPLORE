@@ -124,18 +124,16 @@ class Simulatorprogress extends StatelessWidget {
 
                           final progressDocs = progressSnapshot.data!.docs;
 
-                          Set<String> completedGates = {};
+                          Map<String, bool> gateStatus = {};
+
                           for (var doc in progressDocs) {
                             final gate = doc.id.toUpperCase().trim();
-                            completedGates.add(gate);
-                          }
+                            final data = doc.data() as Map<String, dynamic>;
 
-                          Map<String, String> gateScoreText = {
-                            for (var gate in gateList)
-                              gate: completedGates.contains(gate)
-                                  ? "Passed"
-                                  : "Not Started",
-                          };
+                            bool isCorrect = data['isCorrect'] ?? false;
+
+                            gateStatus[gate] = isCorrect;
+                          }
 
                           /// 🔥 EACH ROW SCROLLABLE
                           return Padding(
@@ -161,21 +159,39 @@ class Simulatorprogress extends StatelessWidget {
                                   ),
 
                                   ...gateList.map((gate) {
-                                    bool isCompleted = completedGates.contains(
-                                      gate,
-                                    );
                                     return SizedBox(
                                       width: 120,
                                       child: Center(
-                                        child: Icon(
-                                          isCompleted
-                                              ? Icons.check_circle
-                                              : Icons.close,
-                                          color: isCompleted
-                                              ? Colors.green
-                                              : Colors.red,
-                                          size: 18,
-                                        ),
+                                        child: !gateStatus.containsKey(gate)
+                                            //  NO RECORD
+                                            ? Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: const [
+                                                  SizedBox(height: 4),
+                                                  Text(
+                                                    "No record",
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              )
+                                            : (gateStatus[gate] == true
+                                                  // PASSED
+                                                  ? const Icon(
+                                                      Icons.check,
+                                                      color: Colors.black,
+                                                      size: 25,
+                                                    )
+                                                  //  FAILED
+                                                  : const Icon(
+                                                      Icons.close,
+                                                      color: Colors.black,
+                                                      size: 25,
+                                                    )),
                                       ),
                                     );
                                   }),

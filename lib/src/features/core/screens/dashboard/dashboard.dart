@@ -24,7 +24,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   bool _isLoading = false;
- 
+
   void whitescreen() {
     setState(() {
       _isLoading = true;
@@ -116,7 +116,7 @@ class _DashboardState extends State<Dashboard> {
                             icon: Icons.computer,
                             text: "Simulator",
                             isDark: isDark,
-                            
+
                             onTap: () {
                               _hidePopupMenu();
                               whitescreen();
@@ -460,17 +460,27 @@ class _DashboardState extends State<Dashboard> {
     return showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Connect Google Account"),
-        content: const Text("Link your Google account for easier login."),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Decline"),
+        title: Text(
+          "Connect Google Account",
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
           ),
+        ),
+        content: Text(
+          "Link your Google account for easier login.",
+          style: TextStyle(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white
+                : Colors.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        actions: [
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
-
               try {
                 final user = FirebaseAuth.instance.currentUser;
 
@@ -487,7 +497,25 @@ class _DashboardState extends State<Dashboard> {
                 );
               }
             },
-            child: const Text("Connect"),
+            child: Text(
+              "Connect",
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              "Decline",
+              style: TextStyle(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
           ),
         ],
       ),

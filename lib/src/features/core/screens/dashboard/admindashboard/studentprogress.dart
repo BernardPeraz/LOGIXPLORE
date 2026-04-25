@@ -146,7 +146,7 @@ class StudentProgressPage extends StatelessWidget {
                             }
                           }
 
-                          /// 🔥 EACH ROW SCROLLABLE
+                          ///  EACH ROW SCROLLABLE
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             child: SingleChildScrollView(

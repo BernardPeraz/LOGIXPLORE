@@ -124,15 +124,14 @@ class Simulatorprogress extends StatelessWidget {
 
                           final progressDocs = progressSnapshot.data!.docs;
 
-                          Map<String, bool> gateStatus = {};
-
+                          Map<String, bool> gateResult = {};
                           for (var doc in progressDocs) {
                             final gate = doc.id.toUpperCase().trim();
-                            final data = doc.data() as Map<String, dynamic>;
 
-                            bool isCorrect = data['isCorrect'] ?? false;
+                            // assume may field ka like: correct: true/false
+                            final isCorrect = true;
 
-                            gateStatus[gate] = isCorrect;
+                            gateResult[gate] = isCorrect;
                           }
 
                           /// 🔥 EACH ROW SCROLLABLE
@@ -157,41 +156,24 @@ class Simulatorprogress extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-
                                   ...gateList.map((gate) {
+                                    if (!gateResult.containsKey(gate)) {
+                                      return const SizedBox(
+                                        width: 120,
+                                      ); // 🔥 BLANK (hindi pa ginamit)
+                                    }
+                                    bool isCorrect = gateResult[gate]!;
+
                                     return SizedBox(
                                       width: 120,
                                       child: Center(
-                                        child: !gateStatus.containsKey(gate)
-                                            //  NO RECORD
-                                            ? Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: const [
-                                                  SizedBox(height: 4),
-                                                  Text(
-                                                    "No record",
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Colors.black,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                              )
-                                            : (gateStatus[gate] == true
-                                                  // PASSED
-                                                  ? const Icon(
-                                                      Icons.check,
-                                                      color: Colors.black,
-                                                      size: 25,
-                                                    )
-                                                  //  FAILED
-                                                  : const Icon(
-                                                      Icons.close,
-                                                      color: Colors.black,
-                                                      size: 25,
-                                                    )),
+                                        child: Icon(
+                                          isCorrect ? Icons.check : Icons.close,
+                                          color: isCorrect
+                                              ? Colors.black
+                                              : Colors.black,
+                                          size: 21,
+                                        ),
                                       ),
                                     );
                                   }),

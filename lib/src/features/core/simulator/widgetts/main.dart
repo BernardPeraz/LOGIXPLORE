@@ -968,31 +968,28 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                           ),
                                           SizedBox(width: 10),
                                           FloatingActionButton.extended(
-                                            onPressed: () async {
-                                              bool isCorrect = listEquals(
+                                            onPressed: () {
+                                              if (listEquals(
                                                 not1.truthvalue,
                                                 widget.ExpecOut,
-                                              );
+                                              )) {
+                                                String gateName =
+                                                    widget.allowedGates.first;
+                                                markGateAsSolved(gateName);
 
-                                              String gateName =
-                                                  widget.allowedGates.first;
-
-                                              // ✅ ALWAYS SAVE
-                                              await markGateAsSolved(
-                                                gateName,
-                                                isCorrect,
-                                              );
-
-                                              if (isCorrect) {
+                                                // (optional) existing dialog mo
                                                 showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     return AlertDialog(
                                                       backgroundColor:
                                                           Colors.white,
+
                                                       title: Text(
                                                         "GREAT JOB!",
                                                         style: TextStyle(
+                                                          fontStyle:
+                                                              FontStyle.normal,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           letterSpacing: 2,
@@ -1020,8 +1017,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                                 Navigator.pop(
                                                                   context,
                                                                 ),
-                                                            child: const Text(
+                                                            child: Text(
                                                               "OK",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -1036,7 +1037,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                     return AlertDialog(
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
+                                                            BorderRadiusGeometry.circular(
                                                               25,
                                                             ),
                                                       ),
@@ -1045,6 +1046,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                       title: Text(
                                                         "TRY AGAIN",
                                                         style: TextStyle(
+                                                          fontStyle:
+                                                              FontStyle.normal,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           letterSpacing: 2,
@@ -1070,8 +1073,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                                 Navigator.pop(
                                                                   context,
                                                                 ),
-                                                            child: const Text(
+                                                            child: Text(
                                                               "OK",
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -1080,15 +1087,32 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                   },
                                                 );
                                               }
-
-                                              // ⚠️ OPTIONAL: REMOVE THIS (nagcacause ng bug)
-                                              // setState(() {
-                                              //   model.toggleSwitch(...);
-                                              // });
+                                              setState(() {
+                                                model.toggleSwitch("s1");
+                                                model.toggleSwitch("s2");
+                                                model.toggleSwitch("s3");
+                                                model.toggleSwitch("s4");
+                                                model.toggleSwitch("s5");
+                                                model.toggleSwitch("s1");
+                                                model.toggleSwitch("s2");
+                                                model.toggleSwitch("s3");
+                                                model.toggleSwitch("s4");
+                                                model.toggleSwitch("s5");
+                                                model.toggleSwitch("s1");
+                                                model.toggleSwitch("s2");
+                                                model.toggleSwitch("s3");
+                                                model.toggleSwitch("s4");
+                                                model.toggleSwitch("s5");
+                                                model.toggleSwitch("s1");
+                                                model.toggleSwitch("s2");
+                                                model.toggleSwitch("s3");
+                                                model.toggleSwitch("s4");
+                                                model.toggleSwitch("s5");
+                                              });
                                             },
-
                                             label: const Text('Submit'),
                                           ),
+
                                           const SizedBox(width: 10),
                                           // ------------------- ADD SWITCH -------------------
                                           FloatingActionButton.extended(
@@ -1718,26 +1742,22 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                 SizedBox(height: 10),
                 if (!widget.hideSubmitButton)
                   FloatingActionButton.extended(
-                    onPressed: () async {
-                      bool isCorrect = listEquals(
-                        not1.truthvalue,
-                        widget.ExpecOut,
-                      );
+                    onPressed: () {
+                      if (listEquals(not1.truthvalue, widget.ExpecOut)) {
+                        String gateName = widget.allowedGates.first;
+                        markGateAsSolved(gateName);
 
-                      String gateName = widget.allowedGates.first;
-
-                      // ✅ ALWAYS SAVE
-                      await markGateAsSolved(gateName, isCorrect);
-
-                      if (isCorrect) {
+                        // (optional) existing dialog mo
                         showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
                               backgroundColor: Colors.white,
+
                               title: Text(
                                 "GREAT JOB!",
                                 style: TextStyle(
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 2,
                                   fontSize: 17,
@@ -1758,7 +1778,10 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 Center(
                                   child: TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: const Text("OK"),
+                                    child: Text(
+                                      "OK",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1771,12 +1794,13 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           builder: (context) {
                             return AlertDialog(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
+                                borderRadius: BorderRadiusGeometry.circular(25),
                               ),
                               backgroundColor: Colors.white,
                               title: Text(
                                 "TRY AGAIN",
                                 style: TextStyle(
+                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 2,
                                   fontSize: 17,
@@ -1796,7 +1820,10 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 Center(
                                   child: TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: const Text("OK"),
+                                    child: Text(
+                                      "OK",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1804,15 +1831,32 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           },
                         );
                       }
-
-                      // ⚠️ OPTIONAL: REMOVE THIS (nagcacause ng bug)
-                      // setState(() {
-                      //   model.toggleSwitch(...);
-                      // });
+                      setState(() {
+                        model.toggleSwitch("s1");
+                        model.toggleSwitch("s2");
+                        model.toggleSwitch("s3");
+                        model.toggleSwitch("s4");
+                        model.toggleSwitch("s5");
+                        model.toggleSwitch("s1");
+                        model.toggleSwitch("s2");
+                        model.toggleSwitch("s3");
+                        model.toggleSwitch("s4");
+                        model.toggleSwitch("s5");
+                        model.toggleSwitch("s1");
+                        model.toggleSwitch("s2");
+                        model.toggleSwitch("s3");
+                        model.toggleSwitch("s4");
+                        model.toggleSwitch("s5");
+                        model.toggleSwitch("s1");
+                        model.toggleSwitch("s2");
+                        model.toggleSwitch("s3");
+                        model.toggleSwitch("s4");
+                        model.toggleSwitch("s5");
+                      });
                     },
-
                     label: const Text('Submit'),
                   ),
+
                 const SizedBox(height: 10),
                 // ------------------- ADD SWITCH -------------------
                 FloatingActionButton.extended(

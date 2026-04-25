@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<void> markGateAsSolved(String gateId, bool isCorrect) async {
+Future<void> markGateAsSolved(String gateId) async {
   final user = FirebaseAuth.instance.currentUser;
   if (user == null) return;
 
@@ -11,7 +11,6 @@ Future<void> markGateAsSolved(String gateId, bool isCorrect) async {
       .collection('simulator_progress')
       .doc(gateId)
       .set({
-        'isCorrect': isCorrect,
         'timestamp': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
 }

@@ -15,7 +15,12 @@ class TempLinePainter extends CustomPainter {
     if (fromNode == null) return;
     final fromPort = fromNode.ports[fromRef.portId];
     if (fromPort == null) return;
-    final p1 = fromNode.position + fromPort.localOffset + Offset(12, 12);
+    const double portRadius = 5;
+
+    final p1 =
+        fromNode.position +
+        fromPort.localOffset +
+        Offset(portRadius, portRadius);
     final p2 = model.currentDragPosition!;
     final path = Path();
     final mid = Offset((p1.dx + p2.dx) / 2, (p1.dy + p2.dy) / 2);
@@ -25,11 +30,11 @@ class TempLinePainter extends CustomPainter {
     canvas.drawPath(
       path,
       Paint()
-        ..color = Colors.black38
-        ..strokeWidth = 2
+        ..color = Colors.black
+        ..strokeWidth = 3
         ..style = PaintingStyle.stroke,
     );
-    canvas.drawCircle(p2, 6, Paint()..color = Colors.black38);
+    canvas.drawCircle(p2, 3, Paint()..color = Colors.black);
   }
 
   @override

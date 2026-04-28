@@ -111,7 +111,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
 
     _seedExample();
 
-    setState(() {});
+    model.addListener(() => setState(() {}));
   }
 
   void resetTruthValues() {
@@ -387,7 +387,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           id: 'out',
           type: PortType.output,
           value: false,
-          localOffset: const Offset(80, 23),
+          localOffset: const Offset(87, 23),
           //position of port
         ),
       },
@@ -404,7 +404,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           id: 'out',
           type: PortType.output,
           value: false,
-          localOffset: const Offset(80, 23),
+          localOffset: const Offset(87, 23),
         ),
       },
       truthvalue: generateTruthValues(switchNum, "B"),
@@ -419,7 +419,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
           id: 'out',
           type: PortType.output,
           value: false,
-          localOffset: const Offset(80, 23),
+          localOffset: const Offset(87, 23),
         ),
       },
       truthvalue: generateTruthValues(switchNum, "C"),
@@ -459,19 +459,19 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
       id: 'output',
       kind: 'RES',
       label: 'Output',
-      position: const Offset(150, 90),
+      position: const Offset(700, 60),
       ports: {
         'in': Port(
           id: 'in',
           type: PortType.input,
           value: false,
-          localOffset: const Offset(0, 20),
+          localOffset: const Offset(0, 25),
         ),
         'out': Port(
           id: 'out',
           type: PortType.output,
           value: false,
-          localOffset: const Offset(120, 20),
+          localOffset: const Offset(120, 25),
         ),
       },
     );
@@ -785,7 +785,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 GestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onPanDown: (d) {
-                                    setState(() {});
                                     //mouse click
                                     // if starting drag on a port -> start connection
                                     final pr = _hitTestPort(d.globalPosition);
@@ -797,13 +796,11 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                         _globalToLocal(d.globalPosition),
                                       );
                                     }
-                                    setState(() {
-                                      toggleOutput1Ports();
-                                    });
+                                    setState(() {});
                                   },
                                   onPanUpdate: (d) {
                                     setState(() {});
-                                    model.toggleSwitch("1");
+
                                     //mouse hold
                                     if (model.connectingFrom != null) {
                                       //not connected yet
@@ -812,15 +809,11 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                         _globalToLocal(d.globalPosition),
                                       );
                                     }
-                                    setState(() {
-                                      toggleOutput1Ports();
-                                    });
+                                    setState(() {});
                                   },
                                   onPanEnd: (d) {
-                                    setState(() {
-                                      model.toggleSwitch("1");
-                                    });
-                                    model.toggleSwitch("1");
+                                    setState(() {});
+
                                     //mouse lift
                                     if (model.connectingFrom != null) {
                                       // try to finish connection on release location                 //not connected yet
@@ -849,9 +842,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                         model.cancelConnection();
                                       }
                                     }
-                                    setState(() {
-                                      toggleOutput1Ports();
-                                    });
+                                    setState(() {});
                                   },
                                   onTapUp: (d) {
                                     // check tap on a port to toggle switch if it's a switch output
@@ -861,12 +852,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                       if (node?.kind == 'SWITCH') {
                                         model.toggleSwitch(node!.id);
                                       }
-                                      model.toggleSwitch(node!.id);
-                                      model.toggleSwitch("1");
                                     }
-                                    setState(() {
-                                      toggleOutput1Ports();
-                                    });
+                                    setState(() {});
                                   },
                                   child: Container(
                                     key: canvasKey,
@@ -954,10 +941,11 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                           SizedBox(width: 10),
                                           FloatingActionButton.extended(
                                             onPressed: () {
+                                              resetPortValues(); // 🔥 lights OFF
                                               model.clearAll(
                                                 not1,
                                               ); // nodes + wires
-                                              resetPortValues(); // 🔥 lights OFF
+
                                               resetTruthValues(); // 🔥 table reset
 
                                               switchNum = 0;
@@ -968,28 +956,28 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                           ),
                                           SizedBox(width: 10),
                                           FloatingActionButton.extended(
-                                            onPressed: () {
-                                              if (listEquals(
+                                            onPressed: () async {
+                                              bool isCorrect = listEquals(
                                                 not1.truthvalue,
                                                 widget.ExpecOut,
-                                              )) {
-                                                String gateName =
-                                                    widget.allowedGates.first;
-                                                markGateAsSolved(gateName);
+                                              );
 
-                                                // (optional) existing dialog mo
+                                              String gateName =
+                                                  widget.allowedGates.first;
+
+                                              // ✅ ALWAYS SAVE
+                                              await markGateAsSolved(gateName);
+
+                                              if (isCorrect) {
                                                 showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     return AlertDialog(
                                                       backgroundColor:
                                                           Colors.white,
-
                                                       title: Text(
                                                         "GREAT JOB!",
                                                         style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           letterSpacing: 2,
@@ -1017,12 +1005,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                                 Navigator.pop(
                                                                   context,
                                                                 ),
-                                                            child: Text(
+                                                            child: const Text(
                                                               "OK",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -1037,7 +1021,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                     return AlertDialog(
                                                       shape: RoundedRectangleBorder(
                                                         borderRadius:
-                                                            BorderRadiusGeometry.circular(
+                                                            BorderRadius.circular(
                                                               25,
                                                             ),
                                                       ),
@@ -1046,8 +1030,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                       title: Text(
                                                         "TRY AGAIN",
                                                         style: TextStyle(
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           letterSpacing: 2,
@@ -1073,12 +1055,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                                 Navigator.pop(
                                                                   context,
                                                                 ),
-                                                            child: Text(
+                                                            child: const Text(
                                                               "OK",
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
                                                             ),
                                                           ),
                                                         ),
@@ -1087,32 +1065,15 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                   },
                                                 );
                                               }
-                                              setState(() {
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                                model.toggleSwitch("s1");
-                                                model.toggleSwitch("s2");
-                                                model.toggleSwitch("s3");
-                                                model.toggleSwitch("s4");
-                                                model.toggleSwitch("s5");
-                                              });
+
+                                              // ⚠️ OPTIONAL: REMOVE THIS (nagcacause ng bug)
+                                              // setState(() {
+                                              //   model.toggleSwitch(...);
+                                              // });
                                             },
+
                                             label: const Text('Submit'),
                                           ),
-
                                           const SizedBox(width: 10),
                                           // ------------------- ADD SWITCH -------------------
                                           FloatingActionButton.extended(
@@ -1213,7 +1174,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                       id: 'out',
                                                       type: PortType.output,
                                                       localOffset: const Offset(
-                                                        90,
+                                                        190,
                                                         25,
                                                       ),
                                                     ),
@@ -1623,17 +1584,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
     );
   }
 
-  void toggleOutput1Ports() {
-    for (int i = 0; i < 12; i++) {
-      // repeat same number of cycles you had
-      model.toggleSwitch("s1");
-      model.toggleSwitch("s2");
-      model.toggleSwitch("s3");
-      model.toggleSwitch("s4");
-      model.toggleSwitch("s5");
-    }
-  }
-
   Widget _buildCanvas() {
     return Stack(
       children: [
@@ -1644,17 +1594,13 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
             if (pr != null && pr.type == PortType.output) {
               model.startConnection(pr, _globalToLocal(d.globalPosition));
             }
-            setState(() {
-              toggleOutput1Ports();
-            });
+            setState(() {});
           },
           onPanUpdate: (d) {
             if (model.connectingFrom != null) {
               model.updateConnectionDrag(_globalToLocal(d.globalPosition));
             }
-            setState(() {
-              toggleOutput1Ports();
-            });
+            setState(() {});
           },
           onPanEnd: (d) {
             if (model.connectingFrom != null) {
@@ -1678,9 +1624,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
               }
             }
 
-            setState(() {
-              toggleOutput1Ports();
-            });
+            setState(() {});
           },
           child: Container(
             key: canvasKey,
@@ -1729,8 +1673,9 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                 FloatingActionButton.extended(
                   heroTag: '✅',
                   onPressed: () {
-                    model.clearAll(not1); // nodes + wires
                     resetPortValues(); // 🔥 lights OFF
+                    model.clearAll(not1); // nodes + wires
+
                     resetTruthValues(); // 🔥 table reset
 
                     switchNum = 0;
@@ -1742,22 +1687,26 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                 SizedBox(height: 10),
                 if (!widget.hideSubmitButton)
                   FloatingActionButton.extended(
-                    onPressed: () {
-                      if (listEquals(not1.truthvalue, widget.ExpecOut)) {
-                        String gateName = widget.allowedGates.first;
-                        markGateAsSolved(gateName);
+                    onPressed: () async {
+                      bool isCorrect = listEquals(
+                        not1.truthvalue,
+                        widget.ExpecOut,
+                      );
 
-                        // (optional) existing dialog mo
+                      String gateName = widget.allowedGates.first;
+
+                      // ✅ ALWAYS SAVE
+                      await markGateAsSolved(gateName);
+
+                      if (isCorrect) {
                         showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
                               backgroundColor: Colors.white,
-
                               title: Text(
                                 "GREAT JOB!",
                                 style: TextStyle(
-                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 2,
                                   fontSize: 17,
@@ -1778,10 +1727,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 Center(
                                   child: TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text(
-                                      "OK",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
+                                    child: const Text("OK"),
                                   ),
                                 ),
                               ],
@@ -1794,13 +1740,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           builder: (context) {
                             return AlertDialog(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadiusGeometry.circular(25),
+                                borderRadius: BorderRadius.circular(25),
                               ),
                               backgroundColor: Colors.white,
                               title: Text(
                                 "TRY AGAIN",
                                 style: TextStyle(
-                                  fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.w700,
                                   letterSpacing: 2,
                                   fontSize: 17,
@@ -1820,10 +1765,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 Center(
                                   child: TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text(
-                                      "OK",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
+                                    child: const Text("OK"),
                                   ),
                                 ),
                               ],
@@ -1831,32 +1773,15 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           },
                         );
                       }
-                      setState(() {
-                        model.toggleSwitch("s1");
-                        model.toggleSwitch("s2");
-                        model.toggleSwitch("s3");
-                        model.toggleSwitch("s4");
-                        model.toggleSwitch("s5");
-                        model.toggleSwitch("s1");
-                        model.toggleSwitch("s2");
-                        model.toggleSwitch("s3");
-                        model.toggleSwitch("s4");
-                        model.toggleSwitch("s5");
-                        model.toggleSwitch("s1");
-                        model.toggleSwitch("s2");
-                        model.toggleSwitch("s3");
-                        model.toggleSwitch("s4");
-                        model.toggleSwitch("s5");
-                        model.toggleSwitch("s1");
-                        model.toggleSwitch("s2");
-                        model.toggleSwitch("s3");
-                        model.toggleSwitch("s4");
-                        model.toggleSwitch("s5");
-                      });
+
+                      // ⚠️ OPTIONAL: REMOVE THIS (nagcacause ng bug)
+                      // setState(() {
+                      //   model.toggleSwitch(...);
+                      // });
                     },
+
                     label: const Text('Submit'),
                   ),
-
                 const SizedBox(height: 10),
                 // ------------------- ADD SWITCH -------------------
                 FloatingActionButton.extended(
@@ -1916,7 +1841,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'a': Port(
                             id: 'a',
                             type: PortType.input,
-                            localOffset: const Offset(0, 10),
+                            localOffset: const Offset(0, 13),
                           ),
                           'b': Port(
                             id: 'b',
@@ -1926,7 +1851,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(90, 25),
+                            localOffset: const Offset(90, 26),
                           ),
                         },
                       );
@@ -1955,7 +1880,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'a': Port(
                             id: 'a',
                             type: PortType.input,
-                            localOffset: const Offset(0, 10),
+                            localOffset: const Offset(0, 14),
                           ),
                           'b': Port(
                             id: 'b',
@@ -1965,7 +1890,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(120, 25),
+                            localOffset: const Offset(89, 26),
                           ),
                         },
                       );
@@ -1993,12 +1918,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'in': Port(
                             id: 'in',
                             type: PortType.input,
-                            localOffset: const Offset(0, 20),
+                            localOffset: const Offset(7, 27),
                           ),
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(120, 20),
+                            localOffset: const Offset(84, 26),
                           ),
                         },
                       );
@@ -2026,17 +1951,17 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'a': Port(
                             id: 'a',
                             type: PortType.input,
-                            localOffset: const Offset(0, 10),
+                            localOffset: const Offset(1, 14),
                           ),
                           'b': Port(
                             id: 'b',
                             type: PortType.input,
-                            localOffset: const Offset(0, 40),
+                            localOffset: const Offset(1, 36),
                           ),
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(120, 25),
+                            localOffset: const Offset(90, 26),
                           ),
                         },
                       );
@@ -2064,17 +1989,17 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'a': Port(
                             id: 'a',
                             type: PortType.input,
-                            localOffset: const Offset(0, 10),
+                            localOffset: const Offset(1, 12),
                           ),
                           'b': Port(
                             id: 'b',
                             type: PortType.input,
-                            localOffset: const Offset(0, 40),
+                            localOffset: const Offset(1, 42),
                           ),
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(120, 25),
+                            localOffset: const Offset(89, 26),
                           ),
                         },
                       );
@@ -2102,17 +2027,17 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'a': Port(
                             id: 'a',
                             type: PortType.input,
-                            localOffset: const Offset(0, 10),
+                            localOffset: const Offset(1, 15),
                           ),
                           'b': Port(
                             id: 'b',
                             type: PortType.input,
-                            localOffset: const Offset(0, 40),
+                            localOffset: const Offset(1, 37),
                           ),
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(120, 25),
+                            localOffset: const Offset(89, 26),
                           ),
                         },
                       );
@@ -2140,17 +2065,17 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'a': Port(
                             id: 'a',
                             type: PortType.input,
-                            localOffset: const Offset(0, 10),
+                            localOffset: const Offset(0, 15),
                           ),
                           'b': Port(
                             id: 'b',
                             type: PortType.input,
-                            localOffset: const Offset(0, 40),
+                            localOffset: const Offset(0, 37),
                           ),
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(120, 25),
+                            localOffset: const Offset(89, 26),
                           ),
                         },
                       );
@@ -2178,12 +2103,12 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           'in': Port(
                             id: 'in',
                             type: PortType.input,
-                            localOffset: const Offset(0, 20),
+                            localOffset: const Offset(5, 26),
                           ),
                           'out': Port(
                             id: 'out',
                             type: PortType.output,
-                            localOffset: const Offset(120, 20),
+                            localOffset: const Offset(87, 26),
                           ),
                         },
                       );

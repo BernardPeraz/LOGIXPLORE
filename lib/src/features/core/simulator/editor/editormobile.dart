@@ -57,6 +57,7 @@ class EditorModel extends ChangeNotifier {
     if (fromPort != null && toPort != null) {
       toPort.value = fromPort.value;
       propagateFromPort(w.from);
+      loopcheck();
     }
     notifyListeners();
   }
@@ -116,6 +117,16 @@ class EditorModel extends ChangeNotifier {
     out.value = !out.value;
     propagateFromPort(PortRef(nodeId, out.id, PortType.output));
     notifyListeners();
+  }
+
+  void loopcheck() {
+    for (int i = 0; i < 4; i++) {
+      toggleSwitch("s1");
+      toggleSwitch("s2");
+      toggleSwitch("s3");
+      toggleSwitch("s4");
+      toggleSwitch("s5");
+    }
   }
 
   void propagateFromPort(PortRef outRef) {
@@ -210,13 +221,20 @@ class EditorModel extends ChangeNotifier {
       List<List<int>> inputPatterns = [];
 
       for (final p in inputs) {
-        final incomingWire = wires.values.firstWhere(
-          (w) => w.to.nodeId == gate.id && w.to.portId == p.id,
-          orElse: () => null as Wire,
-        );
+        Wire? incomingWire;
 
-        final inputNode = nodes[incomingWire.from.nodeId];
-        if (inputNode != null) inputPatterns.add(inputNode.truthvalue);
+        try {
+          incomingWire = wires.values.firstWhere(
+            (w) => w.to.nodeId == gate.id && w.to.portId == p.id, //250sdad
+          );
+        } catch (e) {
+          incomingWire = null;
+        }
+
+        if (incomingWire != null) {
+          final inputNode = nodes[incomingWire.from.nodeId];
+          if (inputNode != null) inputPatterns.add(inputNode.truthvalue);
+        }
       }
 
       // Guard: No inputs → output pattern = empty

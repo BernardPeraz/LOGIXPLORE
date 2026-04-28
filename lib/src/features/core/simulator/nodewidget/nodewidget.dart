@@ -8,6 +8,9 @@ class NodeWidget extends StatelessWidget {
   final Node node;
   final EditorModel model;
   const NodeWidget({super.key, required this.node, required this.model});
+  Color _getGateColor(Node node) {
+    return Colors.black;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +37,10 @@ class NodeWidget extends StatelessWidget {
             Center(
               child: Image.asset(
                 'assets/images/${node.label}.png',
-                height: 55,
-                width: 115,
+                height: 63,
+                width: 100,
+                color: _getGateColor(node),
+                colorBlendMode: BlendMode.srcIn,
                 errorBuilder: (context, error, stackTrace) {
                   print("IMAGE ERROR: $error");
                   return const Icon(Icons.error);

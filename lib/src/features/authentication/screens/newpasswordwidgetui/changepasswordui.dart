@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:studydesign2zzdatabaseplaylist/Profilemenu/passwordsettings/passwordback/passwordcontrollers.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/welcome/landingpage.dart';
 
@@ -14,10 +13,23 @@ class Changepasswordui extends StatefulWidget {
 }
 
 class _ChangepassworduiState extends State<Changepasswordui> {
+  final currntPasswordController = TextEditingController();
+  final nwPasswordController = TextEditingController();
+
+  final rpeatPasswordController = TextEditingController();
   bool isLoading = false;
   final ValueNotifier<bool> repeatPasswordVisible = ValueNotifier(false);
   bool passwordVisible = false;
   bool _passwordVisible = false;
+  @override
+  void dispose() {
+    currntPasswordController.dispose();
+    nwPasswordController.dispose();
+    rpeatPasswordController.dispose();
+    passwordStrengthNotifier.dispose();
+
+    super.dispose();
+  }
 
   Map<String, String?> fieldErrors = {};
   void togglePasswordVisibility() {
@@ -92,7 +104,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                     valueListenable: ValueNotifier<bool>(_passwordVisible),
                     builder: (context, value, child) {
                       return TextFormField(
-                        controller: currentPasswordController,
+                        controller: currntPasswordController,
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.fingerprint),
@@ -118,7 +130,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                   SizedBox(height: 20),
                   // NEW PASSWORD FIELD
                   TextFormField(
-                    controller: newPasswordController,
+                    controller: nwPasswordController,
                     obscureText: !passwordVisible,
                     maxLength: 20,
                     onChanged: (pdw) {
@@ -202,7 +214,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                     valueListenable: repeatPasswordVisible,
                     builder: (context, value, child) {
                       return TextFormField(
-                        controller: repeaatPasswordController,
+                        controller: rpeatPasswordController,
                         obscureText: !value,
                         maxLength: 50,
                         decoration: InputDecoration(
@@ -237,9 +249,8 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                     child: ElevatedButton(
                       onPressed: () async {
                         setState(() => isLoading = true);
-                        final newPass = newPasswordController.text.trim();
-                        final repeatPass = repeaatPasswordController.text
-                            .trim();
+                        final newPass = nwPasswordController.text.trim();
+                        final repeatPass = rpeatPasswordController.text.trim();
 
                         setState(() {
                           fieldErrors.clear();
@@ -302,7 +313,7 @@ class _ChangepassworduiState extends State<Changepasswordui> {
                           }
 
                           //  GET OLD PASSWORD FROM FIRESTORE
-                          final oldPassword = currentPasswordController.text
+                          final oldPassword = currntPasswordController.text
                               .trim();
 
                           // REAUTHENTICATE USER USING OLD PASSWORD

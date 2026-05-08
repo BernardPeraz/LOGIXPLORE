@@ -10,7 +10,7 @@ class LogixApi {
       Uri.parse("$baseUrl/api/questions"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
-        "gate": gate, // 👈 send gate type
+        "gate": gate, //  send gate type
       }),
     );
 

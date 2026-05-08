@@ -31,7 +31,7 @@ class _AdminloginState extends State<Adminlogin> {
     if (input.isEmpty || password.isEmpty) {
       setState(() {
         if (input.isEmpty) {
-          _emailError = "Please enter your email or username.";
+          _emailError = "Please enter your email";
         }
         if (password.isEmpty) _passwordError = "Please enter your password.";
       });

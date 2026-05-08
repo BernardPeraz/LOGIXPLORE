@@ -73,6 +73,41 @@ class _WebsiteSignupScreenState extends State<WebsiteSignupScreen> {
                                       setState(() {});
 
                                       if (result != null) {
+                                        final user =
+                                            FirebaseAuth.instance.currentUser;
+
+                                        if (user != null) {
+                                          final docRef = FirebaseFirestore
+                                              .instance
+                                              .collection('users')
+                                              .doc(user.uid);
+
+                                          final doc = await docRef.get();
+
+                                          // If new user, save basic info
+                                          if (!doc.exists) {
+                                            await docRef.set({
+                                              'Email': user.email,
+                                              'First Name':
+                                                  user.displayName
+                                                      ?.split(' ')
+                                                      .first ??
+                                                  '',
+                                              'Last Name':
+                                                  user.displayName!
+                                                          .split(' ')
+                                                          .length >
+                                                      1
+                                                  ? user.displayName!
+                                                        .split(' ')
+                                                        .last
+                                                  : '',
+                                              'CreatedAt':
+                                                  FieldValue.serverTimestamp(),
+                                            });
+                                          }
+                                        }
+
                                         // login success
                                         Navigator.pushReplacement(
                                           context,

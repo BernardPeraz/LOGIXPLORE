@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/achievementui/achievement_manager.dart';
+import 'package:studydesign2zzdatabaseplaylist/assessment/whitescreen/whitescreen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/nodewidget.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/pageController.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/painters/wirepainter.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/editor/editormobile.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/node.dart';
@@ -58,17 +61,19 @@ class LogicSimApp extends StatelessWidget {
 */
 class LogicEditorPage extends StatefulWidget {
   // NEW: parameter to control which gates are shown
-  final List<int> ExpecOut;
-  final List<String> allowedGates;
-  final Widget nextPage;
   final SimulatorMode mode;
   final bool hideSubmitButton;
+  final List<int> ExpecOut;
+  final List<String> allowedGates;
+  final Widget Function() nextPage;
 
   const LogicEditorPage({
     super.key,
+
+    this.mode = SimulatorMode.practice,
+    this.hideSubmitButton = false,
     required this.ExpecOut,
     required this.allowedGates,
-    this.hideSubmitButton = false,
 
     // 'AND',
     // 'OR',
@@ -79,7 +84,6 @@ class LogicEditorPage extends StatefulWidget {
     //  'XNOR',
     // 'BUFFER',
     required this.nextPage,
-    this.mode = SimulatorMode.practice,
   });
 
   @override
@@ -92,6 +96,8 @@ enum SimulatorMode {
 }
 
 class _LogicEditorPageState extends State<LogicEditorPage> {
+  final controller = Get.put(LevelController());
+  bool moved = false;
   bool isSolved = false;
   EditorModel model = EditorModel();
 
@@ -698,13 +704,19 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
 
                                                     child: ElevatedButton(
                                                       onPressed: () {
+                                                        if (moved) return;
+
+                                                        moved = true;
+                                                        controller.next();
+
+                                                        print("Level Complete");
                                                         if (widget.mode ==
                                                             SimulatorMode
                                                                 .level) {
                                                           // NEXT LEVEL
                                                           Get.off(
-                                                            () =>
-                                                                widget.nextPage,
+                                                            () => widget
+                                                                .nextPage(),
                                                           );
                                                         } else {
                                                           Navigator.pushReplacement(
@@ -939,6 +951,26 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                             ),
                                           ],
                                           SizedBox(width: 10),
+                                          FloatingActionButton.extended(
+                                            heroTag: 'removeWire',
+                                            onPressed: () {
+                                              if (model.wires.isNotEmpty) {
+                                                // get latest wire id
+                                                final latestWireId =
+                                                    model.wires.keys.last;
+
+                                                // remove latest wire
+                                                model.removeWire(latestWireId);
+
+                                                setState(() {});
+                                              }
+                                            },
+                                            label: const Text(
+                                              'Remove Latest Wire',
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 10),
                                           FloatingActionButton.extended(
                                             onPressed: () {
                                               resetPortValues(); // 🔥 lights OFF
@@ -1671,6 +1703,23 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
             child: Column(
               children: [
                 FloatingActionButton.extended(
+                  heroTag: 'removeWire',
+                  onPressed: () {
+                    if (model.wires.isNotEmpty) {
+                      // get latest wire id
+                      final latestWireId = model.wires.keys.last;
+
+                      // remove latest wire
+                      model.removeWire(latestWireId);
+
+                      setState(() {});
+                    }
+                  },
+                  label: const Text('Remove Latest Wire'),
+                ),
+
+                const SizedBox(height: 10),
+                FloatingActionButton.extended(
                   heroTag: '✅',
                   onPressed: () {
                     resetPortValues(); // 🔥 lights OFF
@@ -2197,8 +2246,13 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
 
                           child: ElevatedButton(
                             onPressed: () {
+                              if (moved) return;
+                              controller.next();
+
+                              moved = true;
+                              print("Level Complete");
                               if (widget.mode == SimulatorMode.level) {
-                                Get.off(() => widget.nextPage);
+                                Get.off(() => widget.nextPage());
                               } else {
                                 Navigator.push(
                                   context,

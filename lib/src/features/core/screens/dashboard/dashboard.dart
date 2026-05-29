@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +14,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/scree
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/Multipagedialog.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard_blocknavigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/whitescreen.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/pageController.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/repository/authentication_repository/auth_service.dart';
 
 class Dashboard extends StatefulWidget {
@@ -23,6 +25,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  final controller = Get.put(LevelController());
   bool _isLoading = false;
 
   void whitescreen() {
@@ -118,6 +121,7 @@ class _DashboardState extends State<Dashboard> {
                             isDark: isDark,
 
                             onTap: () {
+                              controller.level.value = 1;
                               _hidePopupMenu();
                               whitescreen();
                               Future.delayed(
@@ -622,6 +626,7 @@ class _DashboardState extends State<Dashboard> {
           if (screenWidth > 735)
             IconButton(
               onPressed: () {
+                controller.level.value = 1;
                 _hidePopupMenu();
 
                 // Pupunta muna sa white screen

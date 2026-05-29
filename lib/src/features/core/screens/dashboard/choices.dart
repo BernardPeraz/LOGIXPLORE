@@ -166,7 +166,7 @@ class Assessment extends StatelessWidget {
                                 ExpecOut: output,
                                 allowedGates: gates,
                                 mode: SimulatorMode.practice,
-                                nextPage: Dashboard(),
+                                nextPage: () => Dashboard(),
                               ),
                             ),
                           );

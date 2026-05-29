@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/pageController.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/main.dart';
 
 class WhiteScreen extends StatefulWidget {
@@ -11,6 +12,8 @@ class WhiteScreen extends StatefulWidget {
 }
 
 class _WhiteScreenState extends State<WhiteScreen> {
+  final controller = Get.put(LevelController());
+
   @override
   void initState() {
     super.initState();
@@ -18,23 +21,13 @@ class _WhiteScreenState extends State<WhiteScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       //LogicEditorPage());
       //LogicSimp()
-      Get.off(
-        () => LogicEditorPage(
-          ExpecOut: [1, 0, 1, 1, 1, 0, 0, 0],
-          allowedGates: [
-            "AND",
-            "OR",
-            "BUFFER",
-            "NOT",
-            "NAND",
-            "NOR",
-            "XOR",
-            "XNOR",
-          ],
-          mode: SimulatorMode.level,
-          hideSubmitButton: true,
-          nextPage: LogicEditorPage(
-            ExpecOut: [1, 0, 0, 0, 1, 0, 1, 1],
+
+      if (controller.level.value == 1) {
+        Get.off(
+          () => LogicEditorPage(
+            mode: SimulatorMode.level,
+            hideSubmitButton: true,
+            ExpecOut: [0, 0, 0, 0, 1, 1, 1, 1],
             allowedGates: [
               "AND",
               "OR",
@@ -45,11 +38,53 @@ class _WhiteScreenState extends State<WhiteScreen> {
               "XOR",
               "XNOR",
             ],
-            nextPage: Dashboard(),
-            hideSubmitButton: true,
+
+            nextPage: () => WhiteScreen(),
           ),
-        ),
-      );
+        );
+      }
+      if (controller.level.value == 2) {
+        Get.off(
+          () => LogicEditorPage(
+            mode: SimulatorMode.level,
+            hideSubmitButton: true,
+            ExpecOut: [0, 0, 1, 1, 0, 0, 1, 1],
+            allowedGates: [
+              "AND",
+              "OR",
+              "BUFFER",
+              "NOT",
+              "NAND",
+              "NOR",
+              "XOR",
+              "XNOR",
+            ],
+
+            nextPage: () => WhiteScreen(),
+          ),
+        );
+      }
+      if (controller.level.value == 3) {
+        Get.off(
+          () => LogicEditorPage(
+            mode: SimulatorMode.level,
+            hideSubmitButton: true,
+            ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
+            allowedGates: [
+              "AND",
+              "OR",
+              "BUFFER",
+              "NOT",
+              "NAND",
+              "NOR",
+              "XOR",
+              "XNOR",
+            ],
+
+            nextPage: () => Dashboard(),
+          ),
+        );
+      }
     });
   }
 

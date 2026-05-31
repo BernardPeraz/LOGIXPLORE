@@ -18,7 +18,7 @@ class TermsAndConditionsPage extends StatelessWidget {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12),
-              Text('Last Updated: 11/11/25'),
+              Text('Last Updated: 05/31/26'),
               SizedBox(height: 16),
               Text(
                 'Welcome to Logixplore. By using this App, you agree to be bound by these Terms & Conditions. '
@@ -32,31 +32,31 @@ class TermsAndConditionsPage extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Your continued use constitutes acceptance of any updates to these Terms.',
+                'By using Logixplore, you agree to follow these Terms & Conditions.',
               ),
               SizedBox(height: 8),
               Text(
-                '2. Use of the Application',
+                '2. Educational Purpose',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Use the App only for educational purposes; do not reverse-engineer, disrupt, or use it for illegal activities.',
+                'Logixplore is intended solely for educational use to help users learn logic gates.',
               ),
               SizedBox(height: 8),
               Text(
-                '3. Account Creation',
+                '3. User Responsibility',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Provide accurate info; keep credentials confidential; we are not liable for unauthorized access caused by sharing.',
+                'Users must use the system properly and avoid any misuse of its features.',
               ),
               SizedBox(height: 8),
               Text(
-                '4. Educational Content',
+                '4. System Content and Accuracy',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Materials are for learning only; no guarantees of accuracy or outcomes.',
+                'All outputs and simulations are for learning purposes only and may not always be perfectly accurate.',
               ),
               SizedBox(height: 8),
               Text(
@@ -64,50 +64,29 @@ class TermsAndConditionsPage extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'All content is owned by the developer and cannot be copied or resold without permission.',
+                'All system content and design of Logixplore belong to the developers and may not be copied or reused without permission.',
               ),
               SizedBox(height: 8),
               Text(
-                '6. Prohibited Activities',
+                '6. Data and Privacy',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'No malware, harassment, unauthorized access, or service disruption.',
+                'Any collected data is used only to improve system performance and learning experience.',
               ),
               SizedBox(height: 8),
               Text(
-                '7. Privacy & Data Use',
+                '7. System Updates and Improvements',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Basic information may be collected for functionality and improvements. See Privacy Policy for details.',
+                'The developers may update or modify the system at any time to improve functionality.',
               ),
               SizedBox(height: 8),
+              Text('8. Contact', style: TextStyle(fontWeight: FontWeight.bold)),
               Text(
-                '8. Limitation of Liability',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                'For any inquiries or support, please contact us at logixplore00@gmail.com.',
               ),
-              Text(
-                'Provided “as is”; we are not liable for damages, data loss, or interruptions.',
-              ),
-              SizedBox(height: 8),
-              Text(
-                '9. Modifications',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('We may update features or terms at any time.'),
-              SizedBox(height: 8),
-              Text(
-                '10. Termination',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('We may suspend or terminate access for violations.'),
-              SizedBox(height: 8),
-              Text(
-                '11. Contact',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('logixplore@gmail.com'),
               SizedBox(height: 24),
             ],
           ),

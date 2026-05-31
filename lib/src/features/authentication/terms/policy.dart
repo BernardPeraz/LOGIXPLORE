@@ -18,7 +18,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 12),
-              Text('Last Updated: [Insert Date]'),
+              Text('Last Updated: 05/31/26'),
               SizedBox(height: 16),
               Text(
                 'This Privacy Policy explains how LogicGates collects, uses, and protects information when you use the App.',

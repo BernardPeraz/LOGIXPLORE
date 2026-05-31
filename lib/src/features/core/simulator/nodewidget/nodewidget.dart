@@ -17,76 +17,62 @@ class NodeWidget extends StatelessWidget {
     const double portRadius = 5; // adjust depende sa size ng PortCircle
 
     return Material(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-
-          boxShadow: portRadius > 0
-              ? [
-                  BoxShadow(
-                    color: Colors.white, // FIX
-                    blurRadius: 4,
-                    offset: const Offset(2, 2),
-                  ),
-                ]
-              : null,
-        ),
-
-        child: Stack(
-          children: [
-            Center(
-              child: Image.asset(
-                'assets/images/${node.label}.png',
-                height: 63,
-                width: 100,
-                color: _getGateColor(node),
-                colorBlendMode: BlendMode.srcIn,
-                errorBuilder: (context, error, stackTrace) {
-                  print("IMAGE ERROR: $error");
-                  return const Icon(Icons.error);
-                },
-              ),
+      color: Colors.transparent,
+      child: Stack(
+        children: [
+          Center(
+            child: Image.asset(
+              'assets/images/${node.label}.png',
+              height: 63,
+              width: 100,
+              fit: BoxFit.contain,
+              color: _getGateColor(node),
+              colorBlendMode: BlendMode.srcIn,
+              errorBuilder: (context, error, stackTrace) {
+                print("IMAGE ERROR: $error");
+                return const Icon(Icons.error);
+              },
             ),
-            // ports
-            for (final port in node.ports.values)
-              Positioned(
-                left: port.localOffset.dx,
-                top: port.localOffset.dy,
-                child: GestureDetector(
-                  onPanStart: (d) {
-                    // if starting from output start connection
-                    if (port.type == PortType.output) {
-                      final gpos = (context.findRenderObject() as RenderBox)
-                          .localToGlobal(
-                            port.localOffset +
-                                node.position +
-                                const Offset(portRadius, portRadius),
-                          );
-                    }
-                  },
-                  onPanUpdate: (d) {
+          ),
+          // ports
+          for (final port in node.ports.values)
+            Positioned(
+              left: port.localOffset.dx,
+              top: port.localOffset.dy,
+              child: GestureDetector(
+                onPanStart: (d) {
+                  // if starting from output start connection
+                  if (port.type == PortType.output) {
                     final gpos = (context.findRenderObject() as RenderBox)
                         .localToGlobal(
                           port.localOffset +
                               node.position +
                               const Offset(portRadius, portRadius),
                         );
-                  },
-                  onPanEnd: (d) {
-                    // finish by checking nearest input at release
-                    // We'll rely on global gesture detection in parent; do nothing here
-                  },
-                  onTap: () {
-                    // toggle switches by tapping their output port (switch behavior)
-                    if (node.kind == 'SWITCH' && port.type == PortType.output) {
-                      model.toggleSwitch(node.id);
-                    }
-                  },
-                  child: PortCircle(port: port),
-                ),
+                  }
+                },
+                onPanUpdate: (d) {
+                  final gpos = (context.findRenderObject() as RenderBox)
+                      .localToGlobal(
+                        port.localOffset +
+                            node.position +
+                            const Offset(portRadius, portRadius),
+                      );
+                },
+                onPanEnd: (d) {
+                  // finish by checking nearest input at release
+                  // We'll rely on global gesture detection in parent; do nothing here
+                },
+                onTap: () {
+                  // toggle switches by tapping their output port (switch behavior)
+                  if (node.kind == 'SWITCH' && port.type == PortType.output) {
+                    model.toggleSwitch(node.id);
+                  }
+                },
+                child: PortCircle(port: port),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }

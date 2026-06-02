@@ -283,19 +283,12 @@ class MobileProfile extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              final user = FirebaseAuth.instance.currentUser;
-                              if (user == null) return;
-
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(user.uid)
-                                  .set({
-                                    "First Name": firstNameeController.text
-                                        .trim(),
-                                    "Last Name": lastNameeController.text
-                                        .trim(),
-                                    "Username": usernameeController.text.trim(),
-                                  }, SetOptions(merge: true));
+                              updateUserProfile(
+                                context: context,
+                                firstName: firstNameeController.text.trim(),
+                                lastName: lastNameeController.text.trim(),
+                                username: usernameeController.text.trim(),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color.fromARGB(

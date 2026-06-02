@@ -177,7 +177,6 @@ class _LoginFormState extends State<LoginForm> {
                 prefixIcon: Icon(Icons.person_outline_outlined),
                 labelText: "Email or Username",
                 filled: true,
-                hintText: "Email or Username",
                 enabledBorder: TInputBorders.enabled,
                 focusedBorder: TInputBorders.focused,
                 errorBorder: TInputBorders.error,
@@ -201,7 +200,6 @@ class _LoginFormState extends State<LoginForm> {
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.fingerprint),
                     labelText: "Password",
-                    hintText: "Password",
                     filled: true,
                     suffixIcon: IconButton(
                       icon: Icon(

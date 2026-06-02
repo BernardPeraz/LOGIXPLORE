@@ -22,6 +22,8 @@ class SignUpFormWidget extends StatefulWidget {
 bool agreeToTerms = false;
 
 class _SignUpFormWidgetState extends State<SignUpFormWidget> {
+  bool isTermsHovered = false;
+  bool isPrivacyHovered = false;
   String generateOtp() {
     return (100000 + DateTime.now().millisecondsSinceEpoch % 900000).toString();
   }
@@ -275,42 +277,60 @@ class _SignUpFormWidgetState extends State<SignUpFormWidget> {
                   child: Wrap(
                     children: [
                       const Text("I agree to the "),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const TermsAndConditionsPage(),
+
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        onEnter: (_) => setState(() => isTermsHovered = true),
+                        onExit: (_) => setState(() => isTermsHovered = false),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const TermsAndConditionsPage(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Terms & Conditions",
+                            style: TextStyle(
+                              color: isTermsHovered
+                                  ? const Color(0xFFFF9500)
+                                  : Colors.black,
+                              fontWeight: FontWeight.w900,
+
+                              fontSize: isTermsHovered ? 16 : 14,
                             ),
-                          );
-                        },
-                        child: const Text(
-                          "Terms & Conditions",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w900,
-                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
+
                       const Text(" and "),
 
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PrivacyPolicyPage(),
+                      MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        onEnter: (_) => setState(() => isPrivacyHovered = true),
+                        onExit: (_) => setState(() => isPrivacyHovered = false),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PrivacyPolicyPage(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "Privacy Policy",
+                            style: TextStyle(
+                              color: isPrivacyHovered
+                                  ? const Color(0xFFFF9500)
+                                  : Colors.black,
+                              fontWeight: FontWeight.w900,
+
+                              fontSize: isPrivacyHovered ? 16 : 14,
                             ),
-                          );
-                        },
-                        child: const Text(
-                          "Privacy Policy",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w900,
-                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),

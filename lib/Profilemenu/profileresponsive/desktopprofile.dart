@@ -88,48 +88,52 @@ class _DesktopProfileState extends State<DesktopProfile> {
                         ),
                       ),
                       child: ClipOval(
-                       child: StreamBuilder<User?>(
-  stream: FirebaseAuth.instance.userChanges(),
-  builder: (context, authSnapshot) {
-    final user = authSnapshot.data;
+                        child: StreamBuilder<User?>(
+                          stream: FirebaseAuth.instance.userChanges(),
+                          builder: (context, authSnapshot) {
+                            final user = authSnapshot.data;
 
-    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(user?.uid)
-          .snapshots(),
-      builder: (context, snapshot) {
+                            return StreamBuilder<
+                              DocumentSnapshot<Map<String, dynamic>>
+                            >(
+                              stream: FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(user?.uid)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (authSnapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
 
-        if (authSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+                                String? imageUrl;
 
-        String? imageUrl;
+                                // 🔥 Firestore image priority
+                                if (snapshot.hasData && snapshot.data!.exists) {
+                                  imageUrl = snapshot.data!
+                                      .data()?['profileImage'];
+                                }
 
-        // 🔥 Firestore image priority
-        if (snapshot.hasData && snapshot.data!.exists) {
-          imageUrl = snapshot.data!.data()?['profileImage'];
-        }
+                                // 🔥 Google fallback
+                                imageUrl ??= user?.photoURL;
 
-        // 🔥 Google fallback
-        imageUrl ??= user?.photoURL;
+                                if (imageUrl != null && imageUrl.isNotEmpty) {
+                                  return Image.network(
+                                    imageUrl,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) =>
+                                        Image.asset('assets/logo/avatar.png'),
+                                  );
+                                }
 
-        if (imageUrl != null && imageUrl.isNotEmpty) {
-          return Image.network(
-            imageUrl,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) =>
-                Image.asset('assets/logo/avatar.png'),
-          );
-        }
-
-        return Image.asset('assets/logo/avatar.png');
-      },
-    );
-  },
-),
-                         
-                    ),
+                                return Image.asset('assets/logo/avatar.png');
+                              },
+                            );
+                          },
+                        ),
+                      ),
                     ),
 
                     const SizedBox(height: 20),

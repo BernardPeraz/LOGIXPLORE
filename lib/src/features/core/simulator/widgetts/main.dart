@@ -12,6 +12,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/model
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/port.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/portref.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/porttype.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/inputcontroller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/truthtable.dart';
 import 'package:flutter/foundation.dart'; // for listEquals
 import 'dart:math';
@@ -96,9 +97,16 @@ enum SimulatorMode {
 
 class _LogicEditorPageState extends State<LogicEditorPage> {
   final controller = Get.put(LevelController());
+  final icontroller = Get.put(Inputcontroller());
   bool moved = false;
   bool isSolved = false;
   EditorModel model = EditorModel();
+
+  bool s1value = false;
+  bool s2value = false;
+  bool s3value = false;
+  bool s4value = false;
+  bool s5value = false;
 
   void _resetNodesSafely() {
     // clear old nodes
@@ -376,6 +384,17 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
   late Node s4;
   late Node s5;
   late Node not1;
+
+  late SwitchTable TTable = SwitchTable(
+    Aswitch: s1.truthvalue,
+    Bswitch: s2.truthvalue,
+    Cswitch: s3.truthvalue,
+    Dswitch: s4.truthvalue,
+    Eswitch: s5.truthvalue,
+    Output: not1.truthvalue,
+    Expected: widget.ExpecOut,
+    nums: switchNum,
+  );
 
   @override
   void initState() {
@@ -796,6 +815,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                 GestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onPanDown: (d) {
+                                    print("click");
                                     //mouse click
                                     // if starting drag on a port -> start connection
                                     final pr = _hitTestPort(d.globalPosition);
@@ -807,9 +827,14 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                         _globalToLocal(d.globalPosition),
                                       );
                                     }
-                                    setState(() {});
+
+                                    highlightsrow();
+                                    setState(() {
+                                      highlightsrow();
+                                    });
                                   },
                                   onPanUpdate: (d) {
+                                    print("hold");
                                     setState(() {});
 
                                     //mouse hold
@@ -823,8 +848,10 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                     setState(() {});
                                   },
                                   onPanEnd: (d) {
-                                    setState(() {});
-
+                                    setState(() {
+                                      print("hold");
+                                    });
+                                    print("hold");
                                     //mouse lift
                                     if (model.connectingFrom != null) {
                                       // try to finish connection on release location                 //not connected yet
@@ -862,8 +889,11 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                       final node = model.nodes[pr.nodeId];
                                       if (node?.kind == 'SWITCH') {
                                         model.toggleSwitch(node!.id);
+
+                                        print("clicking");
                                       }
                                     }
+
                                     setState(() {});
                                   },
                                   child: Container(
@@ -949,7 +979,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                               icon: Icon(Icons.dashboard),
                                             ),
                                           ],
-                                          SizedBox(width: 10),
+
                                           FloatingActionButton.extended(
                                             heroTag: 'removeWire',
                                             onPressed: () {
@@ -1620,20 +1650,50 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
       children: [
         GestureDetector(
           behavior: HitTestBehavior.translucent,
+
           onPanDown: (d) {
+            // print("hold");
+
             final pr = _hitTestPort(d.globalPosition);
+
             if (pr != null && pr.type == PortType.output) {
               model.startConnection(pr, _globalToLocal(d.globalPosition));
             }
             setState(() {});
+          },
+          onPanStart: (d) {
+            s1value = s1.ports['out']!.value;
+
+            s2value = s2.ports['out']!.value;
+            s3value = s3.ports['out']!.value;
+            s4value = s4.ports['out']!.value;
+            s5value = s5.ports['out']!.value;
+            highlightsrow();
+          },
+          onPanCancel: () {
+            s1value = s1.ports['out']!.value;
+
+            s2value = s2.ports['out']!.value;
+            s3value = s3.ports['out']!.value;
+            s4value = s4.ports['out']!.value;
+            s5value = s5.ports['out']!.value;
+            highlightsrow();
           },
           onPanUpdate: (d) {
             if (model.connectingFrom != null) {
               model.updateConnectionDrag(_globalToLocal(d.globalPosition));
             }
             setState(() {});
+            s1value = s1.ports['out']!.value;
+
+            s2value = s2.ports['out']!.value;
+            s3value = s3.ports['out']!.value;
+            s4value = s4.ports['out']!.value;
+            s5value = s5.ports['out']!.value;
+            highlightsrow();
           },
           onPanEnd: (d) {
+            highlightsrow();
             if (model.connectingFrom != null) {
               final last = model.currentDragPosition;
 
@@ -1656,6 +1716,35 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
             }
 
             setState(() {});
+            s1value = s1.ports['out']!.value;
+
+            s2value = s2.ports['out']!.value;
+            s3value = s3.ports['out']!.value;
+            s4value = s4.ports['out']!.value;
+            s5value = s5.ports['out']!.value;
+            highlightsrow();
+          },
+
+          onTapUp: (d) {
+            // check tap on a port to toggle switch if it's a switch output
+            final pr = _hitTestPort(d.globalPosition);
+            if (pr != null) {
+              final node = model.nodes[pr.nodeId];
+              if (node?.kind == 'SWITCH') {
+                model.toggleSwitch(node!.id);
+
+                print("clicking");
+              }
+            }
+
+            setState(() {});
+            s1value = s1.ports['out']!.value;
+
+            s2value = s2.ports['out']!.value;
+            s3value = s3.ports['out']!.value;
+            s4value = s4.ports['out']!.value;
+            s5value = s5.ports['out']!.value;
+            highlightsrow();
           },
           child: Container(
             key: canvasKey,
@@ -2299,6 +2388,148 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
         ],
       ),
     );
+  }
+
+  void highlightsrow() {
+    if (switchNum == 1) {
+      if (s1value == false) {
+        icontroller.level.value = 0;
+      } else if (s1value == true) {
+        icontroller.level.value = 1;
+      }
+    }
+    if (switchNum == 2) {
+      if (s1value == false && s2value == false) {
+        icontroller.level.value = 0;
+      } else if (s1value == false && s2value == true) {
+        icontroller.level.value = 1;
+      } else if (s1value == true && s2value == false) {
+        icontroller.level.value = 2;
+      } else if (s1value == true && s2value == true) {
+        icontroller.level.value = 3;
+      }
+    }
+    if (switchNum == 3) {
+      if (s1value == false && s2value == false && s3value == false) {
+        icontroller.level.value = 0;
+      } else if (s1value == false && s2value == false && s3value == true) {
+        icontroller.level.value = 1;
+      } else if (s1value == false && s2value == true && s3value == false) {
+        icontroller.level.value = 2;
+      } else if (s1value == false && s2value == true && s3value == true) {
+        icontroller.level.value = 3;
+      } else if (s1value == true && s2value == false && s3value == false) {
+        icontroller.level.value = 4;
+      } else if (s1value == true && s2value == false && s3value == true) {
+        icontroller.level.value = 5;
+      } else if (s1value == true && s2value == true && s3value == false) {
+        icontroller.level.value = 6;
+      } else if (s1value == true && s2value == true && s3value == true) {
+        icontroller.level.value = 7;
+      }
+    }
+    if (switchNum == 4) {
+      if (!s1value && !s2value && !s3value && !s4value) {
+        icontroller.level.value = 0;
+      } else if (!s1value && !s2value && !s3value && s4value) {
+        icontroller.level.value = 1;
+      } else if (!s1value && !s2value && s3value && !s4value) {
+        icontroller.level.value = 2;
+      } else if (!s1value && !s2value && s3value && s4value) {
+        icontroller.level.value = 3;
+      } else if (!s1value && s2value && !s3value && !s4value) {
+        icontroller.level.value = 4;
+      } else if (!s1value && s2value && !s3value && s4value) {
+        icontroller.level.value = 5;
+      } else if (!s1value && s2value && s3value && !s4value) {
+        icontroller.level.value = 6;
+      } else if (!s1value && s2value && s3value && s4value) {
+        icontroller.level.value = 7;
+      } else if (s1value && !s2value && !s3value && !s4value) {
+        icontroller.level.value = 8;
+      } else if (s1value && !s2value && !s3value && s4value) {
+        icontroller.level.value = 9;
+      } else if (s1value && !s2value && s3value && !s4value) {
+        icontroller.level.value = 10;
+      } else if (s1value && !s2value && s3value && s4value) {
+        icontroller.level.value = 11;
+      } else if (s1value && s2value && !s3value && !s4value) {
+        icontroller.level.value = 12;
+      } else if (s1value && s2value && !s3value && s4value) {
+        icontroller.level.value = 13;
+      } else if (s1value && s2value && s3value && !s4value) {
+        icontroller.level.value = 14;
+      } else if (s1value && s2value && s3value && s4value) {
+        icontroller.level.value = 15;
+      }
+    }
+    if (switchNum == 5) {
+      if (!s1value && !s2value && !s3value && !s4value && !s5value) {
+        icontroller.level.value = 0;
+      } else if (!s1value && !s2value && !s3value && !s4value && s5value) {
+        icontroller.level.value = 1;
+      } else if (!s1value && !s2value && !s3value && s4value && !s5value) {
+        icontroller.level.value = 2;
+      } else if (!s1value && !s2value && !s3value && s4value && s5value) {
+        icontroller.level.value = 3;
+      } else if (!s1value && !s2value && s3value && !s4value && !s5value) {
+        icontroller.level.value = 4;
+      } else if (!s1value && !s2value && s3value && !s4value && s5value) {
+        icontroller.level.value = 5;
+      } else if (!s1value && !s2value && s3value && s4value && !s5value) {
+        icontroller.level.value = 6;
+      } else if (!s1value && !s2value && s3value && s4value && s5value) {
+        icontroller.level.value = 7;
+      } else if (!s1value && s2value && !s3value && !s4value && !s5value) {
+        icontroller.level.value = 8;
+      } else if (!s1value && s2value && !s3value && !s4value && s5value) {
+        icontroller.level.value = 9;
+      } else if (!s1value && s2value && !s3value && s4value && !s5value) {
+        icontroller.level.value = 10;
+      } else if (!s1value && s2value && !s3value && s4value && s5value) {
+        icontroller.level.value = 11;
+      } else if (!s1value && s2value && s3value && !s4value && !s5value) {
+        icontroller.level.value = 12;
+      } else if (!s1value && s2value && s3value && !s4value && s5value) {
+        icontroller.level.value = 13;
+      } else if (!s1value && s2value && s3value && s4value && !s5value) {
+        icontroller.level.value = 14;
+      } else if (!s1value && s2value && s3value && s4value && s5value) {
+        icontroller.level.value = 15;
+      } else if (s1value && !s2value && !s3value && !s4value && !s5value) {
+        icontroller.level.value = 16;
+      } else if (s1value && !s2value && !s3value && !s4value && s5value) {
+        icontroller.level.value = 17;
+      } else if (s1value && !s2value && !s3value && s4value && !s5value) {
+        icontroller.level.value = 18;
+      } else if (s1value && !s2value && !s3value && s4value && s5value) {
+        icontroller.level.value = 19;
+      } else if (s1value && !s2value && s3value && !s4value && !s5value) {
+        icontroller.level.value = 20;
+      } else if (s1value && !s2value && s3value && !s4value && s5value) {
+        icontroller.level.value = 21;
+      } else if (s1value && !s2value && s3value && s4value && !s5value) {
+        icontroller.level.value = 22;
+      } else if (s1value && !s2value && s3value && s4value && s5value) {
+        icontroller.level.value = 23;
+      } else if (s1value && s2value && !s3value && !s4value && !s5value) {
+        icontroller.level.value = 24;
+      } else if (s1value && s2value && !s3value && !s4value && s5value) {
+        icontroller.level.value = 25;
+      } else if (s1value && s2value && !s3value && s4value && !s5value) {
+        icontroller.level.value = 26;
+      } else if (s1value && s2value && !s3value && s4value && s5value) {
+        icontroller.level.value = 27;
+      } else if (s1value && s2value && s3value && !s4value && !s5value) {
+        icontroller.level.value = 28;
+      } else if (s1value && s2value && s3value && !s4value && s5value) {
+        icontroller.level.value = 29;
+      } else if (s1value && s2value && s3value && s4value && !s5value) {
+        icontroller.level.value = 30;
+      } else if (s1value && s2value && s3value && s4value && s5value) {
+        icontroller.level.value = 31;
+      }
+    }
   }
 }
 

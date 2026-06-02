@@ -172,7 +172,6 @@ class _AdminloginState extends State<Adminlogin> {
                       ),
                       labelText: "Admin",
                       filled: true,
-                      hintText: "Admin",
                       enabledBorder: TInputBorders.enabled,
                       focusedBorder: TInputBorders.focused,
                       errorBorder: TInputBorders.error,
@@ -198,7 +197,6 @@ class _AdminloginState extends State<Adminlogin> {
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.fingerprint),
                           labelText: "Password",
-                          hintText: "Password",
                           filled: true,
                           enabledBorder: TInputBorders.enabled,
                           focusedBorder: TInputBorders.focused,
@@ -244,14 +242,6 @@ class _AdminloginState extends State<Adminlogin> {
       ),
 
       backgroundColor: const Color(0xFFF5F5F5),
-
-      appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        leading: IconButton(
-          onPressed: () => Get.off(LoginScreen()),
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-        ),
-      ),
     );
   }
 }

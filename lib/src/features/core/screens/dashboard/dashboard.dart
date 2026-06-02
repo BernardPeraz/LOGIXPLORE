@@ -18,7 +18,9 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/pageC
 import 'package:studydesign2zzdatabaseplaylist/src/repository/authentication_repository/auth_service.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final bool isAdmin;
+
+  const Dashboard({super.key, this.isAdmin = false});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -534,6 +536,9 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
+    if (widget.isAdmin) {
+      return;
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final user = FirebaseAuth.instance.currentUser;

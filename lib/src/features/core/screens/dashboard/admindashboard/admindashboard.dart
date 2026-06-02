@@ -30,7 +30,7 @@ class _AdmindashboardState extends State<Admindashboard> {
 
   final List<Widget> pages = [
     // Adminoverallui(),
-    Dashboard(),
+    Dashboard(isAdmin: true),
     StudentProgressPage(),
     ResultScores(),
     Simulatorprogress(),
@@ -248,15 +248,10 @@ class _AdmindashboardState extends State<Admindashboard> {
                                                     foregroundColor:
                                                         Colors.white,
                                                   ),
-                                                  onPressed: () {
-                                                    Navigator.pushAndRemoveUntil(
+                                                  onPressed: () async {
+                                                    Navigator.of(
                                                       context,
-                                                      MaterialPageRoute(
-                                                        builder: (_) =>
-                                                            Adminlogin(),
-                                                      ),
-                                                      (route) => false,
-                                                    );
+                                                    ).pop(true);
                                                   },
                                                   child: Text("Logout"),
                                                 ),

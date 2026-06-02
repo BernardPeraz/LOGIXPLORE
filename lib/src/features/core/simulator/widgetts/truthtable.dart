@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/inputcontroller.dart';
 
 class SwitchTable extends StatefulWidget {
   List<int> Aswitch;
@@ -105,6 +108,7 @@ class _SwitchTableState extends State<SwitchTable> {
     );
   }
 
+  final controller = Get.put(Inputcontroller());
   Flexible AColumn() {
     return Flexible(
       child: Align(
@@ -113,8 +117,16 @@ class _SwitchTableState extends State<SwitchTable> {
           border: TableBorder.all(color: Colors.black),
           children: [
             TableRow(children: [cell("A")]),
-            ...widget.Aswitch.map((value) {
-              return TableRow(children: [cell(value.toString())]);
+            ...widget.Aswitch.asMap().entries.map((entry) {
+              int index = entry.key;
+              int value = entry.value;
+
+              return TableRow(
+                decoration: BoxDecoration(
+                  color: index == controller.level.value ? Colors.yellow : null,
+                ),
+                children: [cell(value.toString())],
+              );
             }),
           ],
         ),
@@ -130,8 +142,16 @@ class _SwitchTableState extends State<SwitchTable> {
           border: TableBorder.all(color: Colors.black),
           children: [
             TableRow(children: [cell("B")]),
-            ...widget.Bswitch.map((value) {
-              return TableRow(children: [cell(value.toString())]);
+            ...widget.Bswitch.asMap().entries.map((entry) {
+              int index = entry.key;
+              int value = entry.value;
+
+              return TableRow(
+                decoration: BoxDecoration(
+                  color: index == controller.level.value ? Colors.yellow : null,
+                ),
+                children: [cell(value.toString())],
+              );
             }),
           ],
         ),
@@ -147,8 +167,16 @@ class _SwitchTableState extends State<SwitchTable> {
           border: TableBorder.all(color: Colors.black),
           children: [
             TableRow(children: [cell("C")]),
-            ...widget.Cswitch.map((value) {
-              return TableRow(children: [cell(value.toString())]);
+            ...widget.Cswitch.asMap().entries.map((entry) {
+              int index = entry.key;
+              int value = entry.value;
+
+              return TableRow(
+                decoration: BoxDecoration(
+                  color: index == controller.level.value ? Colors.yellow : null,
+                ),
+                children: [cell(value.toString())],
+              );
             }),
           ],
         ),
@@ -164,8 +192,16 @@ class _SwitchTableState extends State<SwitchTable> {
           border: TableBorder.all(color: Colors.black),
           children: [
             TableRow(children: [cell("D")]),
-            ...widget.Dswitch.map((value) {
-              return TableRow(children: [cell(value.toString())]);
+            ...widget.Dswitch.asMap().entries.map((entry) {
+              int index = entry.key;
+              int value = entry.value;
+
+              return TableRow(
+                decoration: BoxDecoration(
+                  color: index == controller.level.value ? Colors.yellow : null,
+                ),
+                children: [cell(value.toString())],
+              );
             }),
           ],
         ),
@@ -181,8 +217,16 @@ class _SwitchTableState extends State<SwitchTable> {
           border: TableBorder.all(color: Colors.black),
           children: [
             TableRow(children: [cell("E")]),
-            ...widget.Eswitch.map((value) {
-              return TableRow(children: [cell(value.toString())]);
+            ...widget.Eswitch.asMap().entries.map((entry) {
+              int index = entry.key;
+              int value = entry.value;
+
+              return TableRow(
+                decoration: BoxDecoration(
+                  color: index == controller.level.value ? Colors.yellow : null,
+                ),
+                children: [cell(value.toString())],
+              );
             }),
           ],
         ),

@@ -284,11 +284,11 @@ class MobileProfile extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               updateUserProfile(
-                                context: context,
-                                firstName: firstNameeController.text.trim(),
-                                lastName: lastNameeController.text.trim(),
-                                username: usernameeController.text.trim(),
-                              );
+                              context: context,
+                              firstName: firstNameeController.text.trim(),
+                              lastName: lastNameeController.text.trim(),
+                              username: usernameeController.text.trim(),
+                            );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color.fromARGB(

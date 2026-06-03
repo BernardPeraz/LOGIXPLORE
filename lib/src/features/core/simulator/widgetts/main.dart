@@ -3,6 +3,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:studydesign2zzdatabaseplaylist/achievementui/achievement_manager.dart';
+import 'package:studydesign2zzdatabaseplaylist/assessment/whitescreen/whitescreen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/nodewidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/pageController.dart';
@@ -13,6 +14,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/model
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/portref.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/models/porttype.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/inputcontroller.dart';
+
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/truthtable.dart';
 import 'package:flutter/foundation.dart'; // for listEquals
 import 'dart:math';
@@ -66,6 +68,7 @@ class LogicEditorPage extends StatefulWidget {
   final List<int> ExpecOut;
   final List<String> allowedGates;
   final Widget Function() nextPage;
+  final String Equation;
 
   const LogicEditorPage({
     super.key,
@@ -74,6 +77,7 @@ class LogicEditorPage extends StatefulWidget {
     this.hideSubmitButton = false,
     required this.ExpecOut,
     required this.allowedGates,
+    required this.Equation,
 
     // 'AND',
     // 'OR',
@@ -385,17 +389,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
   late Node s5;
   late Node not1;
 
-  late SwitchTable TTable = SwitchTable(
-    Aswitch: s1.truthvalue,
-    Bswitch: s2.truthvalue,
-    Cswitch: s3.truthvalue,
-    Dswitch: s4.truthvalue,
-    Eswitch: s5.truthvalue,
-    Output: not1.truthvalue,
-    Expected: widget.ExpecOut,
-    nums: switchNum,
-  );
-
   @override
   void initState() {
     super.initState();
@@ -648,6 +641,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                       Output: not1.truthvalue,
                                       Expected: widget.ExpecOut,
                                       nums: switchNum,
+                                      Equation: widget.Equation,
                                     ),
                                   ),
                                   SizedBox(
@@ -2283,6 +2277,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
               Output: not1.truthvalue,
               Expected: widget.ExpecOut,
               nums: switchNum,
+              Equation: widget.Equation,
             ),
           ),
           Container(

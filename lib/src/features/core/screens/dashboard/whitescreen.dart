@@ -27,6 +27,7 @@ class _WhiteScreenState extends State<WhiteScreen> {
           () => LogicEditorPage(
             mode: SimulatorMode.level,
             hideSubmitButton: true,
+            Equation: "A",
             ExpecOut: [0, 0, 0, 0, 1, 1, 1, 1],
             allowedGates: [
               "AND",
@@ -48,6 +49,7 @@ class _WhiteScreenState extends State<WhiteScreen> {
           () => LogicEditorPage(
             mode: SimulatorMode.level,
             hideSubmitButton: true,
+            Equation: "B",
             ExpecOut: [0, 0, 1, 1, 0, 0, 1, 1],
             allowedGates: [
               "AND",
@@ -69,6 +71,29 @@ class _WhiteScreenState extends State<WhiteScreen> {
           () => LogicEditorPage(
             mode: SimulatorMode.level,
             hideSubmitButton: true,
+            Equation: "C",
+            ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
+            allowedGates: [
+              "AND",
+              "OR",
+              "BUFFER",
+              "NOT",
+              "NAND",
+              "NOR",
+              "XOR",
+              "XNOR",
+            ],
+
+            nextPage: () => Dashboard(),
+          ),
+        );
+      }
+      if (controller.level.value == 4) {
+        Get.off(
+          () => LogicEditorPage(
+            mode: SimulatorMode.level,
+            hideSubmitButton: true,
+            Equation: "C",
             ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
             allowedGates: [
               "AND",

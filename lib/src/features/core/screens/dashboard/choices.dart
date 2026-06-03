@@ -163,6 +163,7 @@ class Assessment extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => LogicEditorPage(
+                                Equation: title,
                                 ExpecOut: output,
                                 allowedGates: gates,
                                 mode: SimulatorMode.practice,

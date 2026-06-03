@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
 
-import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/login_screen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/admindashboard.dart';
 
 class Adminlogin extends StatefulWidget {

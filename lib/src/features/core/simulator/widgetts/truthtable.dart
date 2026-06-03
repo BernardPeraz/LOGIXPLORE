@@ -11,6 +11,8 @@ class SwitchTable extends StatefulWidget {
   List<int> Eswitch;
   List<int> Output;
   List<int> Expected;
+  String Equation;
+
   int nums;
   SwitchTable({
     super.key,
@@ -22,6 +24,7 @@ class SwitchTable extends StatefulWidget {
     required this.Output,
     required this.Expected,
     required this.nums,
+    required this.Equation,
   });
 
   @override
@@ -29,81 +32,220 @@ class SwitchTable extends StatefulWidget {
 }
 
 class _SwitchTableState extends State<SwitchTable> {
+  bool isHovered = false;
+  bool submitted = false;
+  bool get isCorrect {
+    if (widget.Output.length != widget.Expected.length) return false;
+
+    for (int i = 0; i < widget.Output.length; i++) {
+      if (widget.Output[i] != widget.Expected[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  List<int> answers = [];
   void updateSwitches() {
     setState(() {});
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    answers = List.filled(widget.Expected.length, -1);
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (widget.nums == 0) {
-      return Row(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Boolean Expression: ${widget.Equation}",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
 
-        children: [ExpectedColumn()],
+          const SizedBox(height: 10),
+
+          Row(crossAxisAlignment: CrossAxisAlignment.start, children: []),
+        ],
       );
     }
+
     if (widget.nums == 1) {
-      return Row(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [AColumn(), OutputColumn(), ExpectedColumn()],
+        children: [
+          Text(
+            "Boolean Expression: ${widget.Equation}",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [AColumn(), if (isCorrect) AnswerColumn()],
+          ),
+
+          if (isCorrect) ...[const SizedBox(height: 20), SubmitButton()],
+        ],
       );
     }
     if (widget.nums == 2) {
-      return Row(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [AColumn(), BColumn(), OutputColumn(), ExpectedColumn()],
+        children: [
+          Text(
+            "Boolean Expression: ${widget.Equation}",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [AColumn(), BColumn(), if (isCorrect) AnswerColumn()],
+          ),
+
+          if (isCorrect) ...[const SizedBox(height: 20), SubmitButton()],
+        ],
       );
     }
     if (widget.nums == 3) {
-      return Row(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AColumn(),
-          BColumn(),
-          CColumn(),
-          OutputColumn(),
-          ExpectedColumn(),
+          Text(
+            "Boolean Expression: ${widget.Equation}",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AColumn(),
+              BColumn(),
+              CColumn(),
+              if (isCorrect) AnswerColumn(),
+            ],
+          ),
+
+          if (isCorrect) ...[const SizedBox(height: 20), SubmitButton()],
         ],
       );
     }
     if (widget.nums == 4) {
-      return Row(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AColumn(),
-          BColumn(),
-          CColumn(),
-          DColumn(),
-          OutputColumn(),
-          ExpectedColumn(),
+          Text(
+            "Boolean Expression: ${widget.Equation}",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AColumn(),
+              BColumn(),
+              CColumn(),
+              DColumn(),
+              if (isCorrect) AnswerColumn(),
+            ],
+          ),
+
+          if (isCorrect) ...[const SizedBox(height: 20), SubmitButton()],
         ],
       );
     }
 
     if (widget.nums == 5) {
-      return Row(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AColumn(),
-          BColumn(),
-          CColumn(),
-          DColumn(),
-          EColumn(),
-          OutputColumn(),
-          ExpectedColumn(),
+          Text(
+            "Boolean Expression: ${widget.Equation}",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AColumn(),
+              BColumn(),
+              CColumn(),
+              DColumn(),
+              EColumn(),
+              if (isCorrect) AnswerColumn(),
+            ],
+          ),
+
+          if (isCorrect) ...[const SizedBox(height: 20), SubmitButton()],
         ],
       );
     }
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AColumn(),
-        BColumn(),
-        CColumn(),
-        DColumn(),
-        EColumn(),
-        OutputColumn(),
-        ExpectedColumn(),
+        Text(
+          "Boolean Expression: ${widget.Equation}",
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AColumn(),
+            BColumn(),
+            CColumn(),
+            DColumn(),
+            EColumn(),
+            OutputColumn(),
+            ExpectedColumn(),
+            AnswerColumn(),
+          ],
+        ),
       ],
     );
   }
@@ -272,6 +414,59 @@ class _SwitchTableState extends State<SwitchTable> {
     );
   }
 
+  Flexible AnswerColumn() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Table(
+          border: TableBorder.all(color: Colors.black),
+          children: [
+            TableRow(children: [cell("Answer")]),
+
+            ...List.generate(widget.Expected.length, (i) {
+              bool correct = answers[i] == widget.Expected[i];
+
+              return TableRow(
+                decoration: submitted
+                    ? BoxDecoration(
+                        color: correct ? Colors.green[200] : Colors.red[200],
+                      )
+                    : null,
+                children: [
+                  InkWell(
+                    onTap: submitted
+                        ? null
+                        : () {
+                            setState(() {
+                              if (answers[i] == -1) {
+                                answers[i] = 0;
+                              } else {
+                                answers[i] = answers[i] == 0 ? 1 : 0;
+                              }
+                            });
+                          },
+                    child: SizedBox(
+                      height: 24,
+                      child: Center(
+                        child: Text(
+                          answers[i] == -1 ? "" : answers[i].toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
   TableRow coloredRow(String text, bool match) {
     return TableRow(
       decoration: BoxDecoration(
@@ -299,4 +494,38 @@ class _SwitchTableState extends State<SwitchTable> {
       ),
     ),
   );
+
+  Widget SubmitButton() {
+    return MouseRegion(
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: AnimatedScale(
+        scale: isHovered ? 1.05 : 1.0,
+        duration: const Duration(milliseconds: 200),
+        child: Center(
+          child: SizedBox(
+            width: 270,
+            height: 50,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+              onPressed: submitted
+                  ? null
+                  : () {
+                      setState(() {
+                        submitted = true;
+                      });
+                    },
+              child: Center(
+                child: const Text("Submit", style: TextStyle(fontSize: 18)),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

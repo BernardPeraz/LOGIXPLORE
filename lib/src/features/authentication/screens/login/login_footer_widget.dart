@@ -204,19 +204,6 @@ class _LoginFooterWidgetState extends State<LoginFooterWidget> {
           ),
         ),
         SizedBox(height: 15),
-        TextButton(
-          onPressed: () {
-            _showFullScreenLoadingAndGoToAdmin(context);
-          },
-          child: const Text(
-            'Admin',
-            style: TextStyle(
-              color: Color.fromARGB(255, 25, 17, 255),
-              fontSize: 15,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-        ),
       ],
     );
   }

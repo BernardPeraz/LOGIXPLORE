@@ -5,6 +5,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/constants/sizes.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/controllers/signup_controller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/forget_password/forget_password_mail/forget_password_mail.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/login/adminlogin/global.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/admindashboard/admindashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,14 +44,18 @@ class _LoginFormState extends State<LoginForm> {
         if (input.isEmpty) {
           _emailError = "Please enter your email or username.";
         }
-        if (password.isEmpty) _passwordError = "Please enter your password.";
+        if (password.isEmpty) {
+          _passwordError = "Please enter your password.";
+        }
       });
 
       Future.delayed(const Duration(seconds: 3), () {
-        setState(() {
-          _emailError = null;
-          _passwordError = null;
-        });
+        if (mounted) {
+          setState(() {
+            _emailError = null;
+            _passwordError = null;
+          });
+        }
       });
       return;
     }
@@ -76,46 +81,34 @@ class _LoginFormState extends State<LoginForm> {
             message: 'Username not found',
           );
         }
+
         email = snapshot.docs.first['Email'];
       }
 
       await _auth.signInWithEmailAndPassword(email: email!, password: password);
 
-      //BLOCK ADMIN FROM SIGNING IN HERE
+      // CHECK IF ADMIN
       final uid = _auth.currentUser!.uid;
+
       final adminDoc = await FirebaseFirestore.instance
           .collection('admin1')
           .doc(uid)
           .get();
 
-      if (adminDoc.exists && adminDoc.data()?['role'] == 'Admin') {
-        // This is an admin account → block login
+      if (adminDoc.exists) {
+        isAdminLogin = true;
 
         setState(() {
           _isLoading = false;
-          _emailError = "Admin accounts cannot sign in here.";
         });
 
-        Future.delayed(const Duration(seconds: 2), () {
-          if (mounted) {
-            setState(() {
-              _emailError = null;
-            });
-          }
-        });
-
-        return; // ← STOP LOGIN, DO NOT CONTINUE
+        Get.off(() => const Admindashboard());
+        return;
       }
-      /*
-      final providers = _auth.currentUser!.providerData;
-      if (!providers.any((p) => p.providerId == 'google.com')) {
-        await AuthService().linkGoogleAccount();
-      }*/
-      // If success go to dashboard
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'Created At': Timestamp.now(),
-      });
+
+      // NORMAL USER
       isAdminLogin = false;
+
       setState(() {
         _isLoading = false;
       });

@@ -128,9 +128,11 @@ class _DashboardState extends State<Dashboard> {
                                 AlertDialog(
                                   // palitan mo ng gusto mong kulay
                                   title: const Text(
-                                    "Select Difficulty",
+                                    "Select MODE",
                                     style: TextStyle(
                                       fontStyle: FontStyle.normal,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -146,8 +148,11 @@ class _DashboardState extends State<Dashboard> {
                                             0,
                                           ),
                                           title: const Text(
-                                            "Easy",
+                                            "EASY",
                                             textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                            ),
                                           ),
                                           onTap: () => Get.back(result: 1),
                                         ),
@@ -159,8 +164,11 @@ class _DashboardState extends State<Dashboard> {
                                             0,
                                           ),
                                           title: const Text(
-                                            "Medium",
+                                            "MEDIUM",
                                             textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                            ),
                                           ),
                                           onTap: () => Get.back(result: 2),
                                         ),
@@ -172,8 +180,11 @@ class _DashboardState extends State<Dashboard> {
                                             0,
                                           ),
                                           title: const Text(
-                                            "Hard",
+                                            "HARD",
                                             textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                            ),
                                           ),
                                           onTap: () => Get.back(result: 3),
                                         ),
@@ -700,8 +711,13 @@ class _DashboardState extends State<Dashboard> {
                   AlertDialog(
                     // palitan mo ng gusto mong kulay
                     title: const Text(
-                      "Select Difficulty",
-                      style: TextStyle(fontStyle: FontStyle.normal),
+                      "SELECT MODE",
+                      style: TextStyle(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+
                       textAlign: TextAlign.center,
                     ),
                     content: Column(
@@ -710,24 +726,27 @@ class _DashboardState extends State<Dashboard> {
                         ListTile(
                           hoverColor: Color.fromARGB(255, 255, 149, 0),
                           title: const Text(
-                            "Easy",
+                            "EASY",
                             textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w900),
                           ),
                           onTap: () => Get.back(result: 1),
                         ),
                         ListTile(
                           hoverColor: Color.fromARGB(255, 255, 149, 0),
                           title: const Text(
-                            "Medium",
+                            "MEDIUM",
                             textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w900),
                           ),
                           onTap: () => Get.back(result: 2),
                         ),
                         ListTile(
                           hoverColor: Color.fromARGB(255, 255, 149, 0),
                           title: const Text(
-                            "Hard",
+                            "HARD",
                             textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w900),
                           ),
                           onTap: () => Get.back(result: 3),
                         ),

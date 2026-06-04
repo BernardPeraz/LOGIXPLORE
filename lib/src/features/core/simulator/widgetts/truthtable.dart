@@ -75,16 +75,6 @@ class _SwitchTableState extends State<SwitchTable> {
             ),
           ),
         ),
-        Obx(
-          () => Text(
-            "Score: ${scoreController.level.value} | High Score: ${scoreController.highscore.value}",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -240,8 +230,6 @@ class _SwitchTableState extends State<SwitchTable> {
             CColumn(),
             DColumn(),
             EColumn(),
-            OutputColumn(),
-            ExpectedColumn(),
             AnswerColumn(),
           ],
         ),

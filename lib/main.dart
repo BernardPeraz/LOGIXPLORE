@@ -6,6 +6,7 @@ import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboa
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/authentication/screens/splash_screen/splash_screens.dart';
 import 'package:studydesign2zzdatabaseplaylist/firebase_options.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/Scorecontroller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/utils/theme/theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -26,7 +27,7 @@ Future<void> main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1bXVmYnNicWl3bmpuemthY25uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEzOTg0MDYsImV4cCI6MjA3Njk3NDQwNn0.nDq_gUdJBbsdzdHNLZap1B6QWxP4Nna92gRwHG_Gbp0',
   );
-
+ Get.put(Scorecontroller(), permanent: true);
   runApp(const MyApp());
 }
 

@@ -69,6 +69,7 @@ class LogicEditorPage extends StatefulWidget {
   final List<String> allowedGates;
   final Widget Function() nextPage;
   final String Equation;
+  final bool showScore;
 
   const LogicEditorPage({
     super.key,
@@ -78,6 +79,7 @@ class LogicEditorPage extends StatefulWidget {
     required this.ExpecOut,
     required this.allowedGates,
     required this.Equation,
+    this.showScore = true,
 
     // 'AND',
     // 'OR',
@@ -102,6 +104,7 @@ enum SimulatorMode {
 class _LogicEditorPageState extends State<LogicEditorPage> {
   final controller = Get.put(LevelController());
   final icontroller = Get.put(Inputcontroller());
+
   bool moved = false;
   bool isSolved = false;
   EditorModel model = EditorModel();
@@ -719,7 +722,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                                                         if (moved) return;
 
                                                         moved = true;
-                                                        controller.next();
+                                                        controller.random();
 
                                                         print("Level Complete");
                                                         if (widget.mode ==
@@ -2330,7 +2333,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (moved) return;
-                              controller.next();
+                              controller.random();
 
                               moved = true;
                               print("Level Complete");

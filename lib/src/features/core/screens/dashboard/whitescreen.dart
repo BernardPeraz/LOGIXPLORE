@@ -21,95 +21,210 @@ class _WhiteScreenState extends State<WhiteScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       //LogicEditorPage());
       //LogicSimp()
+      if (controller.difficulty.value == 1) {
+        if (controller.level.value == 1) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "A+B",
+              ExpecOut: [0, 0, 0, 0, 0, 0, 1, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
 
-      if (controller.level.value == 1) {
-        Get.off(
-          () => LogicEditorPage(
-            mode: SimulatorMode.level,
-            hideSubmitButton: true,
-            Equation: "A",
-            ExpecOut: [0, 0, 0, 0, 1, 1, 1, 1],
-            allowedGates: [
-              "AND",
-              "OR",
-              "BUFFER",
-              "NOT",
-              "NAND",
-              "NOR",
-              "XOR",
-              "XNOR",
-            ],
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+        if (controller.level.value == 2) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "B+C",
+              ExpecOut: [0, 0, 0, 1, 0, 0, 0, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
 
-            nextPage: () => WhiteScreen(),
-          ),
-        );
-      }
-      if (controller.level.value == 2) {
-        Get.off(
-          () => LogicEditorPage(
-            mode: SimulatorMode.level,
-            hideSubmitButton: true,
-            Equation: "B",
-            ExpecOut: [0, 0, 1, 1, 0, 0, 1, 1],
-            allowedGates: [
-              "AND",
-              "OR",
-              "BUFFER",
-              "NOT",
-              "NAND",
-              "NOR",
-              "XOR",
-              "XNOR",
-            ],
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+        if (controller.level.value == 3) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "A+C",
+              ExpecOut: [0, 0, 0, 0, 0, 1, 0, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
 
-            nextPage: () => WhiteScreen(),
-          ),
-        );
-      }
-      if (controller.level.value == 3) {
-        Get.off(
-          () => LogicEditorPage(
-            mode: SimulatorMode.level,
-            hideSubmitButton: true,
-            Equation: "C",
-            ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
-            allowedGates: [
-              "AND",
-              "OR",
-              "BUFFER",
-              "NOT",
-              "NAND",
-              "NOR",
-              "XOR",
-              "XNOR",
-            ],
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+      } //Easy
+      if (controller.difficulty.value == 2) {
+        if (controller.level.value == 1) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "A+B",
+              ExpecOut: [0, 0, 0, 0, 1, 1, 1, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
 
-            nextPage: () => Dashboard(),
-          ),
-        );
-      }
-      if (controller.level.value == 4) {
-        Get.off(
-          () => LogicEditorPage(
-            mode: SimulatorMode.level,
-            hideSubmitButton: true,
-            Equation: "C",
-            ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
-            allowedGates: [
-              "AND",
-              "OR",
-              "BUFFER",
-              "NOT",
-              "NAND",
-              "NOR",
-              "XOR",
-              "XNOR",
-            ],
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+        if (controller.level.value == 2) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "BC",
+              ExpecOut: [0, 0, 1, 1, 0, 0, 1, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
 
-            nextPage: () => Dashboard(),
-          ),
-        );
-      }
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+        if (controller.level.value == 3) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "C+A",
+              ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
+
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+      } //Medium
+      if (controller.difficulty.value == 3) {
+        if (controller.level.value == 1) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "ABC + AB",
+              ExpecOut: [0, 0, 0, 0, 1, 1, 1, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
+
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+        if (controller.level.value == 2) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "AC + AB",
+              ExpecOut: [0, 0, 1, 1, 0, 0, 1, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
+
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+        if (controller.level.value == 3) {
+          Get.off(
+            () => LogicEditorPage(
+              mode: SimulatorMode.level,
+              hideSubmitButton: true,
+              Equation: "ABC",
+              ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
+              allowedGates: [
+                "AND",
+                "OR",
+                "BUFFER",
+                "NOT",
+                "NAND",
+                "NOR",
+                "XOR",
+                "XNOR",
+              ],
+
+              nextPage: () => WhiteScreen(),
+            ),
+          );
+        }
+      } //Hard
     });
   }
 

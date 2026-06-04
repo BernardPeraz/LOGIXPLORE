@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/Scorecontroller.dart';
+
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/widgetts/inputcontroller.dart';
 
 class SwitchTable extends StatefulWidget {
@@ -32,6 +35,7 @@ class SwitchTable extends StatefulWidget {
 }
 
 class _SwitchTableState extends State<SwitchTable> {
+  final scoreController = Get.find<Scorecontroller>();
   bool isHovered = false;
   bool submitted = false;
   bool get isCorrect {
@@ -44,6 +48,45 @@ class _SwitchTableState extends State<SwitchTable> {
     }
 
     return true;
+  }
+
+  bool get isAnswerCorrect {
+    if (answers.length != widget.Expected.length) return false;
+
+    for (int i = 0; i < answers.length; i++) {
+      if (answers[i] != widget.Expected[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  Widget ExpressAndScore() {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            "Boolean Expression: ${widget.Equation}",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        Obx(
+          () => Text(
+            "Score: ${scoreController.level.value} | High Score: ${scoreController.highscore.value}",
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   List<int> answers = [];
@@ -64,15 +107,7 @@ class _SwitchTableState extends State<SwitchTable> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Boolean Expression: ${widget.Equation}",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-
+          ExpressAndScore(),
           const SizedBox(height: 10),
 
           Row(crossAxisAlignment: CrossAxisAlignment.start, children: []),
@@ -84,14 +119,7 @@ class _SwitchTableState extends State<SwitchTable> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Boolean Expression: ${widget.Equation}",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
+          ExpressAndScore(),
 
           const SizedBox(height: 10),
 
@@ -108,14 +136,7 @@ class _SwitchTableState extends State<SwitchTable> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Boolean Expression: ${widget.Equation}",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
+          ExpressAndScore(),
 
           const SizedBox(height: 10),
 
@@ -132,15 +153,7 @@ class _SwitchTableState extends State<SwitchTable> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Boolean Expression: ${widget.Equation}",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-
+          ExpressAndScore(),
           const SizedBox(height: 10),
 
           Row(
@@ -161,14 +174,7 @@ class _SwitchTableState extends State<SwitchTable> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Boolean Expression: ${widget.Equation}",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
+          ExpressAndScore(),
 
           const SizedBox(height: 10),
 
@@ -192,14 +198,7 @@ class _SwitchTableState extends State<SwitchTable> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Boolean Expression: ${widget.Equation}",
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
+          ExpressAndScore(),
 
           const SizedBox(height: 10),
 
@@ -518,6 +517,18 @@ class _SwitchTableState extends State<SwitchTable> {
                       setState(() {
                         submitted = true;
                       });
+
+                      if (isAnswerCorrect) {
+                        scoreController.level.value++;
+
+                        if (scoreController.level.value >
+                            scoreController.highscore.value) {
+                          scoreController.highscore.value =
+                              scoreController.level.value;
+                        }
+                      } else {
+                        scoreController.level.value = 0;
+                      }
                     },
               child: Center(
                 child: const Text("Submit", style: TextStyle(fontSize: 18)),

@@ -28,6 +28,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final controller = Get.put(LevelController());
+
   bool _isLoading = false;
 
   void whitescreen() {
@@ -122,10 +123,74 @@ class _DashboardState extends State<Dashboard> {
                             text: "Simulator",
                             isDark: isDark,
 
-                            onTap: () {
-                              controller.level.value = 1;
+                            onTap: () async {
+                              final difficulty = await Get.dialog<int>(
+                                AlertDialog(
+                                  // palitan mo ng gusto mong kulay
+                                  title: const Text(
+                                    "Select Difficulty",
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.normal,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  content: Center(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          hoverColor: Color.fromARGB(
+                                            255,
+                                            255,
+                                            149,
+                                            0,
+                                          ),
+                                          title: const Text(
+                                            "Easy",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          onTap: () => Get.back(result: 1),
+                                        ),
+                                        ListTile(
+                                          hoverColor: Color.fromARGB(
+                                            255,
+                                            255,
+                                            165,
+                                            0,
+                                          ),
+                                          title: const Text(
+                                            "Medium",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          onTap: () => Get.back(result: 2),
+                                        ),
+                                        ListTile(
+                                          hoverColor: Color.fromARGB(
+                                            255,
+                                            255,
+                                            149,
+                                            0,
+                                          ),
+                                          title: const Text(
+                                            "Hard",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          onTap: () => Get.back(result: 3),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+
+                              if (difficulty == null) return;
+
+                              controller.setDifficulty(difficulty);
+                              controller.random();
+
                               _hidePopupMenu();
                               whitescreen();
+
                               Future.delayed(
                                 const Duration(milliseconds: 300),
                                 () {
@@ -630,11 +695,54 @@ class _DashboardState extends State<Dashboard> {
         actions: [
           if (screenWidth > 735)
             IconButton(
-              onPressed: () {
-                controller.level.value = 1;
+              onPressed: () async {
+                final difficulty = await Get.dialog<int>(
+                  AlertDialog(
+                    // palitan mo ng gusto mong kulay
+                    title: const Text(
+                      "Select Difficulty",
+                      style: TextStyle(fontStyle: FontStyle.normal),
+                      textAlign: TextAlign.center,
+                    ),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          hoverColor: Color.fromARGB(255, 255, 149, 0),
+                          title: const Text(
+                            "Easy",
+                            textAlign: TextAlign.center,
+                          ),
+                          onTap: () => Get.back(result: 1),
+                        ),
+                        ListTile(
+                          hoverColor: Color.fromARGB(255, 255, 149, 0),
+                          title: const Text(
+                            "Medium",
+                            textAlign: TextAlign.center,
+                          ),
+                          onTap: () => Get.back(result: 2),
+                        ),
+                        ListTile(
+                          hoverColor: Color.fromARGB(255, 255, 149, 0),
+                          title: const Text(
+                            "Hard",
+                            textAlign: TextAlign.center,
+                          ),
+                          onTap: () => Get.back(result: 3),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+
+                if (difficulty == null) return;
+
+                controller.setDifficulty(difficulty);
+                controller.random(); // <-- don't forget the ()
+
                 _hidePopupMenu();
 
-                // Pupunta muna sa white screen
                 Get.to(() => WhiteScreen());
               },
               icon: Container(

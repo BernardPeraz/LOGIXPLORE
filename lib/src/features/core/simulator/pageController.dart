@@ -13,7 +13,7 @@ class LevelController extends GetxController {
 
   void random() {
     final rand = Random();
-    level.value = rand.nextInt(3) + 1;
+    level.value = rand.nextInt(10) + 1;
   }
 
   void setDifficulty(int value) {

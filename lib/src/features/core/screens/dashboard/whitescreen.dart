@@ -24,135 +24,139 @@ class _WhiteScreenState extends State<WhiteScreen> {
       if (controller.difficulty.value == 1) {
         if (controller.level.value == 1) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "A+B",
-              ExpecOut: [0, 0, 0, 0, 0, 0, 1, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
-            ),
+            () =>
+                Level(Equation: "(A ⋅ C)'", ExpecOut: [1, 1, 1, 1, 1, 0, 1, 0]),
           );
         }
         if (controller.level.value == 2) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "B+C",
-              ExpecOut: [0, 0, 0, 1, 0, 0, 0, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
-            ),
+            () => Level(Equation: "A + B'", ExpecOut: [1, 1, 0, 0, 1, 1, 1, 1]),
           );
         }
         if (controller.level.value == 3) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "A+C",
-              ExpecOut: [0, 0, 0, 0, 0, 1, 0, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
-            ),
+            () =>
+                Level(Equation: "(B ⋅ C)'", ExpecOut: [1, 1, 1, 0, 1, 1, 1, 0]),
+          );
+        }
+        if (controller.level.value == 4) {
+          Get.off(
+            () =>
+                Level(Equation: "(B + C)'", ExpecOut: [1, 0, 0, 0, 1, 0, 0, 0]),
+          );
+        }
+        if (controller.level.value == 5) {
+          Get.off(
+            () =>
+                Level(Equation: "A' ⋅ B'", ExpecOut: [1, 1, 0, 0, 0, 0, 0, 0]),
+          ); //⊕
+        }
+        if (controller.level.value == 6) {
+          Get.off(
+            () => Level(Equation: "B ⊕ C", ExpecOut: [0, 1, 1, 0, 0, 1, 1, 0]),
+          );
+        }
+        if (controller.level.value == 7) {
+          Get.off(
+            () =>
+                Level(Equation: "(A ⊕ C)'", ExpecOut: [1, 0, 1, 0, 0, 1, 0, 1]),
+          );
+        }
+        if (controller.level.value == 8) {
+          Get.off(
+            () =>
+                Level(Equation: "(A + B)'", ExpecOut: [1, 1, 0, 0, 0, 0, 0, 0]),
+          );
+        }
+        if (controller.level.value == 9) {
+          Get.off(
+            () => Level(Equation: "A' ⊕ B", ExpecOut: [1, 1, 0, 0, 0, 0, 1, 1]),
+          );
+        }
+        if (controller.level.value == 10) {
+          Get.off(
+            () => Level(Equation: "B + C'", ExpecOut: [1, 0, 1, 1, 1, 0, 1, 1]),
           );
         }
       } //Easy
       if (controller.difficulty.value == 2) {
         if (controller.level.value == 1) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "A+B",
-              ExpecOut: [0, 0, 0, 0, 1, 1, 1, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
+            () => Level(
+              Equation: "((A ⋅ B) + C')'",
+              ExpecOut: [0, 1, 0, 1, 0, 1, 0, 0],
             ),
           );
         }
         if (controller.level.value == 2) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "BC",
-              ExpecOut: [0, 0, 1, 1, 0, 0, 1, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
+            () => Level(
+              Equation: "(A ⋅ B)' ⊕ B",
+              ExpecOut: [1, 1, 0, 0, 1, 1, 1, 1],
             ),
           );
         }
         if (controller.level.value == 3) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "C+A",
-              ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
+            () => Level(
+              Equation: "C' + (B ⋅ A')'",
+              ExpecOut: [1, 1, 1, 0, 1, 1, 1, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 4) {
+          Get.off(
+            () => Level(
+              Equation: "((B ⋅ C)' ⊕ C')'",
+              ExpecOut: [1, 0, 1, 1, 1, 0, 1, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 5) {
+          Get.off(
+            () => Level(
+              Equation: "(A ⋅ C)' ⊕ B",
+              ExpecOut: [1, 1, 0, 0, 1, 0, 0, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 6) {
+          Get.off(
+            () => Level(
+              Equation: "((A + B) + C)'",
+              ExpecOut: [1, 0, 0, 0, 0, 0, 0, 0],
+            ),
+          );
+        }
+        if (controller.level.value == 7) {
+          Get.off(
+            () => Level(
+              Equation: "B + (A ⋅ C')",
+              ExpecOut: [0, 0, 1, 1, 1, 0, 1, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 8) {
+          Get.off(
+            () => Level(
+              Equation: "((A ⋅ B)' + C)'",
+              ExpecOut: [0, 0, 0, 0, 0, 0, 1, 0],
+            ),
+          );
+        }
+        if (controller.level.value == 9) {
+          Get.off(
+            () => Level(
+              Equation: "((B ⋅ C)' ⋅ B)'",
+              ExpecOut: [1, 1, 0, 1, 1, 1, 0, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 10) {
+          Get.off(
+            () => Level(
+              Equation: "(A ⋅ C)' + B'",
+              ExpecOut: [1, 1, 1, 1, 1, 1, 1, 0],
             ),
           );
         }
@@ -160,67 +164,81 @@ class _WhiteScreenState extends State<WhiteScreen> {
       if (controller.difficulty.value == 3) {
         if (controller.level.value == 1) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "ABC + AB",
-              ExpecOut: [0, 0, 0, 0, 1, 1, 1, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
+            () => Level(
+              Equation: "((A + B) ⊕ (B ⋅ C')')'",
+              ExpecOut: [0, 0, 0, 1, 1, 1, 0, 1],
             ),
           );
         }
         if (controller.level.value == 2) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "AC + AB",
-              ExpecOut: [0, 0, 1, 1, 0, 0, 1, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
+            () => Level(
+              Equation: "((B' ⋅ A)' + (A ⊕ C'))'",
+              ExpecOut: [0, 0, 0, 0, 1, 0, 0, 0],
             ),
           );
         }
         if (controller.level.value == 3) {
           Get.off(
-            () => LogicEditorPage(
-              mode: SimulatorMode.level,
-              hideSubmitButton: true,
-              Equation: "ABC",
-              ExpecOut: [0, 1, 0, 1, 0, 1, 0, 1],
-              allowedGates: [
-                "AND",
-                "OR",
-                "BUFFER",
-                "NOT",
-                "NAND",
-                "NOR",
-                "XOR",
-                "XNOR",
-              ],
-
-              nextPage: () => WhiteScreen(),
+            () => Level(
+              Equation: "(A ⋅ C')' ⊕ (C + B)'",
+              ExpecOut: [0, 1, 1, 1, 1, 1, 0, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 4) {
+          Get.off(
+            () => Level(
+              Equation: "(B ⋅ A) + (A' + C')'",
+              ExpecOut: [0, 0, 0, 0, 0, 1, 1, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 5) {
+          Get.off(
+            () => Level(
+              Equation: "(A ⋅ B) + (B + C')'",
+              ExpecOut: [0, 1, 0, 0, 0, 1, 1, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 6) {
+          Get.off(
+            () => Level(
+              Equation: "((A ⊕ B) ⋅ (B + C))'",
+              ExpecOut: [1, 1, 0, 0, 1, 0, 1, 1],
+            ),
+          );
+        }
+        if (controller.level.value == 7) {
+          Get.off(
+            () => Level(
+              Equation: "((C + A') + (A ⋅ B)')'",
+              ExpecOut: [0, 0, 0, 0, 0, 0, 1, 0],
+            ),
+          );
+        }
+        if (controller.level.value == 8) {
+          Get.off(
+            () => Level(
+              Equation: "((C + A) + (A' ⋅ B')')'",
+              ExpecOut: [1, 0, 0, 0, 0, 0, 0, 0],
+            ),
+          );
+        }
+        if (controller.level.value == 9) {
+          Get.off(
+            () => Level(
+              Equation: "(B ⊕ A)' ⊕ (A + C')",
+              ExpecOut: [0, 1, 1, 0, 1, 1, 0, 0],
+            ),
+          );
+        }
+        if (controller.level.value == 10) {
+          Get.off(
+            () => Level(
+              Equation: "(B' + A) ⊕ (A + C')'",
+              ExpecOut: [1, 0, 0, 1, 1, 1, 1, 1],
             ),
           );
         }
@@ -241,3 +259,24 @@ class _WhiteScreenState extends State<WhiteScreen> {
   }
 }
 //LogicSimp()
+
+class Level extends LogicEditorPage {
+  Level({required String Equation, required List<int> ExpecOut, super.key})
+    : super(
+        mode: SimulatorMode.level,
+        hideSubmitButton: true,
+        Equation: Equation,
+        ExpecOut: ExpecOut,
+        allowedGates: const [
+          "NOT",
+          "AND",
+          "NAND",
+          "OR",
+          "NOR",
+          "XOR",
+          "XNOR",
+          "BUFFER",
+        ],
+        nextPage: () => WhiteScreen(),
+      );
+}

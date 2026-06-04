@@ -113,31 +113,40 @@ class Assessment extends StatelessWidget {
                         onPressed: () async {
                           List<int> output = [];
                           List<String> gates = [];
+                          String equation = "";
 
                           if (title == "AND GATE") {
-                            output = [0, 0, 0, 1, 0, 0, 0, 1];
+                            equation = "A ⋅ (B ⋅ C)";
+                            output = [0, 0, 0, 0, 0, 0, 0, 1];
                             gates = ["AND"];
+                          } else if (title == "NAND GATE") {
+                            equation = "(B ⋅ C)'";
+                            output = [1, 1, 1, 0, 1, 1, 1, 0];
+                            gates = ["NAND"];
                           } else if (title == "OR GATE") {
+                            equation = "(A + C) + B";
                             output = [0, 1, 1, 1, 1, 1, 1, 1];
                             gates = ["OR"];
-                          } else if (title == "NOT GATE") {
-                            output = [1, 0, 1, 0, 1, 0, 1, 0];
-                            gates = ["NOT"];
-                          } else if (title == "NAND GATE") {
-                            output = [1, 1, 1, 1, 1, 1, 1, 0];
-                            gates = ["NAND"];
                           } else if (title == "NOR GATE") {
-                            output = [1, 0, 0, 0, 0, 0, 0, 0];
+                            equation = "((A + B)' + C)'";
+                            output = [0, 0, 1, 0, 1, 0, 1, 0];
                             gates = ["NOR"];
                           } else if (title == "XOR GATE") {
-                            output = [0, 1, 1, 0, 1, 0, 0, 1];
+                            equation = "B ⊕ C";
+                            output = [0, 1, 1, 0, 0, 1, 1, 0];
                             gates = ["XOR"];
                           } else if (title == "XNOR GATE") {
-                            output = [1, 0, 0, 1, 0, 1, 1, 0];
+                            equation = "(A ⊕ C)'";
+                            output = [1, 0, 1, 0, 0, 1, 0, 1];
                             gates = ["XNOR"];
                           } else if (title == "BUFFER GATE") {
-                            output = [0, 0, 0, 0, 1, 1, 1, 1];
+                            equation = "B";
+                            output = [0, 0, 1, 1, 0, 0, 1, 1];
                             gates = ["BUFFER"];
+                          } else if (title == "NOT GATE") {
+                            equation = "A'";
+                            output = [1, 1, 1, 1, 0, 0, 0, 0];
+                            gates = ["NOT"];
                           }
 
                           //  SHOW LOADING
@@ -163,7 +172,7 @@ class Assessment extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => LogicEditorPage(
-                                Equation: title,
+                                Equation: equation,
                                 ExpecOut: output,
                                 allowedGates: gates,
                                 mode: SimulatorMode.practice,

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:studydesign2zzdatabaseplaylist/achievementui/achievement_manager.dart';
 import 'package:studydesign2zzdatabaseplaylist/assessment/whitescreen/whitescreen.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/screens/dashboard/dashboard.dart';
+import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/Scorecontroller.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/nodewidget/nodewidget.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/pageController.dart';
 import 'package:studydesign2zzdatabaseplaylist/src/features/core/simulator/painters/wirepainter.dart';
@@ -69,7 +71,6 @@ class LogicEditorPage extends StatefulWidget {
   final List<String> allowedGates;
   final Widget Function() nextPage;
   final String Equation;
-  final bool showScore;
 
   const LogicEditorPage({
     super.key,
@@ -79,7 +80,6 @@ class LogicEditorPage extends StatefulWidget {
     required this.ExpecOut,
     required this.allowedGates,
     required this.Equation,
-    this.showScore = true,
 
     // 'AND',
     // 'OR',
@@ -503,6 +503,17 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
     // add a switch
 
     model.addNode(not1);
+    model.addNode(s1);
+    model.addNode(s2);
+    model.addNode(s3);
+    switchNum = 3;
+    setState(() {
+      s1.truthvalue = generateTruthValues(switchNum, "A");
+      s2.truthvalue = generateTruthValues(switchNum, "B");
+      s3.truthvalue = generateTruthValues(switchNum, "C");
+      s4.truthvalue = generateTruthValues(switchNum, "D");
+      s5.truthvalue = generateTruthValues(switchNum, "E");
+    });
   } //above is just adding node
 
   Offset _globalToLocal(Offset global) {
@@ -523,7 +534,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
       final nodeTopLeft = node.position; //locate all nodes
       for (final p in node.ports.values) {
         //loop through all the port
-        final portCenter = nodeTopLeft + p.localOffset + const Offset(12, 12);
+        final portCenter = nodeTopLeft + p.localOffset + const Offset(12, 6);
         final dist = (portCenter - local).distance;
         if (dist <= 25) {
           return PortRef(node.id, p.id, p.type);
@@ -540,14 +551,43 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
 
   @override
   Widget build(BuildContext context) {
+    SwitchTable TTable = new SwitchTable(
+      Aswitch: s1.truthvalue,
+      Bswitch: s2.truthvalue,
+      Cswitch: s3.truthvalue,
+      Dswitch: s4.truthvalue,
+      Eswitch: s5.truthvalue,
+      Output: not1.truthvalue,
+      Expected: widget.ExpecOut,
+      nums: switchNum,
+      Equation: widget.Equation,
+    );
+    final scoreController = Get.find<Scorecontroller>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: Text(
-          'Logic Gate Simulator',
-          style: TextStyle(fontSize: 20, color: Colors.black),
-          strutStyle: StrutStyle(fontWeight: FontWeight.w700),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Logic Gate Simulator',
+              style: TextStyle(fontSize: 20, color: Colors.black),
+              strutStyle: StrutStyle(fontWeight: FontWeight.w700),
+            ),
+            (widget.mode == SimulatorMode.level)
+                ? Obx(
+                    () => Text(
+                      "Score: ${scoreController.level.value} | High Score: ${scoreController.highscore.value}",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  )
+                : Text(""),
+          ],
         ),
         actions: [
           Tooltip(
@@ -1960,6 +2000,39 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                   label: const Text('Add Switch'),
                 ),
                 const SizedBox(height: 8),
+                // ------------------- NOT -------------------
+                if (gateAllowed('NOT'))
+                  FloatingActionButton.extended(
+                    heroTag: 'addNot',
+                    onPressed: () {
+                      final id = 'g${DateTime.now().microsecondsSinceEpoch}';
+                      final n = Node(
+                        id: id,
+                        kind: 'NOT',
+                        label: 'Noot',
+                        position: const Offset(120, 320),
+                        ports: {
+                          'in': Port(
+                            id: 'in',
+                            type: PortType.input,
+                            localOffset: const Offset(7, 27),
+                          ),
+                          'out': Port(
+                            id: 'out',
+                            type: PortType.output,
+                            localOffset: const Offset(84, 26),
+                          ),
+                        },
+                      );
+                      model.addNode(n);
+                    },
+                    label: Tooltip(
+                      message: 'NOT GATE',
+                      child: Image.asset('assets/images/Noot.png', height: 40),
+                    ),
+                  ),
+                if (gateAllowed('NOT')) const SizedBox(height: 8),
+
                 // ------------------- AND -------------------
                 if (gateAllowed('AND'))
                   FloatingActionButton.extended(
@@ -1998,6 +2071,43 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                     ),
                   ),
                 if (gateAllowed('AND')) const SizedBox(height: 8),
+                // ------------------- NAND -------------------
+                if (gateAllowed('NAND'))
+                  FloatingActionButton.extended(
+                    heroTag: 'addNand',
+                    onPressed: () {
+                      final id = 'g${DateTime.now().microsecondsSinceEpoch}';
+                      final n = Node(
+                        id: id,
+                        kind: 'NAND',
+                        label: 'Naand',
+                        position: const Offset(120, 420),
+                        ports: {
+                          'a': Port(
+                            id: 'a',
+                            type: PortType.input,
+                            localOffset: const Offset(1, 14),
+                          ),
+                          'b': Port(
+                            id: 'b',
+                            type: PortType.input,
+                            localOffset: const Offset(1, 36),
+                          ),
+                          'out': Port(
+                            id: 'out',
+                            type: PortType.output,
+                            localOffset: const Offset(90, 26),
+                          ),
+                        },
+                      );
+                      model.addNode(n);
+                    },
+                    label: Tooltip(
+                      message: 'NAND GATE',
+                      child: Image.asset('assets/images/Naand.png', height: 40),
+                    ),
+                  ),
+                if (gateAllowed('NAND')) const SizedBox(height: 8),
 
                 // ------------------- OR -------------------
                 if (gateAllowed('OR'))
@@ -2036,77 +2146,6 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                     ),
                   ),
                 if (gateAllowed('OR')) const SizedBox(height: 8),
-
-                // ------------------- NOT -------------------
-                if (gateAllowed('NOT'))
-                  FloatingActionButton.extended(
-                    heroTag: 'addNot',
-                    onPressed: () {
-                      final id = 'g${DateTime.now().microsecondsSinceEpoch}';
-                      final n = Node(
-                        id: id,
-                        kind: 'NOT',
-                        label: 'Noot',
-                        position: const Offset(120, 320),
-                        ports: {
-                          'in': Port(
-                            id: 'in',
-                            type: PortType.input,
-                            localOffset: const Offset(7, 27),
-                          ),
-                          'out': Port(
-                            id: 'out',
-                            type: PortType.output,
-                            localOffset: const Offset(84, 26),
-                          ),
-                        },
-                      );
-                      model.addNode(n);
-                    },
-                    label: Tooltip(
-                      message: 'NOT GATE',
-                      child: Image.asset('assets/images/Noot.png', height: 40),
-                    ),
-                  ),
-                if (gateAllowed('NOT')) const SizedBox(height: 8),
-
-                // ------------------- NAND -------------------
-                if (gateAllowed('NAND'))
-                  FloatingActionButton.extended(
-                    heroTag: 'addNand',
-                    onPressed: () {
-                      final id = 'g${DateTime.now().microsecondsSinceEpoch}';
-                      final n = Node(
-                        id: id,
-                        kind: 'NAND',
-                        label: 'Naand',
-                        position: const Offset(120, 420),
-                        ports: {
-                          'a': Port(
-                            id: 'a',
-                            type: PortType.input,
-                            localOffset: const Offset(1, 14),
-                          ),
-                          'b': Port(
-                            id: 'b',
-                            type: PortType.input,
-                            localOffset: const Offset(1, 36),
-                          ),
-                          'out': Port(
-                            id: 'out',
-                            type: PortType.output,
-                            localOffset: const Offset(90, 26),
-                          ),
-                        },
-                      );
-                      model.addNode(n);
-                    },
-                    label: Tooltip(
-                      message: 'NAND GATE',
-                      child: Image.asset('assets/images/Naand.png', height: 40),
-                    ),
-                  ),
-                if (gateAllowed('NAND')) const SizedBox(height: 8),
 
                 // ------------------- NOR -------------------
                 if (gateAllowed('NOR'))
@@ -2333,7 +2372,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (moved) return;
-                              controller.random();
+                              controller.next();
 
                               moved = true;
                               print("Level Complete");

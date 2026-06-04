@@ -1046,9 +1046,38 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
 
                                               resetTruthValues(); // 🔥 table reset
 
-                                              switchNum = 0;
-
-                                              setState(() {});
+                                              model.addNode(not1);
+                                              model.addNode(s1);
+                                              model.addNode(s2);
+                                              model.addNode(s3);
+                                              switchNum = 3;
+                                              setState(() {
+                                                s1.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "A",
+                                                    );
+                                                s2.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "B",
+                                                    );
+                                                s3.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "C",
+                                                    );
+                                                s4.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "D",
+                                                    );
+                                                s5.truthvalue =
+                                                    generateTruthValues(
+                                                      switchNum,
+                                                      "E",
+                                                    );
+                                              });
                                             },
                                             label: const Text('RESET'),
                                           ),
@@ -1852,9 +1881,18 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
 
                     resetTruthValues(); // 🔥 table reset
 
-                    switchNum = 0;
-
-                    setState(() {});
+                    model.addNode(not1);
+                    model.addNode(s1);
+                    model.addNode(s2);
+                    model.addNode(s3);
+                    switchNum = 3;
+                    setState(() {
+                      s1.truthvalue = generateTruthValues(switchNum, "A");
+                      s2.truthvalue = generateTruthValues(switchNum, "B");
+                      s3.truthvalue = generateTruthValues(switchNum, "C");
+                      s4.truthvalue = generateTruthValues(switchNum, "D");
+                      s5.truthvalue = generateTruthValues(switchNum, "E");
+                    });
                   },
                   label: const Text('RESET'),
                 ),
@@ -2347,8 +2385,8 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                     child: Text(
                       (s1.truthvalue.length == widget.ExpecOut.length)
                           ? (listEquals(not1.truthvalue, widget.ExpecOut)
-                                ? 'Good job! The output is correct means you chose gates correctly.'
-                                : 'Good! the output length is correct, now use correct gates to do the expected output')
+                                ? 'Now toggle the Answer column to determine the output of the expression ${widget.Equation}.'
+                                : "Use the correct logic gates to represent the Boolean expression ${widget.Equation} in the simulator.")
                           : (pow(2, switchNum + 1) < widget.ExpecOut.length)
                           ? "Let’s use the switches to get ${widget.ExpecOut} as Expected Output "
                           : 'Output length is more than expected output length, please restart',

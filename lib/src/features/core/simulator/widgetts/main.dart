@@ -2372,7 +2372,7 @@ class _LogicEditorPageState extends State<LogicEditorPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               if (moved) return;
-                              controller.next();
+                              controller.random();
 
                               moved = true;
                               print("Level Complete");
